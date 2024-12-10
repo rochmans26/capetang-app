@@ -224,29 +224,42 @@
 
                     <!-- User menu dan tombol Sign In -->
                     <div class="d-flex align-items-center">
-                        <!-- Dropdown User Menu jika Sudah Melakukan Sign In -->
-                        <div class="dropdown me-3">
-                            <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                                href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <small class="me-2">Hi, Rochman Setiono</small>
-                                <i class="bi bi-person-circle fs-5"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="#">Profil</a></li>
-                                <li><a class="dropdown-item" href="#">Pusat Kelola</a></li>
-                                <li><a class="dropdown-item" href="#">Log Out</a></li>
-                            </ul>
-                        </div>
+                        @if (Auth::check())
+                            <!-- Dropdown User Menu jika Sudah Melakukan Sign In -->
+                            <div class="dropdown me-3">
+                                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                                    href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <small class="me-2">Hi, {{ ucwords(Auth::user()->name) ?? 'User' }}</small>
+                                    <i class="bi bi-person-circle fs-5"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="#">Profil</a></li>
+                                    <li><a class="dropdown-item" href="#">Pusat Kelola</a></li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
 
-                        <!-- Tombol Sign In Muncul Jika User belum melakukan login -->
-                        <a href="#" class="btn btn-outline-light" data-bs-toggle="modal"
-                            data-bs-target="#login-form">Log In</a>
+                                        <li>
+                                            <a class="dropdown-item" href="#"
+                                                onclick="event.preventDefault();
+                                                            this.closest('form').submit();">
+                                                Log Out
+                                            </a>
+                                        </li>
+                                    </form>
+                                </ul>
+                            </div>
+                        @endif
+
+                        @if (Auth::guest())
+                            <!-- Tombol Sign In Muncul Jika User belum melakukan login -->
+                            <a href="#" class="btn btn-outline-light" data-bs-toggle="modal"
+                                data-bs-target="#login-form">Log In</a>
+                        @endif
                     </div>
                 </div>
             </div>
         </nav>
-
 
     </header>
 
@@ -450,23 +463,32 @@
             <div class="row bg-success p-4 rounded justify-content-center" id="contact">
                 <h1 class="text text-center mb-3 text-white">Contact</h1>
                 <div class="col-lg">
-                    <form action="" method="post">
+                    <form method="POST" action="{{ route('feedback') }}">
+                        @csrf
+
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label text-white">Email address</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1"
-                                placeholder="name@example.com">
+                            <input type="email" class="form-control" id="exampleFormControlInput1" name="email"
+                                placeholder="name@example.com" required>
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlTextarea1" class="form-label text-white">Example
                                 textarea</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="message" required></textarea>
                         </div>
                         <div class="mb-3 d-flex justify-content-center">
                             <button type="submit" class="btn btn-light">Submit</button>
                         </div>
+
+                        @if (session('success'))
+                            <script>
+                                alert('{{ session('success') }}');
+                            </script>
+                        @endif
                     </form>
                 </div>
             </div>
+
             <hr class="featurette-divider">
 
             <!-- /END THE FEATURETTES -->
@@ -490,7 +512,10 @@
                 <div class="modal-body">
                     <div class="form-signin d-flex flex-column align-items-center justify-content-center">
                         <!-- Form Start -->
-                        <form class="text-center w-100" style="max-width: auto;">
+                        <form method="POST" action="{{ route('login') }}" class="text-center w-100"
+                            style="max-width: auto;">
+                            @csrf
+
                             <!-- Logo -->
                             <img class="mb-4 mx-auto d-block" src="{{ asset('img/bootstrap-logo.svg') }}"
                                 alt="Logo" width="72" height="57">
@@ -499,14 +524,19 @@
 
                             <!-- Input Email -->
                             <div class="form-floating">
-                                <input type="email" class="form-control" id="floatingInput"
+                                <input type="email" class="form-control" id="floatingInput" name="email"
                                     placeholder="name@example.com">
                                 <label for="floatingInput">Email address</label>
+                                @error('email')
+                                    <script>
+                                        alert('{{ $message }}');
+                                    </script>
+                                @enderror
                             </div>
 
                             <!-- Input Password -->
                             <div class="form-floating">
-                                <input type="password" class="form-control" id="floatingPassword"
+                                <input type="password" class="form-control" id="floatingPassword" name="password"
                                     placeholder="Password">
                                 <label for="floatingPassword">Password</label>
                             </div>
@@ -525,9 +555,10 @@
                         </form>
                         <!-- Form End -->
                         <!-- Tombol Daftar -->
-                        <button class="btn btn-outline-success w-100 py-2" data-bs-toggle="modal"
-                            data-bs-target="#register-form" data-bs-dismiss="modal">Daftar</button>
-
+                        @if (Route::has('register'))
+                            <button class="btn btn-outline-success w-100 py-2" data-bs-toggle="modal"
+                                data-bs-target="#register-form" data-bs-dismiss="modal">Daftar</button>
+                        @endif
                         <!-- Footer -->
                         <p class="mt-5 mb-3 text-body-secondary">&copy; Capetang App 2024</p>
                     </div>
@@ -543,17 +574,19 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <!-- Form Start -->
-                    <form>
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+
                         <!-- Full Name -->
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="fullName" placeholder="Full Name"
-                                required>
+                                name="name" required>
                             <label for="fullName">Full Name</label>
                         </div>
 
                         <!-- Email -->
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="emailAddress"
+                            <input type="email" class="form-control" id="emailAddress" name="email"
                                 placeholder="name@example.com" required>
                             <label for="emailAddress">Email Address</label>
                         </div>
@@ -561,27 +594,27 @@
                         <!-- Username -->
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="username" placeholder="Username"
-                                required>
+                                name="username" required>
                             <label for="username">Username</label>
                         </div>
 
                         <!-- Password -->
                         <div class="form-floating mb-3">
                             <input type="password" class="form-control" id="password" placeholder="Password"
-                                required>
+                                name="password" required>
                             <label for="password">Password</label>
                         </div>
 
                         <!-- Confirm Password -->
                         <div class="form-floating mb-4">
                             <input type="password" class="form-control" id="confirmPassword"
-                                placeholder="Confirm Password" required>
+                                name="password_confirmation" placeholder="Confirm Password" required>
                             <label for="confirmPassword">Confirm Password</label>
                         </div>
 
                         <!-- Terms and Conditions -->
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
                             <label class="form-check-label" for="terms">
                                 I agree to the <a href="#" class="text-decoration-none">Terms and Conditions</a>
                             </label>
@@ -593,10 +626,13 @@
                     <!-- Form End -->
 
                     <!-- Footer -->
-                    <p class="mt-4 text-center text-muted">
-                        Already have an account? <a href="#" class="text-decoration-none"
-                            data-bs-toggle="modal" data-bs-target="#login-form" data-bs-dismiss="modal">Log In</a>
-                    </p>
+                    @if (Route::has('login'))
+                        <p class="mt-4 text-center text-muted">
+                            Already have an account? <a href="#" class="text-decoration-none"
+                                data-bs-toggle="modal" data-bs-target="#login-form" data-bs-dismiss="modal">Log
+                                In</a>
+                        </p>
+                    @endif
                 </div>
             </div>
         </div>
