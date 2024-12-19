@@ -25,6 +25,33 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('landing_page');
 })->name('landing-page');
+Route::get('/v-user-dashboard/', function () {
+    return view('users.dashboard');
+})->name('user-dashboard');
+Route::get('/v-kategori-sampah/', function () {
+    return view('users.kategori_sampah');
+})->name('user-kategori-sampah');
+Route::get('/v-all-quest/', function () {
+    return view('users.all_quest');
+})->name('user-all-quest');
+Route::get('/v-user-quest/', function () {
+    return view('users.user_quest');
+})->name('user-quest');
+Route::get('/v-reward-poin/', function () {
+    return view('users.riwayat_reward_poin');
+})->name('reward-poin');
+Route::get('/v-riwayat-tukar-poin/', function () {
+    return view('users.riwayat_tukar_poin');
+})->name('riwayat-tukar-poin');
+Route::get('/v-tukar-poin/', function () {
+    return view('users.tukar_poin');
+})->name('tukar-poin');
+Route::get('/v-user-profile/', function () {
+    return view('users.user_profile');
+})->name('user-profile');
+Route::get('/v-user-authentication/', function () {
+    return view('auth.change-password');
+})->name('user-authentication');
 
 Route::post('/feedback', [FeedbackController::class, 'kirimFeedback'])->name('feedback');
 
