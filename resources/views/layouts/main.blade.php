@@ -13,13 +13,6 @@
         html {
             height: 100%;
         }
-
-        .custom-bg {
-            background-image: url('{{ asset('img/banner-capetang.png') }}');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
     </style>
 
     </style>

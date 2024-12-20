@@ -18,7 +18,7 @@
               <ul class="navbar-nav ms-auto">
                   <li class="nav-item">
                       <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
-                          <span class="me-1">Point Anda: 200000</span>
+                          <span class="me-1 badge text-bg-warning">Point Anda: 200000</span>
                           <img src="{{ asset('img/coin.png') }}" alt="Coin" width="22" class="me-2">
                           <span>|</span>
                       </a>

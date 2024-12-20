@@ -1,4 +1,4 @@
- <aside id="sidebar">
+ <aside id="sidebar" class="shadow">
      <div class="d-flex">
          <button class="toggle-btn" type="button">
              <i class="bi bi-grid"></i>
