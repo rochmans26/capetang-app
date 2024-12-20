@@ -14,8 +14,6 @@
             height: 100%;
         }
     </style>
-
-    </style>
 </head>
 
 <body>
