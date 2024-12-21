@@ -30,9 +30,15 @@
              <ul id="quest" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                  <li class="sidebar-item">
                      <a href="{{ route('user-all-quest') }}" class="sidebar-link">Semua Quest</a>
+                     <span
+                         class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                         <span class="visually-hidden">New alerts</span>
                  </li>
                  <li class="sidebar-item">
                      <a href="{{ route('user-quest') }}" class="sidebar-link">Quest Anda</a>
+                     <span
+                         class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                         <span class="visually-hidden">New alerts</span>
                  </li>
              </ul>
          </li>
@@ -45,9 +51,15 @@
              <ul id="reward" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                  <li class="sidebar-item">
                      <a href="{{ route('reward-poin') }}" class="sidebar-link">Reward Point</a>
+                     <span
+                         class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                         <span class="visually-hidden">New alerts</span>
                  </li>
                  <li class="sidebar-item">
                      <a href="{{ route('riwayat-tukar-poin') }}" class="sidebar-link">Riwayat Tukar Point</a>
+                     <span
+                         class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                         <span class="visually-hidden">New alerts</span>
                  </li>
              </ul>
          </li>

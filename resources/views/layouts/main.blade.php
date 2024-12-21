@@ -14,6 +14,7 @@
             height: 100%;
         }
     </style>
+    @yield('customize-style')
 </head>
 
 <body>
