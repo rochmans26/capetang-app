@@ -1,6 +1,6 @@
 <h1>Perbarui Quest</h1>
 
-<form action="{{ route('update-quest', $quest->id) }}" method="post" enctype="multipart/form-data">
+<form action="{{ route('users.update-quest', $quest->id) }}" method="post" enctype="multipart/form-data">
     @csrf
     @method('put')
 

@@ -79,8 +79,27 @@ class User extends Authenticatable implements MustVerifyEmail
     /*
     *   Helper function
     */
-    public function hitungPoint()
+    public function getPointsAttribute()
     {
         return $this->reward()->sum('point_reward');
+    }
+
+    public function getActiveQuestsAttribute()
+    {
+        return $this->quest()
+            ->where('status', '!=', 'selesai')
+            ->where('waktu_mulai', '<=', now())
+            ->where('waktu_berakhir', '>=', now())
+            ->count();
+    }
+
+    public function getCompletedQuestsAttribute()
+    {
+        return $this->quest()->where('status', 'selesai')->count();
+    }
+
+    public function getTotalQuestsAttribute()
+    {
+        return $this->quest()->count();
     }
 }

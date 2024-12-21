@@ -64,6 +64,7 @@ class SetorSampahController extends Controller
     public function destroy(string $id)
     {
         $setorSampah = SetorSampah::findOrFail($id);
+        $setorSampah->deletePencatatanReward($setorSampah);
         $setorSampah->delete();
 
         return redirect()->route('penyetoran-sampah.index')->with('success', 'Setor sampah berhasil dihapus');
