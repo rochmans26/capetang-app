@@ -11,19 +11,34 @@ use Illuminate\Support\Facades\DB;
 
 class GamifikasiController extends Controller
 {
-    public function index(Request $request)
+    public function allQuest()
     {
-        $questTersedia = Quest::aktif()->get();
-        $questKadaluarsa = Quest::kadaluarsa()->get();
+        $semuaQuest = Quest::all();
 
-        return view('admin.transaksi.quest.index', compact('questTersedia', 'questKadaluarsa'));
+        return view('users.all_quest', [
+            'semuaQuest' => $semuaQuest,
+        ]);
+    }
+
+    public function listQuestUser()
+    {
+        $user = auth()->user();
+        $questTersedia = $user->quest()->aktif()->where('status', '!=', 'selesai')->get();
+        $questKadaluarsa = $user->quest()->kadaluarsa()->get();
+        $questDiSelesaikan = $user->quest()->where('status', 'selesai')->get();
+
+        return view('users.user_quest', [
+            'questTersedia' => $questTersedia,
+            'questKadaluarsa' => $questKadaluarsa,
+            'questDiSelesaikan' => $questDiSelesaikan,
+        ]);
     }
 
     public function ambilQuest(string $id)
     {
         $user = auth()->user();
 
-        $quest = Quest::find($id);
+        $quest = Quest::findOrFail($id);
 
         // Periksa apakah quest tidak ditemukan atau tidak aktif
         if (!$quest || !$quest->berlangsung()) {
@@ -46,10 +61,12 @@ class GamifikasiController extends Controller
 
     public function detailQuest(string $id)
     {
-        $quest = Quest::with('users')->findOrFail($id);
-        $user = $quest->users->firstOrFail();
-        $quest->status = $user->pivot->getAttribute('status');
-        $quest->bukti_penyerahan = $user->pivot->getAttribute('bukti_penyerahan') ?? "Belum upload bukti penyerahan";
+        $user = auth()->user();
+        $quest = $user->quest()->whereHas('users', function ($query) use ($user, $id) {
+            $query->where('id_user', $user->id)->where('id_quest', $id);
+        })->firstOrFail();
+        $quest->status = $quest->pivot->status;
+        $quest->bukti_penyerahan = $quest->pivot->bukti_penyerahan ?? "Belum upload bukti penyerahan";
 
         return view('admin.transaksi.quest.show', compact('quest'));
     }
@@ -64,11 +81,11 @@ class GamifikasiController extends Controller
     {
         $user = auth()->user();
         $quest = Quest::findOrFail($id);
-        $userQuest = $quest->users()->where('id_user', $user->id)->first();
+        $userQuest = $quest->users()->where('id_user', $user->id)->firstOrFail();
 
         // Periksa apakah pengguna mengambil quest saat ini
         if (!$userQuest) {
-            return redirect()->route('list-quest')->with('error', 'Anda belum mengambil quest ini');
+            return redirect()->route('users.quest-user')->with('error', 'Anda belum mengambil quest ini');
         }
 
         $pivot = $userQuest->pivot;
@@ -86,10 +103,10 @@ class GamifikasiController extends Controller
                 ]);
             });
 
-            return redirect()->route('detail-quest', $pivot->id_quest)->with('success', 'Bukti penyerahan berhasil diupload');
+            return redirect()->route('users.detail-quest', $pivot->id_quest)->with('success', 'Bukti penyerahan berhasil diupload');
         }
 
-        return redirect()->route('detail-quest', $id)->with('success', 'Quest berhasil diperbarui');
+        return redirect()->route('users.detail-quest', $id)->with('success', 'Quest berhasil diperbarui');
     }
 
     public function hapusQuest(string $id)
@@ -102,12 +119,12 @@ class GamifikasiController extends Controller
             // Hapus pengguna dari quest
             $quest->users()->detach($user->id);
             // Hapus bukti penyerahan jika ada
-            UserQuest::deleteBuktiPenyerahan($quest->users()->where('id_user', $user->id)->first()->pivot->bukti_penyerahan);
+            UserQuest::deleteBuktiPenyerahan($quest->users()->where('id_user', $user->id)->first()->pivot->bukti_penyerahan ?? null);
 
-            return redirect()->route('list-quest')->with('success', 'Quest berhasil dihapus');
+            return redirect()->route('users.quest-user')->with('success', 'Quest berhasil dihapus');
         }
 
-        return redirect()->route('list-quest')->with('error', 'Anda belum mengambil quest ini');
+        return redirect()->route('users.quest-user')->with('error', 'Anda belum mengambil quest ini');
     }
 
     /*
@@ -135,6 +152,6 @@ class GamifikasiController extends Controller
         // Kirim reward ke pengguna
         $userQuest->pencatatanReward($userQuest);
 
-        return redirect()->route('reward-quest')->with('success', 'Reward berhasil dikirim');
+        return redirect()->route('admin.reward-quest')->with('success', 'Reward berhasil dikirim');
     }
 }

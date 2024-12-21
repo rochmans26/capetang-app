@@ -27,7 +27,7 @@
                         <td>{{ $quest->pivot->status }}</td>
                         <td>
                             <form
-                                action="{{ route('kirim-reward-quest', ['userId' => $userQuest->id, 'questId' => $quest->id]) }}"
+                                action="{{ route('admin.kirim-reward-quest', ['userId' => $userQuest->id, 'questId' => $quest->id]) }}"
                                 method="POST">
                                 @csrf
                                 @method('put')

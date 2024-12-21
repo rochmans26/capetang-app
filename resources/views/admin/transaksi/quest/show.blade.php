@@ -16,12 +16,15 @@
 <p>Status: {{ $quest->status }}</p>
 <p>Bukti Penyerahan: {{ $quest->bukti_penyerahan }}</p>
 
-<a href="{{ route('list-quest') }}">Kembali</a>
-<a href="{{ route('perbarui-quest', $quest->id) }}">Perbarui</a>
+<a href="{{ route('users.quest-user') }}">Kembali</a>
 
-<form action="{{ route('hapus-quest', $quest->id) }}" method="post">
-    @csrf
-    @method('delete')
+@if ($quest->berlangsung() && $quest->status !== 'selesai')
+    <a href="{{ route('users.perbarui-quest', $quest->id) }}">Perbarui</a>
 
-    <button type="submit">Batalkan Quest</button>
-</form>
+    <form action="{{ route('users.hapus-quest', $quest->id) }}" method="post">
+        @csrf
+        @method('delete')
+
+        <button type="submit">Batalkan Quest</button>
+    </form>
+@endif

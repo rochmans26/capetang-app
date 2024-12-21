@@ -62,4 +62,9 @@ class SetorSampah extends Model
                 'point_reward' => $setorSampah->point,
             ]);
     }
+
+    public function deletePencatatanReward($setorSampah)
+    {
+        Reward::where('id_transaksi', $setorSampah->id)->delete();
+    }
 }
