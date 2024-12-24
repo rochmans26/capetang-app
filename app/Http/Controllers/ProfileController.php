@@ -16,7 +16,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('users.user_profile', [
             'user' => $request->user(),
         ]);
     }
@@ -26,15 +26,25 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama jika ada
+            $user->deleteFoto($user->foto ?? null);
+            // Simpan foto baru
+            $user->foto = $user->uploadFoto($request->file('foto'));
         }
 
-        $request->user()->save();
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $user->save();
+
+        return Redirect::route('users-profile')
+            ->with('status', 'profile-updated')
+            ->with('success', 'Profile berhasil diubah.');
     }
 
     /**

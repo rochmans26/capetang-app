@@ -16,10 +16,25 @@
             </a>
         </li>
         <li class="sidebar-item">
-            <a href="{{ route('user-kategori-sampah') }}" class="sidebar-link">
+            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                data-bs-target="#sampah" aria-expanded="false" aria-controls="sampah">
                 <i class="bi bi-recycle"></i>
-                <span>Kategori Sampah</span>
+                <span>Pengelolaan Sampah</span>
             </a>
+            <ul id="sampah" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <li class="sidebar-item">
+                    <a href="{{ route('kategori-sampah.index') }}" class="sidebar-link">Kategori Sampah</a>
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                        <span class="visually-hidden">New alerts</span>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{{ route('users.riwayat-setor-sampah') }}" class="sidebar-link">Riwayat Setor Sampah</a>
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                        <span class="visually-hidden">New alerts</span>
+                </li>
+            </ul>
         </li>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
@@ -50,13 +65,13 @@
             </a>
             <ul id="reward" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                 <li class="sidebar-item">
-                    <a href="{{ route('reward-poin') }}" class="sidebar-link">Reward Point</a>
+                    <a href="{{ route('users.riwayat-reward') }}" class="sidebar-link">Reward Point</a>
                     <span
                         class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
                         <span class="visually-hidden">New alerts</span>
                 </li>
                 <li class="sidebar-item">
-                    <a href="{{ route('riwayat-tukar-poin') }}" class="sidebar-link">Riwayat Tukar Point</a>
+                    <a href="{{ route('users.riwayat-tukar-poin') }}" class="sidebar-link">Riwayat Tukar Point</a>
                     <span
                         class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
                         <span class="visually-hidden">New alerts</span>
@@ -64,7 +79,7 @@
             </ul>
         </li>
         <li class="sidebar-item">
-            <a href="{{ route('tukar-poin') }}" class="sidebar-link">
+            <a href="{{ route('users.penukaran-poin') }}" class="sidebar-link">
                 <i class="bi bi-arrow-left-right"></i>
                 <span>Tukar Point</span>
             </a>
@@ -77,10 +92,10 @@
             </a>
             <ul id="setting" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                 <li class="sidebar-item">
-                    <a href="{{ route('user-profile') }}" class="sidebar-link">Profile</a>
+                    <a href="{{ route('users-profile') }}" class="sidebar-link">Profile</a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="{{ route('user-authentication') }}" class="sidebar-link">Authentication</a>
+                    <a href="{{ route('password.edit') }}" class="sidebar-link">Ubah Password</a>
                 </li>
             </ul>
         </li>

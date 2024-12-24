@@ -17,7 +17,7 @@
             <div class="title d-flex justify-content-between align-items-center mt-3">
                 <h1 class="d-flex align-items-center">
                     <i class="bi bi-bookmark-star-fill text-warning"></i>
-                    Riwayat Reward Poin
+                    Riwayat Setor Sampah
                 </h1>
 
                 <a href="javascript:history.back()" class="btn btn-success d-inline-flex align-items-center" role="button"
@@ -32,20 +32,29 @@
                     <thead>
                         <tr>
                             <th scope="col">No.</th>
-                            <th scope="col">Nama Reward</th>
+                            <th scope="col">Tanggal Setor</th>
+                            <th scope="col">Kategori</th>
+                            <th scope="col">Berat(gr)</th>
                             <th scope="col">Point</th>
-                            <th scope="col">Tipe Transaksi</th>
-                            <th scope="col">ID Transaksi</th>
+                            <th scope="col">Bukti Penyerahan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($userHistory as $history)
                             <tr>
                                 <th scope="row">{{ $loop->iteration }}</th>
-                                <td>{{ $history->nama_reward }}</td>
-                                <td>{{ $history->point_reward }}</td>
-                                <td>{{ $history->tipe_transaksi }}</td>
-                                <td>{{ $history->id_transaksi }}</td>
+                                <td>{{ $history->tgl_setor_sampah }}</td>
+                                <td>{{ $history->kategori->nama_kategori }}</td>
+                                <td>{{ $history->berat_sampah }}</td>
+                                <td>{{ $history->point }}</td>
+                                <td>
+                                    @if ($history->bukti_penyerahan)
+                                        <img src="{{ $history->image_url }}" alt="{{ $history->image_url }}"
+                                            class="img-thumbnail" width="100px" height="100px">
+                                    @else
+                                        <p>Tidak ada gambar</p>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

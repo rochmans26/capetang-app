@@ -31,8 +31,12 @@
                         <td>{{ $setoran->berat_sampah }}</td>
                         <td>{{ $setoran->point }}</td>
                         <td>
-                            <img src="{{ $setoran->image_url }}" alt="{{ $setoran->image_url }}" width="100px"
-                                height="100px">
+                            @if ($setoran->bukti_penyerahan)
+                                <img src="{{ $setoran->image_url }}" alt="{{ $setoran->image_url }} " width="100px"
+                                    height="100px">
+                            @else
+                                <p>Tidak ada gambar</p>
+                            @endif
                         </td>
                         <td>
                             <a href="{{ route('penyetoran-sampah.show', $setoran->id) }}">Lihat</a>

@@ -29,7 +29,8 @@
                 <div class="dropdown me-3">
                     <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" href="#"
                         id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle fs-5 me-1"></i>
+                        <img src="{{ auth()->user()->image_url }}" alt="{{ auth()->user()->image_url }}"
+                            class="rounded-circle me-2" width="28" height="28">
                         <small class="me-2">Hi, {{ auth()->user()->name ?? 'User' }}!</small>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">

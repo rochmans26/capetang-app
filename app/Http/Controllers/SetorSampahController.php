@@ -29,6 +29,12 @@ class SetorSampahController extends Controller
     {
         $validasi = $request->validated();
         $validasi['point'] = SetorSampah::hitungPoint($validasi['berat_sampah']);
+
+        // Upload bukti penyerahan
+        if ($request->hasFile('bukti_penyerahan')) {
+            $validasi['bukti_penyerahan'] = SetorSampah::deleteBuktiPenyerahan($request->file('bukti_penyerahan'));
+        }
+
         $setorSampah = SetorSampah::create($validasi);
         $setorSampah->pencatatanReward($setorSampah);
 
@@ -55,6 +61,14 @@ class SetorSampahController extends Controller
         $setorSampah = SetorSampah::findOrFail($id);
         $validasi = $request->validated();
         $validasi['point'] = SetorSampah::hitungPoint($validasi['berat_sampah']);
+
+        if ($request->hasFile('bukti_penyerahan')) {
+            // Hapus bukti penyerahan jika ada
+            $setorSampah->deleteBuktiPenyerahan($setorSampah->bukti_penyerahan ?? null);
+            // Simpan bukti penyerahan baru
+            $validasi['bukti_penyerahan'] = $setorSampah->uploadBuktiPenyerahan($request->file('bukti_penyerahan'));
+        }
+
         $setorSampah->update($validasi);
         $setorSampah->updatePencatatanReward($setorSampah);
 
@@ -64,6 +78,7 @@ class SetorSampahController extends Controller
     public function destroy(string $id)
     {
         $setorSampah = SetorSampah::findOrFail($id);
+        $setorSampah->deleteBuktiPenyerahan($setorSampah->bukti_penyerahan ?? null);
         $setorSampah->deletePencatatanReward($setorSampah);
         $setorSampah->delete();
 

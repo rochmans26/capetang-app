@@ -117,97 +117,38 @@
             <hr>
             {{-- Daftar Item --}}
             <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="card shadow-sm">
-                        <img src="{{ asset('img/sample-item-card.jpg') }}" class="card-img-top rounded-top" alt="Nama Item">
-                        <div class="card-body">
-                            <h5 class="card-title text-primary fw-bold">Nama Item</h5>
-                            <small class="text-muted">Poin Item</small>
-                            <p class="card-text d-flex align-items-center fw-bold fs-4 mt-2">
-                                <span class="me-2">
-                                    <i class="bi bi-coin text-warning"></i>
-                                </span>
-                                2000 Poin
-                            </p>
-                            <small class="text-muted">Deskripsi Item</small>
-                            <p class="card-text mt-2">
-                                Some quick example text to build on the card title and make up the bulk of the card's
-                                content.
-                            </p>
-                            <small class="badge bg-success">Stok: 8</small>
-                        </div>
-                        <div class="card-footer">
-                            <div class="d-flex justify-content-between">
-                                <a href="#" class="btn btn-primary w-100 me-2">Checkout</a>
-                                <a href="#" class="btn btn-warning w-100" data-bs-toggle="modal"
-                                    data-bs-target="#modal-keranjang">
-                                    Masukan Keranjang
-                                </a>
+                @foreach ($listItem as $item)
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <img src="{{ asset('img/sample-item-card.jpg') }}" class="card-img-top rounded-top"
+                                alt="Nama Item">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary fw-bold">{{ $item->nama_item }}</h5>
+                                <small class="text-muted">Poin Item</small>
+                                <p class="card-text d-flex align-items-center fw-bold fs-4 mt-2">
+                                    <span class="me-2">
+                                        <i class="bi bi-coin text-warning"></i>
+                                    </span>
+                                    {{ $item->point_item }} Poin
+                                </p>
+                                <small class="text-muted">Deskripsi Item</small>
+                                <p class="card-text mt-2">
+                                    {{ $item->deskripsi_item }}
+                                </p>
+                                <small class="badge bg-success">Stok: {{ $item->stok_item }}</small>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-flex justify-content-between">
+                                    <a href="#" class="btn btn-primary w-100 me-2">Checkout</a>
+                                    <a href="#" class="btn btn-warning w-100" data-bs-toggle="modal"
+                                        data-bs-target="#modal-keranjang">
+                                        Masukan Keranjang
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card shadow-sm">
-                        <img src="{{ asset('img/sample-item-card.jpg') }}" class="card-img-top rounded-top" alt="Nama Item">
-                        <div class="card-body">
-                            <h5 class="card-title text-primary fw-bold">Nama Item</h5>
-                            <small class="text-muted">Poin Item</small>
-                            <p class="card-text d-flex align-items-center fw-bold fs-4 mt-2">
-                                <span class="me-2">
-                                    <i class="bi bi-coin text-warning"></i>
-                                </span>
-                                2000 Poin
-                            </p>
-                            <small class="text-muted">Deskripsi Item</small>
-                            <p class="card-text mt-2">
-                                Some quick example text to build on the card title and make up the bulk of the card's
-                                content.
-                            </p>
-                            <small class="badge bg-success">Stok: 8</small>
-                        </div>
-                        <div class="card-footer">
-                            <div class="d-flex justify-content-between">
-                                <a href="#" class="btn btn-primary w-100 me-2">Checkout</a>
-                                <a href="#" class="btn btn-warning w-100" data-bs-toggle="modal"
-                                    data-bs-target="#modal-keranjang">
-                                    Masukan Keranjang
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card shadow-sm">
-                        <img src="{{ asset('img/sample-item-card.jpg') }}" class="card-img-top rounded-top"
-                            alt="Nama Item">
-                        <div class="card-body">
-                            <h5 class="card-title text-primary fw-bold">Nama Item</h5>
-                            <small class="text-muted">Poin Item</small>
-                            <p class="card-text d-flex align-items-center fw-bold fs-4 mt-2">
-                                <span class="me-2">
-                                    <i class="bi bi-coin text-warning"></i>
-                                </span>
-                                2000 Poin
-                            </p>
-                            <small class="text-muted">Deskripsi Item</small>
-                            <p class="card-text mt-2">
-                                Some quick example text to build on the card title and make up the bulk of the card's
-                                content.
-                            </p>
-                            <small class="badge bg-success">Stok: 8</small>
-                        </div>
-                        <div class="card-footer">
-                            <div class="d-flex justify-content-between">
-                                <a href="#" class="btn btn-primary w-100 me-2">Checkout</a>
-                                <a href="#" class="btn btn-warning w-100" data-bs-toggle="modal"
-                                    data-bs-target="#modal-keranjang">
-                                    Masukan Keranjang
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             {{-- End Of Daftar Item --}}
         </div>

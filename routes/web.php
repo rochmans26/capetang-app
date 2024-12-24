@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GamifikasiController;
+use App\Http\Controllers\HistoryTransaksiController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\KategoriSampahController;
 use App\Http\Controllers\PenukaranPoinController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SetorSampahController;
@@ -26,31 +28,17 @@ Route::get('/', function () {
     return view('landing_page');
 })->name('landing-page');
 
-Route::get('/v-kategori-sampah/', function () {
-    return view('users.kategori_sampah');
-})->name('user-kategori-sampah');
-Route::get('/v-reward-poin/', function () {
-    return view('users.riwayat_reward_poin');
-})->name('reward-poin');
-Route::get('/v-riwayat-tukar-poin/', function () {
-    return view('users.riwayat_tukar_poin');
-})->name('riwayat-tukar-poin');
-Route::get('/v-tukar-poin/', function () {
-    return view('users.tukar_poin');
-})->name('tukar-poin');
-Route::get('/v-user-profile/', function () {
-    return view('users.user_profile');
-})->name('user-profile');
-Route::get('/v-user-authentication/', function () {
-    return view('auth.change-password');
-})->name('user-authentication');
-
+// Form Feedback dari Landing Page
 Route::post('/feedback', [FeedbackController::class, 'kirimFeedback'])->name('feedback');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/beranda', function () {
         return view('landing_page');
     })->name('beranda');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('users-profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('users-profile.update');
 
     Route::middleware(['verified'])->group(function () {
         Route::resource('item', ItemController::class);
@@ -70,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     // Users
     Route::prefix('users')->middleware(['verified'])->group(function () {
         Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('users.dashboard');
+        Route::resource('kategori-sampah', KategoriSampahController::class)->only('index', 'show');
         // Gamifikasi
         Route::get('/list-quest', [GamifikasiController::class, 'allQuest'])->name('users.list-quest');
         Route::get('/quest', [GamifikasiController::class, 'listQuestUser'])->name('users.quest-user');
@@ -78,6 +67,13 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/perbarui-quest/{id}', [GamifikasiController::class, 'updateQuest'])->name('users.update-quest');
         Route::get('/detail-quest/{id}', [GamifikasiController::class, 'detailQuest'])->name('users.detail-quest');
         Route::delete('/hapus-quest/{id}', [GamifikasiController::class, 'hapusQuest'])->name('users.hapus-quest');
+        // Riwayat Transaksi Poin
+        Route::get('/riwayat-reward', [HistoryTransaksiController::class, 'riwayatRewardUser'])->name('users.riwayat-reward');
+        // Riwayat Transaksi Setoran Sampah
+        Route::get('/riwayat-setor-sampah', [HistoryTransaksiController::class, 'riwayatSetorSampahUser'])->name('users.riwayat-setor-sampah');
+        // Tukar Poin
+        Route::get('/penukaran-poin', [ItemController::class, 'index'])->name('users.penukaran-poin');
+        Route::get('/riwayat-tukar-poin', [HistoryTransaksiController::class, 'riwayatTukarPoinUser'])->name('users.riwayat-tukar-poin');
     });
 });
 

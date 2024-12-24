@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class SetorSampah extends Model
 {
@@ -66,5 +67,22 @@ class SetorSampah extends Model
     public function deletePencatatanReward($setorSampah)
     {
         Reward::where('id_transaksi', $setorSampah->id)->delete();
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return Storage::url('public/uploads/setor-sampah/' . $this->bukti_penyerahan);
+    }
+
+    public static function uploadBuktiPenyerahan($file)
+    {
+        $fileName = time() . '.' . $file->extension();
+        $file->storeAs('public/uploads/setor-sampah', $fileName);
+        return $fileName;
+    }
+
+    public static function deleteBuktiPenyerahan($fileName)
+    {
+        return Storage::exists('public/uploads/setor-sampah/' . $fileName) && Storage::delete('public/uploads/setor-sampah/' . $fileName);
     }
 }

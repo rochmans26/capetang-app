@@ -11,7 +11,7 @@ class ItemController extends Controller
     public function index()
     {
         $listItem = Item::all();
-        return view('admin.item.index', compact('listItem'));
+        return view('users.tukar_poin', compact('listItem'));
     }
 
     public function create()

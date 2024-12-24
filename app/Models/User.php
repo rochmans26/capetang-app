@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -45,6 +46,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = ['points'];
 
     public function role()
     {
@@ -101,5 +104,25 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getTotalQuestsAttribute()
     {
         return $this->quest()->count();
+    }
+
+    public function getImageUrlAttribute()
+    {
+        if (!$this->foto) {
+            return asset('img/lb-user-1.png');
+        }
+        return Storage::url('public/uploads/users/' . $this->foto);
+    }
+
+    public static function uploadFoto($file)
+    {
+        $fileName = time() . '.' . $file->extension();
+        $file->storeAs('public/uploads/users', $fileName);
+        return $fileName;
+    }
+
+    public static function deleteFoto($fileName)
+    {
+        return Storage::exists('public/uploads/users/' . $fileName) && Storage::delete('public/uploads/users/' . $fileName);
     }
 }
