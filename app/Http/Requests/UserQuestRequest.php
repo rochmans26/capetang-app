@@ -24,7 +24,7 @@ class UserQuestRequest extends FormRequest
         return [
             'bukti_penyerahan' => [
                 'nullable',
-                'file',
+                'image',
                 'mimes:png,jpg,jpeg',
                 'max:10240',
                 'dimensions:min_width=100,min_height=100,max_width=2000,max_height=2000', // minimal 100x100, maksimal 2000x2000

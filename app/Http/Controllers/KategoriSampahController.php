@@ -11,7 +11,7 @@ class KategoriSampahController extends Controller
     public function index()
     {
         $listKategori = KategoriSampah::all();
-        return view('admin.kategori.index', compact('listKategori'));
+        return view('users.kategori_sampah', compact('listKategori'));
     }
 
     public function create()

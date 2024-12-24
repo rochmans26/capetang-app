@@ -33,4 +33,17 @@ class Reward extends Model
     {
         return $this->morphOne(UserQuest::class, 'rewardable');
     }
+
+    /*
+    *  Helper function untuk mengkonversi tipe transaksi
+    */
+    public function getTipeTransaksiAttribute($value)
+    {
+        switch ($value) {
+            case 'App\Models\SetorSampah':
+                return 'Setor Sampah';
+            default:
+                return 'Quest';
+        }
+    }
 }

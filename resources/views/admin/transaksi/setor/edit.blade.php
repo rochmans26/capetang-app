@@ -1,6 +1,6 @@
 <h1>Edit Setor Sampah</h1>
 
-<form action="{{ route('penyetoran-sampah.update', $setorSampah->id) }}" method="post">
+<form action="{{ route('penyetoran-sampah.update', $setorSampah->id) }}" method="post" enctype="multipart/form-data">
     @csrf
     @method('put')
 
