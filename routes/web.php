@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('/user-trans-detail', function () {
     return view('users.detail_transaksi_tukar_poin');
 })->name('user-trans-detail');
