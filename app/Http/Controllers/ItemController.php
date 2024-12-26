@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:lihat-item')->only(['index', 'show']);
+        $this->middleware('permission:tambah-item')->only(['create', 'store']);
+        $this->middleware('permission:ubah-item')->only(['edit', 'update']);
+        $this->middleware('permission:hapus-item')->only(['destroy']);
+    }
+
     public function index()
     {
         $listItem = Item::all();

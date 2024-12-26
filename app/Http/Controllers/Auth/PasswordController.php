@@ -12,6 +12,11 @@ use Illuminate\Validation\Rules\Password;
 
 class PasswordController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:ubah-password')->only(['edit', 'update']);
+    }
+
     /**
      * Display the password update view.
      */

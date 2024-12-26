@@ -31,12 +31,14 @@
                                     @else
                                         <a href="{{ route('quest.show', $quest->id) }}">Detail quest</a>
                                     @endif
-                                    <form action="{{ route('users.ambil-quest', $quest->id) }}" method="post">
-                                        @csrf
-                                        @method('post')
+                                    @haspermission('ambil-quest')
+                                        <form action="{{ route('users.ambil-quest', $quest->id) }}" method="post">
+                                            @csrf
+                                            @method('post')
 
-                                        <button type="submit" class="btn btn-primary btn-sm">Ambil Quest</button>
-                                    </form>
+                                            <button type="submit" class="btn btn-primary btn-sm">Ambil Quest</button>
+                                        </form>
+                                    @endhaspermission
                                 </div>
                             </div>
                         </div>

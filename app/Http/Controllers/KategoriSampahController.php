@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class KategoriSampahController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:lihat-kategori-sampah')->only(['index', 'show']);
+        $this->middleware('permission:tambah-kategori-sampah')->only(['create', 'store']);
+        $this->middleware('permission:ubah-kategori-sampah')->only(['edit', 'update']);
+        $this->middleware('permission:hapus-kategori-sampah')->only(['destroy']);
+    }
+
     public function index()
     {
         $listKategori = KategoriSampah::all();

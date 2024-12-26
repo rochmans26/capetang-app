@@ -46,7 +46,7 @@
                                 <td>{{ $history->tgl_setor_sampah }}</td>
                                 <td>{{ $history->kategori->nama_kategori }}</td>
                                 <td>{{ $history->berat_sampah }}</td>
-                                <td>{{ $history->point }}</td>
+                                <td>{{ $history->point ?? '-' }}</td>
                                 <td>
                                     @if ($history->bukti_penyerahan)
                                         <img src="{{ $history->image_url }}" alt="{{ $history->image_url }}"

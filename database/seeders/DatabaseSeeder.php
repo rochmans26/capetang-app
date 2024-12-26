@@ -31,6 +31,11 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
 
+        // Role Seeder
+        $this->call([
+            RoleAndPermissionSeeder::class,
+        ]);
+
         KategoriSampah::factory(10)->create();
 
         Quest::factory(10)->create();

@@ -21,8 +21,8 @@
                 @foreach ($listRole as $role)
                     <tr>
                         <td>{{ $role->id }}</td>
-                        <td>{{ $role->nama_role }}</td>
-                        <td>{{ $role->deskripsi }}</td>
+                        <td>{{ $role->name }}</td>
+                        <td>{{ $role->description }}</td>
                         <td>
                             <a href="{{ route('role.show', $role->id) }}">Lihat</a>
                             <a href="{{ route('role.edit', $role->id) }}">Edit</a>

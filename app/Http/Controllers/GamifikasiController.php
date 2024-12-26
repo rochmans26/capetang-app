@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class GamifikasiController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:lihat-quest')->only(['allQuest', 'listQuestUser', 'detailQuest']);
+        $this->middleware('permission:ambil-quest')->only(['ambilQuest']);
+        $this->middleware('permission:perbarui-quest')->only(['editQuest', 'updateQuest']);
+        $this->middleware('permission:batalkan-quest')->only(['hapusQuest']);
+        $this->middleware('permission:kirimkan-reward')->only(['penerimaReward', 'updateStatus']);
+    }
+
     public function allQuest()
     {
         $semuaQuest = Quest::all();

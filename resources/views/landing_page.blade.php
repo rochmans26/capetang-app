@@ -231,7 +231,8 @@
                                     href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     <small class="me-2">Hi, {{ ucwords(Auth::user()->name) ?? 'User' }}</small>
-                                    <i class="bi bi-person-circle fs-5"></i>
+                                    <img src="{{ auth()->user()->image_url }}" alt="{{ auth()->user()->image_url }}"
+                                        class="rounded-circle me-2" width="28" height="28">
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <li><a class="dropdown-item" href="#">Profil</a></li>

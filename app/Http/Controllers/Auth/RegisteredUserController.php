@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -31,11 +32,23 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterRequest $request): RedirectResponse
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+        $request->merge([
             'password' => Hash::make($request->password),
+            'status' => 1
         ]);
+
+        $user = User::create($request->all());
+
+        // Upload foto
+        if ($request->hasFile('foto')) {
+            $user->foto = $user->uploadFoto($request->file('foto'));
+            $user->save();
+        }
+
+        // Tambahkan role user dan sync permissionnya
+        $role = Role::where('name', 'user')->first();
+        $user->assignRole($role->name);
+        $user->syncPermissions($role->permissions);
 
         event(new Registered($user));
 
