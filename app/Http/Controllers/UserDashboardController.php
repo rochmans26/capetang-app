@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Auth;
 
 class UserDashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:lihat-dashboard')->only(['index']);
+    }
+
     public function index()
     {
         // Quests per user

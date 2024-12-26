@@ -26,12 +26,12 @@ class Reward extends Model
 
     public function setorSampah()
     {
-        return $this->morphOne(SetorSampah::class, 'rewardable');
+        return $this->belongsTo(SetorSampah::class, 'id_transaksi');
     }
 
     public function userQuest()
     {
-        return $this->morphOne(UserQuest::class, 'rewardable');
+        return $this->belongsTo(UserQuest::class, 'id_transaksi', 'id_quest');
     }
 
     /*
@@ -45,5 +45,22 @@ class Reward extends Model
             default:
                 return 'Quest';
         }
+    }
+
+    /*
+    *  Scopes untuk filter data reward berdasarkan
+    *  setor sampah dan user quest
+    *  yang telah diselesaikan
+    */
+    public function scopeDiselesaikan($query)
+    {
+        return $query->where(function ($q) {
+            $q->whereHas('setorSampah', function ($query) {
+                $query->whereNotNull('bukti_penyerahan');
+            })
+                ->orWhereHas('userQuest', function ($query) {
+                    $query->where('status', 'selesai');
+                });
+        });
     }
 }

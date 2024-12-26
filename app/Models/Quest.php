@@ -34,6 +34,11 @@ class Quest extends Model
         return $this->belongsToMany(User::class, 'pivot_user_quest', 'id_quest', 'id_user')->withPivot('status', 'bukti_penyerahan');
     }
 
+    public function userQuest()
+    {
+        return $this->hasMany(UserQuest::class, 'id_quest', 'id');
+    }
+
     /*
     * Helper and Scopes
     */

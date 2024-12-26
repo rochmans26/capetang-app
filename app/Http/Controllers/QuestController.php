@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class QuestController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:lihat-quest')->only(['index', 'show']);
+        $this->middleware('permission:tambah-quest')->only(['create', 'store']);
+        $this->middleware('permission:ubah-quest')->only(['edit', 'update']);
+        $this->middleware('permission:hapus-quest')->only(['destroy']);
+    }
+
     public function index()
     {
         $listQuest = Quest::all();

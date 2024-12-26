@@ -11,6 +11,12 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:ubah-profile')->only(['edit', 'update']);
+        $this->middleware('permission:hapus-profile')->only(['destroy']);
+    }
+
     /**
      * Display the user's profile form.
      */

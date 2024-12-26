@@ -29,7 +29,7 @@
                         <td>{{ $setoran->user->name }}</td>
                         <td>{{ $setoran->kategori->nama_kategori }}</td>
                         <td>{{ $setoran->berat_sampah }}</td>
-                        <td>{{ $setoran->point }}</td>
+                        <td>{{ $setoran->point ?? '-' }}</td>
                         <td>
                             @if ($setoran->bukti_penyerahan)
                                 <img src="{{ $setoran->image_url }}" alt="{{ $setoran->image_url }} " width="100px"
@@ -40,13 +40,19 @@
                         </td>
                         <td>
                             <a href="{{ route('penyetoran-sampah.show', $setoran->id) }}">Lihat</a>
-                            <a href="{{ route('penyetoran-sampah.edit', $setoran->id) }}">Edit</a>
-                            <form action="{{ route('penyetoran-sampah.destroy', $setoran->id) }}" method="post">
-                                @csrf
-                                @method('delete')
 
-                                <button type="submit">Hapus</button>
-                            </form>
+                            @haspermission('ubah-penyetoran-sampah')
+                                <a href="{{ route('penyetoran-sampah.edit', $setoran->id) }}">Edit</a>
+                            @endhaspermission
+
+                            @haspermission('hapus-penyetoran-sampah')
+                                <form action="{{ route('penyetoran-sampah.destroy', $setoran->id) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+
+                                    <button type="submit">Hapus</button>
+                                </form>
+                            @endhaspermission
                         </td>
                     </tr>
                 @endforeach

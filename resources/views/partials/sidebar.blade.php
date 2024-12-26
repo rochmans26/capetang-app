@@ -23,7 +23,10 @@
             </a>
             <ul id="sampah" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                 <li class="sidebar-item">
-                    <a href="{{ route('kategori-sampah.index') }}" class="sidebar-link">Kategori Sampah</a>
+                    <a href="{{ auth()->user()->hasRole('admin') ? route('kategori-sampah.index') : route('users.kategori-sampah') }}"
+                        class="sidebar-link">
+                        Kategori Sampah
+                    </a>
                     <span
                         class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
                         <span class="visually-hidden">New alerts</span>

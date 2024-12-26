@@ -21,10 +21,12 @@
 @if ($quest->berlangsung() && $quest->status !== 'selesai')
     <a href="{{ route('users.perbarui-quest', $quest->id) }}">Perbarui</a>
 
-    <form action="{{ route('users.hapus-quest', $quest->id) }}" method="post">
-        @csrf
-        @method('delete')
+    @haspermission('batalkan-quest')
+        <form action="{{ route('users.hapus-quest', $quest->id) }}" method="post">
+            @csrf
+            @method('delete')
 
-        <button type="submit">Batalkan Quest</button>
-    </form>
+            <button type="submit">Batalkan Quest</button>
+        </form>
+    @endhaspermission
 @endif

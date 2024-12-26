@@ -33,7 +33,7 @@ class SetorSampah extends Model
 
     public function reward()
     {
-        return $this->morphMany(Reward::class, 'rewardable');
+        return $this->hasMany(Reward::class, 'id_transaksi', 'id');
     }
 
     /*
