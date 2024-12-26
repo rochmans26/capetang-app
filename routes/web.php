@@ -24,6 +24,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/user-trans-detail', function () {
+    return view('users.detail_transaksi_tukar_poin');
+})->name('user-trans-detail');
+Route::get('/user-checkout', function () {
+    return view('users.checkout');
+})->name('user-checkout');
+
 Route::get('/', function () {
     return view('landing_page');
 })->name('landing-page');
@@ -58,7 +65,9 @@ Route::middleware(['auth'])->group(function () {
     // Users
     Route::prefix('users')->middleware(['verified'])->group(function () {
         Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('users.dashboard');
-        Route::resource('kategori-sampah', KategoriSampahController::class)->only('index', 'show');
+        // Notes*
+        /*Kiw, anu kategori sampah ieu anu nyieun error pas php artisan optimize teh. Penamaan Urlna ganti cobaan*/
+        Route::resource('kategori-sampah', KategoriSampahController::class)->only('index', 'show'); // ganti namana cobaan soalna diluhur geus aya nu make
         // Gamifikasi
         Route::get('/list-quest', [GamifikasiController::class, 'allQuest'])->name('users.list-quest');
         Route::get('/quest', [GamifikasiController::class, 'listQuestUser'])->name('users.quest-user');

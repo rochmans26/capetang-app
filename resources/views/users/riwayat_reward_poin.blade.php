@@ -67,5 +67,7 @@
         </div>
     </div>
     {{-- end of header --}}
+
+    
 @endsection
 @section('customize-script', '')
