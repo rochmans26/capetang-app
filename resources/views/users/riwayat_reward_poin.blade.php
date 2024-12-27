@@ -43,7 +43,7 @@
                             <tr>
                                 <th scope="row">{{ $loop->iteration }}</th>
                                 <td>{{ $history->nama_reward }}</td>
-                                <td>{{ $history->point_reward }}</td>
+                                <td>{{ $history->point_reward ?? '-' }}</td>
                                 <td>{{ $history->tipe_transaksi }}</td>
                                 <td>{{ $history->id_transaksi }}</td>
                             </tr>
@@ -68,6 +68,6 @@
     </div>
     {{-- end of header --}}
 
-    
+
 @endsection
 @section('customize-script', '')

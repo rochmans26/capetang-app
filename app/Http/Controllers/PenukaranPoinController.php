@@ -7,6 +7,14 @@ use App\Models\TransaksiTukarPoint;
 
 class PenukaranPoinController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:lihat-penukaran-poin')->only(['index', 'show']);
+        $this->middleware('permission:tambah-penukaran-poin')->only(['create', 'store']);
+        $this->middleware('permission:ubah-penukaran-poin')->only(['edit', 'update']);
+        $this->middleware('permission:hapus-penukaran-poin')->only(['destroy']);
+    }
+
     public function index()
     {
         $listTransaksi = TransaksiTukarPoint::all();

@@ -8,10 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -19,12 +20,13 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'id_role',
         'name',
         'email',
         'password',
         'status',
-        'wilayah_bank_unit',
+        'rt',
+        'rw',
+        'alamat',
         'foto',
     ];
 
@@ -48,11 +50,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $appends = ['points'];
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'id_role', 'id');
-    }
 
     public function setorSampah()
     {

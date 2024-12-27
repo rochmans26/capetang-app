@@ -15,17 +15,19 @@ class RoleRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'nama_role' => ['required', 'string', 'min:3', 'max:255'],
-            'deskripsi' => ['nullable', 'string', 'max:255', 'min:3'],
+            'name' => ['required', 'string', 'min:3', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255', 'min:3'],
+            'permission' => 'required|array',
+            'permission.*' => 'exists:permissions,id',
         ];
 
         if ($this->isMethod('post')) {
-            $rules['nama_role'] = ['required', 'string', 'min:3', 'max:255', 'unique:role,nama_role'];
+            $rules['name'] = ['required', 'string', 'min:3', 'max:255', 'unique:roles,name'];
         }
 
         if ($this->isMethod('put')) {
             $id = $this->route('role') ?? $this->id;
-            $rules['nama_role'] = ['required', 'string', 'min:3', 'max:255', 'unique:role,nama_role,' . $id];
+            $rules['name'] = ['required', 'string', 'min:3', 'max:255', 'unique:roles,name,' . $id];
         }
 
         return $rules;

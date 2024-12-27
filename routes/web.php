@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SetorSampahController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,12 +51,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('users-profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('users-profile.update');
 
+    // Belum implement ke viewnya aja
     Route::middleware(['verified'])->group(function () {
         Route::resource('item', ItemController::class);
         Route::resource('kategori-sampah', KategoriSampahController::class);
         Route::resource('penukaran-poin', PenukaranPoinController::class);
         Route::resource('quest', QuestController::class);
         Route::resource('role', RoleController::class);
+        Route::resource('kelola-pengguna', UserController::class);
     });
 
     // Admin
@@ -68,9 +71,7 @@ Route::middleware(['auth'])->group(function () {
     // Users
     Route::prefix('users')->middleware(['verified'])->group(function () {
         Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('users.dashboard');
-        // Notes*
-        /*Kiw, anu kategori sampah ieu anu nyieun error pas php artisan optimize teh. Penamaan Urlna ganti cobaan*/
-        Route::resource('kategori-sampah', KategoriSampahController::class)->only('index', 'show'); // ganti namana cobaan soalna diluhur geus aya nu make
+        Route::get('/kategori-sampah', [KategoriSampahController::class, 'index'])->name('users.kategori-sampah');
         // Gamifikasi
         Route::get('/list-quest', [GamifikasiController::class, 'allQuest'])->name('users.list-quest');
         Route::get('/quest', [GamifikasiController::class, 'listQuestUser'])->name('users.quest-user');

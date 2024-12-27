@@ -6,11 +6,19 @@ use Illuminate\Http\Request;
 
 class HistoryTransaksiController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:lihat-riwayat-transaksi')->only(['riwayatRewardUser', 'riwayatSetorSampahUser', 'riwayatTukarPoinUser']);
+    }
+
     public function riwayatRewardUser()
     {
         $user = auth()->user();
         // Ambil riwayat reward poin dan urutkan berdasarkan data terbaru
-        $userHistory = $user->reward()->latest()->get();
+        $userHistory = $user->reward()
+            ->diselesaikan()
+            ->latest()
+            ->get();
 
         return view('users.riwayat_reward_poin', compact('userHistory'));
     }

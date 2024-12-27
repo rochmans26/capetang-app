@@ -44,15 +44,27 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="wilayah_bank_unit" class="form-label">Wilayah Bank Unit</label>
-                                <input type="text" id="wilayah_bank_unit" name="wilayah_bank_unit" class="form-control"
-                                    disabled value="{{ $user->wilayah_bank_unit }}">
+                                <label for="rt" class="form-label">RT</label>
+                                <input type="text" id="rt" name="rt" class="form-control"
+                                    value="{{ $user->rt }}">
                             </div>
 
                             <div class="mb-3">
-                                <label for="id_role" class="form-label">Role</label>
-                                <input type="text" id="id_role" name="id_role" class="form-control" disabled
-                                    value="{{ $user->id_role }}">
+                                <label for="rw" class="form-label">RW</label>
+                                <input type="text" id="rw" name="rw" class="form-control"
+                                    value="{{ $user->rw }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="alamat" class="form-label">Alamat</label>
+                                <input type="text" id="alamat" name="alamat" class="form-control"
+                                    value="{{ $user->alamat }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <input type="text" id="role" name="role" class="form-control" disabled
+                                    value="{{ $user->roles[0]->name }}">
                             </div>
 
                             <div class="mb-3">

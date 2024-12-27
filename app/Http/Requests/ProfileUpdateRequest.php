@@ -18,9 +18,9 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            // 'id_role' => ['required', 'exists:role,id'],
-            // 'status' => ['required', 'string'],
-            // 'wilayah_bank_unit' => ['required', 'string'],
+            'rt' => ['nullable', 'string'],
+            'rw' => ['nullable', 'string'],
+            'alamat' => ['nullable', 'string'],
             'foto' => [
                 'nullable',
                 'image',

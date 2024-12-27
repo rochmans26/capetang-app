@@ -11,6 +11,14 @@ use Illuminate\Http\Request;
 
 class SetorSampahController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:lihat-penyetoran-sampah')->only(['index', 'show']);
+        $this->middleware('permission:tambah-penyetoran-sampah')->only(['create', 'store']);
+        $this->middleware('permission:ubah-penyetoran-sampah')->only(['edit', 'update']);
+        $this->middleware('permission:hapus-penyetoran-sampah')->only(['destroy']);
+    }
+
     public function index()
     {
         $listSetoran = SetorSampah::all();
@@ -28,11 +36,11 @@ class SetorSampahController extends Controller
     public function store(SetorSampahRequest $request)
     {
         $validasi = $request->validated();
-        $validasi['point'] = SetorSampah::hitungPoint($validasi['berat_sampah']);
 
         // Upload bukti penyerahan
         if ($request->hasFile('bukti_penyerahan')) {
             $validasi['bukti_penyerahan'] = SetorSampah::deleteBuktiPenyerahan($request->file('bukti_penyerahan'));
+            $validasi['point'] = SetorSampah::hitungPoint($validasi['berat_sampah']);
         }
 
         $setorSampah = SetorSampah::create($validasi);
@@ -60,13 +68,17 @@ class SetorSampahController extends Controller
     {
         $setorSampah = SetorSampah::findOrFail($id);
         $validasi = $request->validated();
-        $validasi['point'] = SetorSampah::hitungPoint($validasi['berat_sampah']);
+
+        if (isset($setorSampah->point)) {
+            $validasi['point'] = SetorSampah::hitungPoint($validasi['berat_sampah']);
+        }
 
         if ($request->hasFile('bukti_penyerahan')) {
             // Hapus bukti penyerahan jika ada
             $setorSampah->deleteBuktiPenyerahan($setorSampah->bukti_penyerahan ?? null);
             // Simpan bukti penyerahan baru
             $validasi['bukti_penyerahan'] = $setorSampah->uploadBuktiPenyerahan($request->file('bukti_penyerahan'));
+            $validasi['point'] = SetorSampah::hitungPoint($validasi['berat_sampah']);
         }
 
         $setorSampah->update($validasi);
