@@ -12,6 +12,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SetorSampahController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
+use App\Models\KategoriSampah;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,15 +26,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/admin-show-item', function () {
-    return view('admin.item.show');
-})->name('admin-show-item');
-Route::get('/user-trans-detail', function () {
-    return view('users.detail_transaksi_tukar_poin');
-})->name('user-trans-detail');
-Route::get('/user-checkout', function () {
-    return view('users.checkout');
-})->name('user-checkout');
+// Route::get('/admin-show-item', function () {
+//     return view('admin.item.show');
+// })->name('admin-show-item');
+// Route::get('/user-trans-detail', function () {
+//     return view('users.detail_transaksi_tukar_poin');
+// })->name('user-trans-detail');
+// Route::get('/user-checkout', function () {
+//     return view('users.checkout');
+// })->name('user-checkout');
+// Route::get('/admin-create-kategori', function () {
+//     return view('admin.kategori.create');
+// })->name('admin-create-kategori');
+Route::get('/admin-create-quest', function () {
+    return view('admin.quest.create');
+})->name('admin-create-quest');
+Route::get('/admin-edit-quest/{id}', function ($id) {
+    $quest = \App\Models\Quest::find($id); // Ambil data quest yang id nya 1
+    return view('admin.quest.edit', ['quest' => $quest]);
+})->name('admin-edit-quest');
+Route::get('/admin-show-quest/{id}', function ($id) {
+    $quest = \App\Models\Quest::find($id); // Ambil data quest yang id nya 1
+    return view('admin.quest.show', ['quest' => $quest]);
+})->name('admin-show-quest');
+
+// Route::get('/admin-show-kategori/{id}', function ($id) {
+//     $kategori = KategoriSampah::findOrFail($id);
+//     return view('admin.kategori.show', ['kategori' => $kategori]);
+// })->name('admin-show-kategori');
+
 
 Route::get('/', function () {
     return view('landing_page');
