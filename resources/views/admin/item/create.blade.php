@@ -12,10 +12,10 @@
 @endsection
 @section('content')
     <div class="container">
-        <div class="container shadow full-height rounded">
+        <div class="container shadow rounded">
             {{-- header --}}
             <div class="title d-flex justify-content-between align-items-center mt-3">
-                <h1 class="d-flex align-items-center m-0">
+                <h1 class="d-flex align-items-center mt-3">
                     <i class="bi bi-arrow-left-right fs-1 me-2 text-success"></i>
                     Tambah Data Item
                 </h1>
@@ -31,7 +31,7 @@
             </div>
             <hr>
             <div class="row justify-content-center">
-                <div class="col-md-10">
+                <div class="col-md-10 mb-3">
                     <form action="{{ route('item.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="form-floating mb-3">
