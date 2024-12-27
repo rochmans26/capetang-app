@@ -12,12 +12,12 @@
 @endsection
 @section('content')
     <div class="container">
-        <div class="container shadow full-height rounded">
+        <div class="container shadow rounded">
             {{-- header --}}
             <div class="title d-flex justify-content-between align-items-center mt-3">
                 <h1 class="d-flex align-items-center">
-                    <i class="bi bi-arrow-left-right fs-1 me-2 text-success"></i>
-                    Data Item
+                    <i class="bi bi-eye fs-1 me-2"></i>
+                    Detail Item
                 </h1>
                 <div class="d-flex align-items-center justify-content-end gap-3">
                     <!-- Tombol Kembali -->
@@ -27,77 +27,54 @@
                         Back
                     </a>
                 </div>
-
             </div>
             <hr>
-            <div class="d-flex mb-3">
-                <a href="" class="btn btn-success">Tambah Data</a>
-            </div>
-            @if (session('success'))
-                <script>
-                    alert('{{ session('success') }}');
-                </script>
-            @endif
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Gambar Item</th>
-                            <th scope="col">Nama Item</th>
-                            <th scope="col">Stok Item</th>
-                            <th scope="col">Poin Item</th>
-                            <th scope="col">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($listItem as $item)
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    <img src="{{ asset('img/' . $item->image_url) }}" alt="{{ $item->nama_item }}"
-                                        width="50" height="50" class="me-2 rounded">
-                                </td>
-                                <td>{{ $item->nama_item }}</td>
-                                <td>{{ $item->stok_item }}</td>
-                                <td>{{ $item->point_item }} Poin</td>
-                                <td>
-                                    <div class="d-flex align-item-center">
-                                        <a href="{{ route('item.show', $item->id) }}"
-                                            class="btn btn-primary me-2">Detail</a>
-                                        <a href="{{ route('item.edit', $item->id) }}" class="btn btn-warning me-2">Edit</a>
-                                        <form action="{{ route('item.destroy', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-
-                                            <button type="submit" class="btn btn-danger">Hapus</button>
-                                        </form>
+            <div class="row justify-content-center mb-3">
+                <div class="col-md-10 mb-3">
+                    <div class="card mx-1 mb-2 shadow-sm">
+                        <!-- Konten Item dalam Satu Baris -->
+                        <div class="d-flex align-items-center justify-content-between p-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <img src="{{ asset('img/' . $item->foto_item) }}" alt="Sample Item"
+                                        class="img-fluid me-1 rounded" width="auto">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="me-2 ms-2">
+                                        <small class="text-muted">ID Item</small>
+                                        <h5>{{ $item->id }}</h5>
+                                        <h1 class="card-title text-primary fw-bold">{{ $item->nama_item }}</h1>
+                                        <small class="text-muted">Poin Item</small>
+                                        <p
+                                            class="card-text d-flex align-items-center justify-content-start fw-bold fs-4 mt-2">
+                                            <span class="me-2">
+                                                <i class="bi bi-coin text-warning"></i>
+                                            </span>
+                                            {{ $item->point_item }} Poin
+                                        </p>
+                                        <small class="text-muted">Deskripsi Item</small>
+                                        <p class="card-text mt-2">
+                                            {{ $item->deskripsi_item }}< </p>
+                                                <small class="badge bg-success">Stok: {{ $item->stok_item }}</small>
+                                                <div class="my-3">
+                                                    <a href="" class="btn btn-sm btn-primary">
+                                                        <span><i class="bi bi-pencil-square"></i></span> Edit
+                                                    </a>
+                                                </div>
                                     </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+
         </div>
     </div>
 @endsection
 @section('customize-script', '')
 
-<h1>Detail item</h1>
+{{-- <h1>Detail item</h1>
 
 <p>ID: {{ $item->id }}</p>
 <p>Nama item: {{ $item->nama_item }}</p>
@@ -106,4 +83,4 @@
 <p>Point: {{ $item->point_item }}</p>
 <p>Gambar: {{ $item->foto_item }}</p>
 
-<a href="{{ route('item.index') }}">Kembali</a>
+<a href="{{ route('item.index') }}">Kembali</a> --}}

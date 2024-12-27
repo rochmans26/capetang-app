@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/admin-show-item', function () {
+    return view('admin.item.show');
+})->name('admin-show-item');
 Route::get('/user-trans-detail', function () {
     return view('users.detail_transaksi_tukar_poin');
 })->name('user-trans-detail');
