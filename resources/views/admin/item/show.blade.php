@@ -36,8 +36,8 @@
                         <div class="d-flex align-items-center justify-content-between p-2">
                             <div class="row align-items-center">
                                 <div class="col-md-6">
-                                    <img src="{{ asset('img/' . $item->foto_item) }}" alt="Sample Item"
-                                        class="img-fluid me-1 rounded" width="auto">
+                                    <img src="{{ $item->image_url }}" alt="{{ $item->image_url }}"
+                                        class="img-fluid me-1 rounded">
                                 </div>
                                 <div class="col-md-6">
                                     <div class="me-2 ms-2">
@@ -52,15 +52,18 @@
                                             </span>
                                             {{ $item->point_item }} Poin
                                         </p>
-                                        <small class="text-muted">Deskripsi Item</small>
+                                        <small class="text-muted">Deskripsi Item </small>
                                         <p class="card-text mt-2">
-                                            {{ $item->deskripsi_item }}< </p>
-                                                <small class="badge bg-success">Stok: {{ $item->stok_item }}</small>
-                                                <div class="my-3">
-                                                    <a href="" class="btn btn-sm btn-primary">
-                                                        <span><i class="bi bi-pencil-square"></i></span> Edit
-                                                    </a>
-                                                </div>
+                                            {{ $item->deskripsi_item }}</p>
+                                        <small class="badge bg-success">Stok: {{ $item->stok_item }}</small>
+
+                                        @can('ubah-item')
+                                            <div class="my-3">
+                                                <a href="{{ route('item.edit', $item->id) }}" class="btn btn-sm btn-primary">
+                                                    <span><i class="bi bi-pencil-square"></i></span> Edit
+                                                </a>
+                                            </div>
+                                        @endcan
                                     </div>
                                 </div>
                             </div>
@@ -68,19 +71,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 @endsection
 @section('customize-script', '')
-
-{{-- <h1>Detail item</h1>
-
-<p>ID: {{ $item->id }}</p>
-<p>Nama item: {{ $item->nama_item }}</p>
-<p>Stok: {{ $item->stok_item }}</p>
-<p>Deskripsi: {{ $item->deskripsi_item }}</p>
-<p>Point: {{ $item->point_item }}</p>
-<p>Gambar: {{ $item->foto_item }}</p>
-
-<a href="{{ route('item.index') }}">Kembali</a> --}}

@@ -27,17 +27,15 @@
                         Back
                     </a>
                 </div>
-
             </div>
             <hr>
-            <div class="d-flex mb-3">
-                <a href="{{ route('kelola-pengguna.create') }}" class="btn btn-success">Tambah Data</a>
-            </div>
-            @if (session('success'))
-                <script>
-                    alert('{{ session('success') }}');
-                </script>
-            @endif
+
+            @can('tambah-user')
+                <div class="d-flex mb-3">
+                    <a href="{{ route('kelola-pengguna.create') }}" class="btn btn-success">Tambah Data</a>
+                </div>
+            @endcan
+
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -63,7 +61,7 @@
                                 <td>
                                     {{ $user->status == 1 ? 'Aktif' : ($user->status == 2 ? 'Banned' : 'Tidak Aktif') }}
                                 </td>
-                                <td>{{ $user->roles[0]->name }}</td>
+                                <td>{{ $user->roles()->first()->name ?? '-' }}</td>
                                 <td>{{ $user->rt ?? '-' }}</td>
                                 <td>{{ $user->rw ?? '-' }}</td>
                                 <td>{{ $user->alamat ?? '-' }}</td>
@@ -75,14 +73,19 @@
                                     <div class="d-flex align-item-center">
                                         <a href="{{ route('kelola-pengguna.show', $user->id) }}"
                                             class="btn btn-primary me-2">Detail</a>
-                                        <a href="{{ route('kelola-pengguna.edit', $user->id) }}"
-                                            class="btn btn-warning me-2">Edit</a>
-                                        <form action="{{ route('kelola-pengguna.destroy', $user->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
+                                        @can('ubah-user')
+                                            <a href="{{ route('kelola-pengguna.edit', $user->id) }}"
+                                                class="btn btn-warning me-2">Edit</a>
+                                        @endcan
 
-                                            <button type="submit" class="btn btn-danger">Hapus</button>
-                                        </form>
+                                        @can('hapus-user')
+                                            <form action="{{ route('kelola-pengguna.destroy', $user->id) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -93,8 +96,6 @@
             <div class="d-flex justify-content-center mt-3">
                 {{ $listUser->links() }}
             </div>
-
-
         </div>
     </div>
 @endsection

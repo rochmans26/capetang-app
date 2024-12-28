@@ -27,17 +27,15 @@
                         Back
                     </a>
                 </div>
-
             </div>
             <hr>
-            <div class="d-flex mb-3">
-                <a href="{{ route('quest.create') }}" class="btn btn-success">Tambah Data</a>
-            </div>
-            @if (session('success'))
-                <script>
-                    alert('{{ session('success') }}');
-                </script>
-            @endif
+
+            @can('tambah-quest')
+                <div class="d-flex mb-3">
+                    <a href="{{ route('quest.create') }}" class="btn btn-success">Tambah Data</a>
+                </div>
+            @endcan
+
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -47,31 +45,45 @@
                             <th scope="col">Deskripsi</th>
                             <th scope="col">Waktu Mulai</th>
                             <th scope="col">Waktu Berakhir</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Poin</th>
+                            <th scope="col">Gambar</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($listQuest as $quest)
                             <tr>
-                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td scope="row">
+                                    {{ $loop->index + 1 + ($listQuest->currentPage() - 1) * $listQuest->perPage() }}
+                                </td>
                                 <td>{{ $quest->nama_quest }}</td>
                                 <td>{{ $quest->deskripsi }}</td>
                                 <td>{{ $quest->waktu_mulai }}</td>
                                 <td>{{ $quest->waktu_berakhir }}</td>
-                                <td>{{ $quest->point }}</td>
+                                <td>{{ $quest->status }}</td>
+                                <td>{{ $quest->point }} Poin</td>
+                                <td>
+                                    <img src="{{ $quest->image_url }}" alt="{{ $quest->image_url }}" width="50"
+                                        height="50" class="me-2 rounded">
+                                </td>
                                 <td>
                                     <div class="d-flex align-item-center">
                                         <a href="{{ route('quest.show', $quest->id) }}"
                                             class="btn btn-primary me-2">Detail</a>
-                                        <a href="{{ route('quest.edit', $quest->id) }}"
-                                            class="btn btn-warning me-2">Edit</a>
-                                        <form action="{{ route('quest.destroy', $quest->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
+                                        @can('ubah-quest')
+                                            <a href="{{ route('quest.edit', $quest->id) }}"
+                                                class="btn btn-warning me-2">Edit</a>
+                                        @endcan
 
-                                            <button type="submit" class="btn btn-danger">Hapus</button>
-                                        </form>
+                                        @can('hapus-quest')
+                                            <form action="{{ route('quest.destroy', $quest->id) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -79,19 +91,9 @@
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="d-flex justify-content-center">
+                {{ $listQuest->links() }}
+            </div>
         </div>
     </div>
 @endsection

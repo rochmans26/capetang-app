@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\PasswordChanged;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -42,7 +40,7 @@ class UserController extends Controller
 
         // Upload foto
         if ($request->hasFile('foto')) {
-            $user->foto = $user->uploadFoto($validasi['foto']);
+            $user->foto = $user->uploadImage($validasi['foto']);
             $user->save();
         }
 
@@ -92,9 +90,9 @@ class UserController extends Controller
 
         if ($request->hasFile('foto')) {
             // Hapus foto lama jika ada
-            $user->deleteFoto($user->foto ?? null);
+            $user->deleteImage($user->foto ?? null);
             // Simpan foto baru
-            $validasi['foto'] = $user->uploadFoto($request->file('foto'));
+            $validasi['foto'] = $user->uploadImage($request->file('foto'));
         }
 
         $user->update($validasi);
@@ -114,7 +112,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($user->foto) {
-            $user->deleteFoto($user->foto ?? null);
+            $user->deleteImage($user->foto ?? null);
         }
 
         // Melepas semua permission yang dimiliki oleh user

@@ -8,9 +8,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
+    public $adminAkses = [
+        'tambah-item',
+        'ubah-item',
+        'hapus-item',
+    ];
+
     public function __construct()
     {
-        $this->middleware('permission:lihat-item')->only(['index', 'show']);
+        $this->middleware('permission:lihat-item')->only(['index', 'show', 'indexUser']);
         $this->middleware('permission:tambah-item')->only(['create', 'store']);
         $this->middleware('permission:ubah-item')->only(['edit', 'update']);
         $this->middleware('permission:hapus-item')->only(['destroy']);
@@ -18,15 +24,20 @@ class ItemController extends Controller
 
     public function index()
     {
-        $listItem = Item::all();
-        return view('users.tukar_poin', compact('listItem'));
-        // $listItem = Item::Paginate(10);
-        // return view('admin.item.index', compact('listItem'));
+        $listItem = Item::paginate(5);
+
+        return request()->user()->canAny($this->adminAkses) ?
+            view('admin.item.index', compact('listItem')) :
+            redirect()->route('users.penukaran-poin');
     }
-    public function viewUser()
+
+    public function indexForUser()
     {
         $listItem = Item::all();
-        return view('users.tukar_poin', compact('listItem'));
+
+        return !request()->user()->canAny($this->adminAkses) ?
+            view('users.tukar_poin', compact('listItem')) :
+            redirect()->route('item.index');
     }
 
     public function create()
@@ -39,19 +50,22 @@ class ItemController extends Controller
         $validasi = $request->validated();
 
         if ($request->hasFile('foto_item')) {
-            $validasi['foto_item'] = Item::uploadItemImage($request->file('foto_item'));
+            $validasi['foto_item'] = Item::uploadImage($request->file('foto_item'));
         }
 
         item::create($validasi);
 
-        return redirect()->route('item.index')->with('success', 'item berhasil ditambahkan');
+        return redirect()->route('item.index')
+            ->with('success', 'item berhasil ditambahkan');
     }
 
     public function show(string $id)
     {
         $item = item::findOrFail($id);
 
-        return view('admin.item.show', compact('item'));
+        return request()->user()->canAny($this->adminAkses) ?
+            view('admin.item.show', compact('item')) :
+            redirect()->route('users.penukaran-poin');
     }
 
     public function edit(string $id)
@@ -68,27 +82,22 @@ class ItemController extends Controller
 
         if ($request->hasFile('foto_item')) {
             // Delete the old image if it exists
-            if ($item->foto_item) {
-                Item::deleteItemImage($item->foto_item);
-            }
+            $item->deleteImage($item->foto_item ?? null);
 
             // Store the new image in storage/app/public/uploads/item
-            $validasi['foto_item'] = Item::uploadItemImage($request->file('foto_item'));
+            $validasi['foto_item'] = $item->uploadImage($request->file('foto_item'));
         }
 
         $item->update($validasi);
 
-        return redirect()->route('item.index')->with('success', 'item berhasil diubah');
+        return redirect()->route('item.index')
+            ->with('success', 'item berhasil diubah');
     }
 
     public function destroy(string $id)
     {
         $item = item::findOrFail($id);
-
-        if ($item->foto_item) {
-            Item::deleteItemImage($item->foto_item);
-        }
-
+        $item->deleteImage($item->foto_item ?? null);
         $item->delete();
 
         return redirect()->route('item.index')->with('success', 'item berhasil dihapus');

@@ -30,17 +30,20 @@ class Item extends Model
      */
     public function getImageUrlAttribute()
     {
+        if (!$this->foto_item) {
+            return asset('img/sample-item-card.jpg');
+        }
         return Storage::url('public/uploads/item/' . $this->foto_item);
     }
 
-    public static function uploadItemImage($file)
+    public static function uploadImage($file)
     {
         $fileName = time() . '.' . $file->extension();
         $file->storeAs('public/uploads/item', $fileName);
         return $fileName;
     }
 
-    public static function deleteItemImage($fileName)
+    public static function deleteImage($fileName)
     {
         return Storage::exists('public/uploads/item/' . $fileName) && Storage::delete('public/uploads/item/' . $fileName);
     }

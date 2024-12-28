@@ -8,6 +8,18 @@ use Illuminate\Http\Request;
 
 class QuestController extends Controller
 {
+    public $adminAkses = [
+        'tambah-quest',
+        'ubah-quest',
+        'hapus-quest'
+    ];
+
+    public $userAkses = [
+        'ambil-quest',
+        'perbarui-quest',
+        'batalkan-quest',
+    ];
+
     public function __construct()
     {
         $this->middleware('permission:lihat-quest')->only(['index', 'show']);
@@ -18,9 +30,11 @@ class QuestController extends Controller
 
     public function index()
     {
-        $listQuest = Quest::all();
+        $listQuest = Quest::paginate(5);
 
-        return view('admin.quest.index', compact('listQuest'));
+        return request()->user()->canAny($this->adminAkses) ?
+            view('admin.quest.index', compact('listQuest')) :
+            redirect()->route('users.list-quest');
     }
 
     public function create()
@@ -31,6 +45,11 @@ class QuestController extends Controller
     public function store(QuestRequest $request)
     {
         $validasi = $request->validated();
+
+        if ($request->hasFile('gambar')) {
+            $validasi['gambar'] = Quest::uploadImage($request->file('gambar'));
+        }
+
         Quest::create($validasi);
 
         return redirect()->route('quest.index')->with('success', 'Quest berhasil ditambahkan');
@@ -39,6 +58,10 @@ class QuestController extends Controller
     public function show(string $id)
     {
         $quest = Quest::findOrFail($id);
+
+        return request()->user()->canAny($this->adminAkses) ?
+            view('admin.quest.show', compact('quest')) :
+            redirect()->route('users.info-quest-user', $quest->id);
 
         return view('admin.quest.show', compact('quest'));
     }
@@ -54,9 +77,18 @@ class QuestController extends Controller
     {
         $quest = Quest::findOrFail($id);
         $validasi = $request->validated();
+
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            $quest->deleteImage($quest->gambar ?? null);
+
+            $validasi['gambar'] = $quest->uploadImage($request->file('gambar'));
+        }
+
         $quest->update($validasi);
 
-        return redirect()->route('quest.index')->with('success', 'Quest berhasil diubah');
+        return redirect()->route('quest.index')
+            ->with('success', 'Quest berhasil diubah');
     }
 
     public function destroy(string $id)
@@ -64,6 +96,7 @@ class QuestController extends Controller
         $quest = Quest::findOrFail($id);
         $quest->delete();
 
-        return redirect()->route('quest.index')->with('success', 'Quest berhasil dihapus');
+        return redirect()->route('quest.index')
+            ->with('success', 'Quest berhasil dihapus');
     }
 }

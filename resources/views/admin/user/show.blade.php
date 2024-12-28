@@ -30,27 +30,20 @@
                 </div>
             </div>
             <hr>
+
             <div class="row justify-content-center mb-3">
                 <div class="col-md-6">
                     <div class="card shadow-lg border-0 rounded-4 mb-3">
                         <!-- Konten Item -->
                         <div class="card-body">
-                            <!-- ID Role -->
                             <div class="d-flex justify-content-center mb-3">
-                                @if (isset($user->foto))
-                                    <img src="{{ asset('img/' . $user->foto) }}" alt="" srcset=""
-                                        class="img-fluid">
-                                @else
-                                    <img src="{{ asset('img/lb-user-1.png') }}" alt="" srcset=""
-                                        class="img-fluid">
-                                @endif
+                                <img src="{{ $user->image_url }}" alt="{{ $user->image_url }}"
+                                    class="img-fluid me-1 rounded">
                             </div>
                             <div class="mb-3">
                                 <small class="text-muted">User ID</small>
                                 <p class="card-text"><span class="badge bg-secondary">{{ $user->id }}</span></p>
                             </div>
-
-                            <!-- Nama -->
                             <div class="mb-3">
                                 <small class="text-muted">Nama User</small>
                                 <h5 class="card-title text-primary"><b>{{ $user->name }}</b></h5>
@@ -66,7 +59,8 @@
                             </div>
                             <div class="mb-3">
                                 <small class="text-muted">Role</small>
-                                <p class="card-text"><span class="badge text-bg-primary">{{ $user->roles[0]->name }}</span>
+                                <p class="card-text">
+                                    <span class="badge text-bg-primary">{{ $user->roles()->first()->name ?? '-' }}</span>
                                 </p>
                             </div>
                             <div class="mb-3">
@@ -81,7 +75,6 @@
                                 <small class="text-muted">RT/RW</small>
                                 <p class="card-text">{{ $user->rt }}/{{ $user->rw }}</p>
                             </div>
-
                         </div>
 
                         <!-- Footer Card -->
@@ -93,8 +86,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 @endsection

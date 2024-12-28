@@ -71,11 +71,6 @@
                                 <label for="foto" class="form-label">Foto</label>
                                 <input type="file" id="foto" name="foto" class="form-control"
                                     accept="image/jpg,image/jpeg,image/png" onchange="previewImage(event)">
-                                @error('foto')
-                                    <script>
-                                        alert('{{ $message }}');
-                                    </script>
-                                @enderror
                             </div>
 
                             <button type="submit" class="btn btn-primary">Ubah Profile</button>
@@ -88,18 +83,6 @@
 @endsection
 
 @section('customize-script')
-    @if (session('success'))
-        <script>
-            alert('{{ session('success') }}');
-        </script>
-    @endif
-
-    @if (session('error'))
-        <script>
-            alert('{{ session('error') }}');
-        </script>
-    @endif
-
     <script>
         function previewImage(event) {
             const preview = document.getElementById('preview-image');

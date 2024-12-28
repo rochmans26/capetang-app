@@ -27,17 +27,15 @@
                         Back
                     </a>
                 </div>
-
             </div>
             <hr>
-            <div class="d-flex mb-3">
-                <a href="" class="btn btn-success">Tambah Data</a>
-            </div>
-            @if (session('success'))
-                <script>
-                    alert('{{ session('success') }}');
-                </script>
-            @endif
+
+            @can('tambah-item')
+                <div class="d-flex mb-3">
+                    <a href="{{ route('item.create') }}" class="btn btn-success">Tambah Data</a>
+                </div>
+            @endcan
+
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -53,10 +51,12 @@
                     <tbody>
                         @foreach ($listItem as $item)
                             <tr>
-                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td scope="row">
+                                    {{ $loop->index + 1 + ($listItem->currentPage() - 1) * $listItem->perPage() }}
+                                </td>
                                 <td>
-                                    <img src="{{ asset('img/' . $item->image_url) }}" alt="{{ $item->nama_item }}"
-                                        width="50" height="50" class="me-2 rounded">
+                                    <img src="{{ $item->image_url }}" alt="{{ $item->image_url }}" width="50"
+                                        height="50" class="me-2 rounded">
                                 </td>
                                 <td>{{ $item->nama_item }}</td>
                                 <td>{{ $item->stok_item }}</td>
@@ -65,13 +65,18 @@
                                     <div class="d-flex align-item-center">
                                         <a href="{{ route('item.show', $item->id) }}"
                                             class="btn btn-primary me-2">Detail</a>
-                                        <a href="{{ route('item.edit', $item->id) }}" class="btn btn-warning me-2">Edit</a>
-                                        <form action="{{ route('item.destroy', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
+                                        @can('ubah-item')
+                                            <a href="{{ route('item.edit', $item->id) }}" class="btn btn-warning me-2">Edit</a>
+                                        @endcan
 
-                                            <button type="submit" class="btn btn-danger">Hapus</button>
-                                        </form>
+                                        @can('hapus-item')
+                                            <form action="{{ route('item.destroy', $item->id) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

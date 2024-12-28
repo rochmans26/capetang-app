@@ -17,7 +17,7 @@
             <div class="title d-flex justify-content-between align-items-center mt-3">
                 <h1 class="d-flex align-items-center mt-3">
                     <i class="bi bi-recycle fs-1 me-2 text-success"></i>
-                    Tambah Ketegori Sampah
+                    Edit Ketegori Sampah
                 </h1>
                 <div class="d-flex align-items-center justify-content-end gap-3">
                     <!-- Tombol Kembali -->
@@ -27,9 +27,9 @@
                         Back
                     </a>
                 </div>
-
             </div>
             <hr>
+
             <div class="row justify-content-center">
                 <div class="col-md-10 mb-3">
                     <form action="{{ route('kategori-sampah.update', $kategori->id) }}" method="post"
@@ -42,27 +42,23 @@
                                 placeholder="Nama kategori" value="{{ $kategori->nama_kategori }}">
                             <label for="nama_kategori">Nama Kategori</label>
                         </div>
-                        @error('nama_kategori')
-                            <script>
-                                alert('{{ $message }}');
-                            </script>
-                        @enderror
+
                         <div class="form-floating mb-3">
                             <textarea class="form-control" placeholder="Deskripsi kategori ..." id="deskripsi" name="deskripsi"
                                 style="height: 100px">{{ $kategori->deskripsi }}</textarea>
                             <label for="deskripsi">Deskripsi</label>
                         </div>
-                        @error('deskripsi')
-                            <script>
-                                alert('{{ $message }}');
-                            </script>
-                        @enderror
+
+                        <div class="form-floating mb-3">
+                            <input type="file" class="form-control" id="gambar" name="gambar" placeholder="Gambar"
+                                accept="image/jpg,image/jpeg,image/png">
+                            <label for="gambar">Gambar</label>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>
 @endsection

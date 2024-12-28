@@ -111,14 +111,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return Storage::url('public/uploads/users/' . $this->foto);
     }
 
-    public static function uploadFoto($file)
+    public static function uploadImage($file)
     {
         $fileName = time() . '.' . $file->extension();
         $file->storeAs('public/uploads/users', $fileName);
         return $fileName;
     }
 
-    public static function deleteFoto($fileName)
+    public static function deleteImage($fileName)
     {
         return Storage::exists('public/uploads/users/' . $fileName) && Storage::delete('public/uploads/users/' . $fileName);
     }

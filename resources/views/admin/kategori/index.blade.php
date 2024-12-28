@@ -27,17 +27,15 @@
                         Back
                     </a>
                 </div>
-
             </div>
             <hr>
-            <div class="d-flex mb-3">
-                <a href="{{ route('kategori-sampah.create') }}" class="btn btn-success">Tambah Data</a>
-            </div>
-            @if (session('success'))
-                <script>
-                    alert('{{ session('success') }}');
-                </script>
-            @endif
+
+            @can('tambah-kategori-sampah')
+                <div class="d-flex mb-3">
+                    <a href="{{ route('kategori-sampah.create') }}" class="btn btn-success">Tambah Data</a>
+                </div>
+            @endcan
+
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -45,27 +43,40 @@
                             <th scope="col">No.</th>
                             <th scope="col">Nama Ketegori</th>
                             <th scope="col">Deskripsi</th>
+                            <th scope="col">Gambar</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($listKategori as $kategori)
                             <tr>
-                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td scope="row">
+                                    {{ $loop->index + 1 + ($listKategori->currentPage() - 1) * $listKategori->perPage() }}
+                                </td>
                                 <td>{{ $kategori->nama_kategori }}</td>
                                 <td>{{ $kategori->deskripsi }}</td>
                                 <td>
+                                    <img src="{{ $kategori->image_url }}" alt="{{ $kategori->image_url }}" width="50"
+                                        height="50" class="me-2 rounded">
+                                </td>
+                                <td>
                                     <div class="d-flex align-item-center">
-                                        <a href="{{ route('item.show', $kategori->id) }}"
+                                        <a href="{{ route('kategori-sampah.show', $kategori->id) }}"
                                             class="btn btn-primary me-2">Detail</a>
-                                        <a href="{{ route('item.edit', $kategori->id) }}"
-                                            class="btn btn-warning me-2">Edit</a>
-                                        <form action="{{ route('item.destroy', $kategori->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
 
-                                            <button type="submit" class="btn btn-danger">Hapus</button>
-                                        </form>
+                                        @can('ubah-kategori-sampah')
+                                            <a href="{{ route('kategori-sampah.edit', $kategori->id) }}"
+                                                class="btn btn-warning me-2">Edit</a>
+                                        @endcan
+
+                                        @can('hapus-kategori-sampah')
+                                            <form action="{{ route('kategori-sampah.destroy', $kategori->id) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -73,19 +84,9 @@
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="d-flex justify-content-center">
+                {{ $listKategori->links() }}
+            </div>
         </div>
     </div>
 @endsection

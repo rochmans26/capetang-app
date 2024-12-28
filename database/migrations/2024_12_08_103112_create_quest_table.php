@@ -18,6 +18,7 @@ return new class extends Migration
             $table->dateTime('waktu_mulai');
             $table->dateTime('waktu_berakhir');
             $table->string('point')->nullable();
+            $table->string('gambar')->nullable();
             $table->timestamps();
         });
     }
