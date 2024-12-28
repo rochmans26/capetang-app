@@ -1,41 +1,95 @@
-<h1>Edit Role</h1>
+@extends('layouts.main')
+@section('customize-style')
+    <style>
+        .full-height {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            /* Pastikan padding termasuk dalam ukuran total */
+        }
+    </style>
+@endsection
+@section('content')
+    <div class="container">
+        <div class="container shadow rounded">
+            {{-- header --}}
+            <div class="title d-flex justify-content-between align-items-center mt-3">
+                <h1 class="d-flex align-items-center mt-3">
+                    <i class="bi bi-bookmark-star-fill fs-1 me-2 text-success"></i>
+                    Edit Role
+                </h1>
+                <div class="d-flex align-items-center justify-content-end gap-3">
+                    <!-- Tombol Kembali -->
+                    <a href="javascript:history.back()" class="btn btn-warning d-inline-flex align-items-center px-3 py-2"
+                        role="button" title="Kembali ke halaman sebelumnya" aria-label="Kembali">
+                        <i class="bi bi-arrow-left-circle me-2"></i>
+                        Back
+                    </a>
+                </div>
 
-<form action="{{ route('role.update', $role->id) }}" method="post">
-    @csrf
-    @method('put')
+            </div>
+            <hr>
+            <div class="row justify-content-center">
+                <div class="col-md-10 mb-3">
+                    <form action="{{ route('role.update', $role->id) }}" method="post">
+                        @csrf
+                        @method('PUT')
 
-    <div>
-        <label for="name">Nama Role:</label>
-        <input type="text" id="name" name="name" value="{{ $role->name }}"><br><br>
-        @error('name')
-            <script>
-                alert('{{ $message }}');
-            </script>
-        @enderror
+                        <!-- Input Nama Role -->
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Nama Role"
+                                value="{{ $role->name }}" required>
+                            <label for="name">Nama Role</label>
+                            @error('name')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Input Deskripsi -->
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" placeholder="Deskripsi Role ..." id="description" name="description"
+                                style="height: 120px">{{ $role->description }}</textarea>
+                            <label for="description">Deskripsi</label>
+                            @error('description')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Checkbox Permissions -->
+                        <div class="mb-3">
+                            <label class="form-label">Permissions</label>
+                            <div class="row">
+                                @foreach ($permissions as $permission)
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="permission[]"
+                                                id="permission-{{ $permission->id }}" value="{{ $permission->id }}"
+                                                {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="permission-{{ $permission->id }}">
+                                                {{ $permission->name }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            @error('permission')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Tombol Submit -->
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <a href="{{ route('role.index') }}" class="btn btn-secondary">Batal</a>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
     </div>
-
-    <div>
-        <label for="description">Deskripsi:</label>
-        <input type="text" id="description" name="description" value="{{ $role->description }}"><br><br>
-        @error('description')
-            <script>
-                alert('{{ $message }}');
-            </script>
-        @enderror
-    </div>
-
-    <div>
-        <label for="permission">Permission:</label>
-        <select name="permission[]" id="permission" multiple>
-            <option value="">Pilih Permission</option>
-            @foreach ($permissions as $permission)
-                <option value="{{ $permission->id }}"
-                    {{ in_array($permission->id, $rolePermissions) ? 'selected' : '' }}>
-                    {{ $permission->name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-
-    <button type="submit">Simpan</button>
-</form>
+@endsection
+@section('customize-script', '')
