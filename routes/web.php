@@ -78,6 +78,22 @@ use Illuminate\Support\Facades\Route;
 //     return view('admin.kategori.show', ['kategori' => $kategori]);
 // })->name('admin-show-kategori');
 
+Route::get('/admin-user-create', function () {
+    $listRole = Role::all();
+    return view('admin.user.create', compact('listRole'));
+})->name('admin-user-create');
+Route::get('/admin-user-edit/{id}', function ($id) {
+    $user = User::findOrFail($id);
+    $listRole = Role::all();
+
+    return view('admin.user.edit', compact('user', 'listRole'));
+})->name('admin-user-create');
+Route::get('/admin-user-show/{id}', function ($id) {
+    $user = User::findOrFail($id);
+    $listRole = Role::all();
+
+    return view('admin.user.show', compact('user', 'listRole'));
+})->name('admin-user-show');
 Route::get('/admin-user-control', function () {
     $listUser = User::paginate(2);
     return view('admin.user.index', compact('listUser'));
