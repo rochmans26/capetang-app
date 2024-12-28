@@ -150,7 +150,7 @@ Route::middleware(['auth'])->group(function () {
         // Riwayat Transaksi Setoran Sampah
         Route::get('/riwayat-setor-sampah', [HistoryTransaksiController::class, 'riwayatSetorSampahUser'])->name('users.riwayat-setor-sampah');
         // Tukar Poin
-        Route::get('/penukaran-poin', [ItemController::class, 'index'])->name('users.penukaran-poin');
+        Route::get('/penukaran-poin', [ItemController::class, 'viewUser'])->name('users.penukaran-poin');
         Route::get('/riwayat-tukar-poin', [HistoryTransaksiController::class, 'riwayatTukarPoinUser'])->name('users.riwayat-tukar-poin');
     });
 });

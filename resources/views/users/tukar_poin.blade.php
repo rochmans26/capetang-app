@@ -107,7 +107,7 @@
                                     </span>
                                     6000 Poin
                                 </p>
-                                <a href="{{ route('user-checkout') }}" class="btn btn-primary">Checkout</a>
+                                {{-- <a href="{{ route('user-checkout') }}" class="btn btn-primary">Checkout</a> --}}
                             </div>
                         </div>
                     </ul>
