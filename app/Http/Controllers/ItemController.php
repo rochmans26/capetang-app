@@ -19,7 +19,14 @@ class ItemController extends Controller
     public function index()
     {
         $listItem = Item::all();
-        return view('admin.item.index', compact('listItem'));
+        return view('users.tukar_poin', compact('listItem'));
+        // $listItem = Item::Paginate(10);
+        // return view('admin.item.index', compact('listItem'));
+    }
+    public function viewUser()
+    {
+        $listItem = Item::all();
+        return view('users.tukar_poin', compact('listItem'));
     }
 
     public function create()

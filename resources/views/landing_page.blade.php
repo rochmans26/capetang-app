@@ -236,7 +236,13 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <li><a class="dropdown-item" href="#">Profil</a></li>
-                                    <li><a class="dropdown-item" href="#">Pusat Kelola</a></li>
+                                    @if (Auth::user()->hasRole('admin'))
+                                        <li><a class="dropdown-item" href="{{ route('users.dashboard') }}">Pusat
+                                                Kelola</a></li>
+                                    @else
+                                        <li><a class="dropdown-item" href="{{ route('users.dashboard') }}">Pusat
+                                                Kelola</a></li>
+                                    @endif
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
 

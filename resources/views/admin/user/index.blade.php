@@ -1,59 +1,101 @@
-<div>
-    <h1>Kelola Pengguna</h1>
+@extends('layouts.main')
+@section('customize-style')
+    <style>
+        .full-height {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            /* Pastikan padding termasuk dalam ukuran total */
+        }
+    </style>
+@endsection
+@section('content')
+    <div class="container">
+        <div class="container shadow full-height rounded">
+            {{-- header --}}
+            <div class="title d-flex justify-content-between align-items-center mt-3">
+                <h1 class="d-flex align-items-center">
+                    <i class="bi bi-bookmark-star-fill fs-1 me-2 text-success"></i>
+                    Daftar Pengguna
+                </h1>
+                <div class="d-flex align-items-center justify-content-end gap-3">
+                    <!-- Tombol Kembali -->
+                    <a href="javascript:history.back()" class="btn btn-warning d-inline-flex align-items-center px-3 py-2"
+                        role="button" title="Kembali ke halaman sebelumnya" aria-label="Kembali">
+                        <i class="bi bi-arrow-left-circle me-2"></i>
+                        Back
+                    </a>
+                </div>
 
-    @if (session('success'))
-        <script>
-            alert('{{ session('success') }}');
-        </script>
-    @endif
+            </div>
+            <hr>
+            <div class="d-flex mb-3">
+                <a href="{{ route('kelola-pengguna.create') }}" class="btn btn-success">Tambah Data</a>
+            </div>
+            @if (session('success'))
+                <script>
+                    alert('{{ session('success') }}');
+                </script>
+            @endif
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">RT</th>
+                            <th scope="col">RW</th>
+                            <th scope="col">Alamat</th>
+                            <th scope="col">Foto</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($listUser as $user)
+                            <tr>
+                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>
+                                    {{ $user->status == 1 ? 'Aktif' : ($user->status == 2 ? 'Banned' : 'Tidak Aktif') }}
+                                </td>
+                                <td>{{ $user->roles[0]->name }}</td>
+                                <td>{{ $user->rt ?? '-' }}</td>
+                                <td>{{ $user->rw ?? '-' }}</td>
+                                <td>{{ $user->alamat ?? '-' }}</td>
+                                <td>
+                                    <img src="{{ $user->image_url }}" alt="{{ $user->image_url }} " width="100px"
+                                        height="100px">
+                                </td>
+                                <td>
+                                    <div class="d-flex align-item-center">
+                                        <a href="{{ route('kelola-pengguna.show', $user->id) }}"
+                                            class="btn btn-primary me-2">Detail</a>
+                                        <a href="{{ route('kelola-pengguna.edit', $user->id) }}"
+                                            class="btn btn-warning me-2">Edit</a>
+                                        <form action="{{ route('kelola-pengguna.destroy', $user->id) }}" method="post">
+                                            @csrf
+                                            @method('delete')
 
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Role</th>
-                    <th>RT</th>
-                    <th>RW</th>
-                    <th>Alamat</th>
-                    <th>Foto</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($listUser as $user)
-                    <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>
-                            {{ $user->status == 1 ? 'Aktif' : ($user->status == 2 ? 'Banned' : 'Tidak Aktif') }}
-                        </td>
-                        <td>{{ $user->roles[0]->name }}</td>
-                        <td>{{ $user->rt ?? '-' }}</td>
-                        <td>{{ $user->rw ?? '-' }}</td>
-                        <td>{{ $user->alamat ?? '-' }}</td>
-                        <td>
-                            <img src="{{ $user->image_url }}" alt="{{ $user->image_url }} " width="100px" height="100px">
-                        </td>
-                        <td>
-                            <a href="{{ route('kelola-pengguna.show', $user->id) }}">Lihat</a>
-                            <a href="{{ route('kelola-pengguna.edit', $user->id) }}">Edit</a>
-                            <form action="{{ route('kelola-pengguna.destroy', $user->id) }}" method="post">
-                                @csrf
-                                @method('delete')
+                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+                {{ $listUser->links() }}
+            </div>
 
-                                <button type="submit">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+
+        </div>
     </div>
-
-    <a href="{{ route('kelola-pengguna.create') }}">Tambah user</a>
-</div>
+@endsection
+@section('customize-script', '')

@@ -13,6 +13,9 @@ use App\Http\Controllers\SetorSampahController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
 use App\Models\KategoriSampah;
+use App\Models\User;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,22 +41,63 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/admin-create-kategori', function () {
 //     return view('admin.kategori.create');
 // })->name('admin-create-kategori');
-Route::get('/admin-create-quest', function () {
-    return view('admin.quest.create');
-})->name('admin-create-quest');
-Route::get('/admin-edit-quest/{id}', function ($id) {
-    $quest = \App\Models\Quest::find($id); // Ambil data quest yang id nya 1
-    return view('admin.quest.edit', ['quest' => $quest]);
-})->name('admin-edit-quest');
-Route::get('/admin-show-quest/{id}', function ($id) {
-    $quest = \App\Models\Quest::find($id); // Ambil data quest yang id nya 1
-    return view('admin.quest.show', ['quest' => $quest]);
-})->name('admin-show-quest');
+// Route::get('/admin-create-quest', function () {
+//     return view('admin.quest.create');
+// })->name('admin-create-quest');
+// Route::get('/admin-edit-quest/{id}', function ($id) {
+//     $quest = \App\Models\Quest::find($id); // Ambil data quest yang id nya 1
+//     return view('admin.quest.edit', ['quest' => $quest]);
+// })->name('admin-edit-quest');
+// Route::get('/admin-show-quest/{id}', function ($id) {
+//     $quest = \App\Models\Quest::find($id); // Ambil data quest yang id nya 1
+//     return view('admin.quest.show', ['quest' => $quest]);
+// })->name('admin-show-quest');
+
+// Route::get('/admin-role-show/{id}', function ($id) {
+//     $role = Role::findOrFail($id);
+
+//     return view('admin.role.show', compact('role'));
+// })->name('admin-dashboard');
+// Route::get('/admin-role-index', function () {
+//     $listRole = Role::all();
+
+//     return view('admin.role.index', compact('listRole'));
+// })->name('admin-role-index');
+// Route::get('/admin-role-edit/{id}', function ($id) {
+//     $role = Role::findOrFail($id);
+//     // Ambil semua permissions yang tersedia
+//     $permissions = Permission::all();
+//     // Ambil ID permissions yang sudah dimiliki role
+//     $rolePermissions = $role->permissions->pluck('id')->toArray();
+
+//     return view('admin.role.edit', compact('role', 'permissions', 'rolePermissions'));
+// })->name('admin-role-edit');
 
 // Route::get('/admin-show-kategori/{id}', function ($id) {
 //     $kategori = KategoriSampah::findOrFail($id);
 //     return view('admin.kategori.show', ['kategori' => $kategori]);
 // })->name('admin-show-kategori');
+
+Route::get('/admin-user-create', function () {
+    $listRole = Role::all();
+    return view('admin.user.create', compact('listRole'));
+})->name('admin-user-create');
+Route::get('/admin-user-edit/{id}', function ($id) {
+    $user = User::findOrFail($id);
+    $listRole = Role::all();
+
+    return view('admin.user.edit', compact('user', 'listRole'));
+})->name('admin-user-create');
+Route::get('/admin-user-show/{id}', function ($id) {
+    $user = User::findOrFail($id);
+    $listRole = Role::all();
+
+    return view('admin.user.show', compact('user', 'listRole'));
+})->name('admin-user-show');
+Route::get('/admin-user-control', function () {
+    $listUser = User::paginate(2);
+    return view('admin.user.index', compact('listUser'));
+})->name('admin-user-control');
 
 
 Route::get('/', function () {
@@ -106,7 +150,7 @@ Route::middleware(['auth'])->group(function () {
         // Riwayat Transaksi Setoran Sampah
         Route::get('/riwayat-setor-sampah', [HistoryTransaksiController::class, 'riwayatSetorSampahUser'])->name('users.riwayat-setor-sampah');
         // Tukar Poin
-        Route::get('/penukaran-poin', [ItemController::class, 'index'])->name('users.penukaran-poin');
+        Route::get('/penukaran-poin', [ItemController::class, 'viewUser'])->name('users.penukaran-poin');
         Route::get('/riwayat-tukar-poin', [HistoryTransaksiController::class, 'riwayatTukarPoinUser'])->name('users.riwayat-tukar-poin');
     });
 });

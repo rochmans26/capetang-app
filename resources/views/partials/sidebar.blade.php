@@ -87,6 +87,21 @@
                 <span>Tukar Point</span>
             </a>
         </li>
+        @if (Auth::user()->hasRole('admin'))
+            <hr>
+            <li class="sidebar-item">
+                <a href="/kelola-pengguna" class="sidebar-link">
+                    <i class="bi bi-people-fill"></i>
+                    <span>Kelola User</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="/kategori-sampah" class="sidebar-link">
+                    <i class="bi bi-recycle"></i>
+                    <span>Kelola Kategori Sampah</span>
+                </a>
+            </li>
+        @endif
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                 data-bs-target="#setting" aria-expanded="false" aria-controls="setting">
