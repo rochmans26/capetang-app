@@ -16,12 +16,12 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'min:3'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'rt' => ['nullable', 'string'],
             'rw' => ['nullable', 'string'],
-            'alamat' => ['nullable', 'string'],
+            'alamat' => ['nullable', 'string', 'min:3', 'max:255'],
             'foto' => [
                 'nullable',
                 'image',

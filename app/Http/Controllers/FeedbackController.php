@@ -13,6 +13,7 @@ class FeedbackController extends Controller
         $feedback = new Feedback();
         $feedback->create($request->validated());
 
-        return redirect()->route('landing-page')->with('success', 'Feedback berhasil disimpan');
+        return redirect()->route('landing-page')
+            ->with('success', 'Feedback berhasil dikirim');
     }
 }
