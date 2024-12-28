@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SetorSampahRequest;
 use App\Models\KategoriSampah;
-use App\Models\Reward;
 use App\Models\SetorSampah;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class SetorSampahController extends Controller
 {
@@ -21,7 +19,7 @@ class SetorSampahController extends Controller
 
     public function index()
     {
-        $listSetoran = SetorSampah::all();
+        $listSetoran = SetorSampah::paginate(5);
         return view('admin.transaksi.setor.index', compact('listSetoran'));
     }
 
@@ -39,7 +37,7 @@ class SetorSampahController extends Controller
 
         // Upload bukti penyerahan
         if ($request->hasFile('bukti_penyerahan')) {
-            $validasi['bukti_penyerahan'] = SetorSampah::deleteBuktiPenyerahan($request->file('bukti_penyerahan'));
+            $validasi['bukti_penyerahan'] = SetorSampah::uploadImage($request->file('bukti_penyerahan'));
             $validasi['point'] = SetorSampah::hitungPoint($validasi['berat_sampah']);
         }
 
@@ -75,9 +73,9 @@ class SetorSampahController extends Controller
 
         if ($request->hasFile('bukti_penyerahan')) {
             // Hapus bukti penyerahan jika ada
-            $setorSampah->deleteBuktiPenyerahan($setorSampah->bukti_penyerahan ?? null);
+            $setorSampah->deleteImage($setorSampah->bukti_penyerahan ?? null);
             // Simpan bukti penyerahan baru
-            $validasi['bukti_penyerahan'] = $setorSampah->uploadBuktiPenyerahan($request->file('bukti_penyerahan'));
+            $validasi['bukti_penyerahan'] = $setorSampah->uploadImage($request->file('bukti_penyerahan'));
             $validasi['point'] = SetorSampah::hitungPoint($validasi['berat_sampah']);
         }
 
@@ -90,7 +88,7 @@ class SetorSampahController extends Controller
     public function destroy(string $id)
     {
         $setorSampah = SetorSampah::findOrFail($id);
-        $setorSampah->deleteBuktiPenyerahan($setorSampah->bukti_penyerahan ?? null);
+        $setorSampah->deleteImage($setorSampah->bukti_penyerahan ?? null);
         $setorSampah->deletePencatatanReward($setorSampah);
         $setorSampah->delete();
 

@@ -24,6 +24,13 @@ class KategoriSampahRequest extends FormRequest
         $rules = [
             'nama_kategori' => ['required', 'string', 'min:3', 'max:255'],
             'deskripsi' => ['nullable', 'string', 'max:255', 'min:3'],
+            'gambar' => [
+                'nullable',
+                'image',
+                'mimes:png,jpg,jpeg',
+                'max:10240',
+                'dimensions:min_width=100,min_height=100,max_width=2000,max_height=2000', // minimal 100x100, maksimal 2000x2000
+            ],
         ];
 
         if ($this->isMethod('post')) {

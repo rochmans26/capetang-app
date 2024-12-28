@@ -27,9 +27,9 @@
                         Back
                     </a>
                 </div>
-
             </div>
             <hr>
+
             <div class="row justify-content-center">
                 <div class="col-md-10 mb-3">
                     <form action="{{ route('kategori-sampah.store') }}" method="post" enctype="multipart/form-data">
@@ -39,27 +39,23 @@
                                 placeholder="Nama kategori">
                             <label for="nama_kategori">Nama Kategori</label>
                         </div>
-                        @error('nama_kategori')
-                            <script>
-                                alert('{{ $message }}');
-                            </script>
-                        @enderror
+
                         <div class="form-floating mb-3">
                             <textarea class="form-control" placeholder="Deskripsi kategori ..." id="deskripsi" name="deskripsi"
                                 style="height: 100px"></textarea>
                             <label for="deskripsi">Deskripsi</label>
                         </div>
-                        @error('deskripsi')
-                            <script>
-                                alert('{{ $message }}');
-                            </script>
-                        @enderror
+
+                        <div class="form-floating mb-3">
+                            <input type="file" class="form-control" id="gambar" name="gambar" placeholder="Gambar"
+                                accept="image/jpg,image/jpeg,image/png">
+                            <label for="gambar">Gambar</label>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>
 @endsection

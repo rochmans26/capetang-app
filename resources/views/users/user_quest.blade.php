@@ -134,16 +134,4 @@
         </div>
     </div>
 @endsection
-@section('customize-script')
-    @if (session('success'))
-        <script>
-            alert('{{ session('success') }}');
-        </script>
-    @endif
-
-    @if (session('error'))
-        <script>
-            alert('{{ session('error') }}');
-        </script>
-    @endif
-@endsection
+@section('customize-script', '')

@@ -89,6 +89,7 @@ class RoleAndPermissionSeeder extends Seeder
             'lihat-riwayat-transaksi',
             'lihat-kategori-sampah',
             'lihat-quest',
+            'lihat-item',
             'ambil-quest',
             'batalkan-quest',
             'perbarui-quest',

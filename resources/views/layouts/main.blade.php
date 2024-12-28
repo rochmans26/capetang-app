@@ -18,6 +18,22 @@
 </head>
 
 <body>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
+            style="z-index: 1050; max-width: 350px;">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3"
+            style="z-index: 1050; max-width: 350px;">
+            {{ $errors->first() }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check2" viewBox="0 0 16 16">
             <path
@@ -100,6 +116,17 @@
     </div>
 
     <script src="{{ asset('js/script.js') }}"></script>
+    {{-- Alert Notification Fade Out --}}
+    <script>
+        setTimeout(() => {
+            const alert = document.querySelector('.alert');
+            if (alert) {
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+                setTimeout(() => alert.remove(), 500);
+            }
+        }, 2000);
+    </script>
     @yield('customize-script')
 </body>
 

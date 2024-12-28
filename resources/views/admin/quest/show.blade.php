@@ -44,11 +44,19 @@
                             <p class="card-text">{{ $quest->waktu_berakhir }}</p>
                             <small class="text-muted">Point</small>
                             <p class="card-text">{{ $quest->point }}</p>
-                            <div class="d-flex justify-content-end">
-                                <a href="{{ route('quest.edit', $quest->id) }}" class="btn btn-sm btn-primary">
-                                    <span><i class="bi bi-pencil-square"></i></span> Edit
-                                </a>
-                            </div>
+                            <small class="text-muted">Status</small>
+                            <p class="card-text">{{ $quest->status }}</p>
+                            <small class="text-muted">Gambar</small><br>
+                            <img src="{{ $quest->image_url }}" alt="{{ $quest->image_url }}" width="200" height="200"
+                                class="me-2 rounded">
+
+                            @can('ubah-quest')
+                                <div class="d-flex justify-content-end">
+                                    <a href="{{ route('quest.edit', $quest->id) }}" class="btn btn-sm btn-primary">
+                                        <span><i class="bi bi-pencil-square"></i></span> Edit
+                                    </a>
+                                </div>
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -58,14 +66,3 @@
     </div>
 @endsection
 @section('customize-script', '')
-
-{{-- <h1>Detail quest</h1>
-
-<p>ID: {{ $quest->id }}</p>
-<p>Nama quest: {{ $quest->nama_quest }}</p>
-<p>Deskripsi: {{ $quest->deskripsi }}</p>
-<p>Waktu Mulai: {{ $quest->waktu_mulai }}</p>
-<p>Waktu Berakhir: {{ $quest->waktu_berakhir }}</p>
-<p>Point: {{ $quest->point }}</p>
-
-<a href="{{ route('quest.index') }}">Kembali</a> --}}

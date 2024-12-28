@@ -71,17 +71,20 @@ class SetorSampah extends Model
 
     public function getImageUrlAttribute()
     {
+        if (!$this->bukti_penyerahan) {
+            return asset('img/sample-item-card.jpg');
+        }
         return Storage::url('public/uploads/setor-sampah/' . $this->bukti_penyerahan);
     }
 
-    public static function uploadBuktiPenyerahan($file)
+    public static function uploadImage($file)
     {
         $fileName = time() . '.' . $file->extension();
         $file->storeAs('public/uploads/setor-sampah', $fileName);
         return $fileName;
     }
 
-    public static function deleteBuktiPenyerahan($fileName)
+    public static function deleteImage($fileName)
     {
         return Storage::exists('public/uploads/setor-sampah/' . $fileName) && Storage::delete('public/uploads/setor-sampah/' . $fileName);
     }

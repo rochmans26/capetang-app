@@ -62,7 +62,7 @@
         </script>
     @endif
 
-    @error('current_password', 'updatePassword')
+    {{-- @error('current_password', 'updatePassword')
         <script>
             alert('{{ $message }}');
         </script>
@@ -72,5 +72,5 @@
         <script>
             alert('{{ $message }}');
         </script>
-    @enderror
+    @enderror --}}
 @endsection

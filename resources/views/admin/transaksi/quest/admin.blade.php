@@ -1,42 +1,75 @@
-@if (session('success'))
-    <script>
-        alert('{{ session('success') }}');
-    </script>
-@endif
+@extends('layouts.main')
+@section('customize-style')
+    <style>
+        .full-height {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            /* Pastikan padding termasuk dalam ukuran total */
+        }
+    </style>
+@endsection
+@section('content')
+    <div class="container">
+        <div class="container shadow full-height rounded">
+            {{-- header --}}
+            <div class="title d-flex justify-content-between align-items-center mt-3">
+                <h1 class="d-flex align-items-center">
+                    <i class="bi bi-arrow-left-right fs-1 me-2 text-success"></i>
+                    Daftar Quest Yang Menunggu Approval
+                </h1>
+                <div class="d-flex align-items-center justify-content-end gap-3">
+                    <!-- Tombol Kembali -->
+                    <a href="javascript:history.back()" class="btn btn-warning d-inline-flex align-items-center px-3 py-2"
+                        role="button" title="Kembali ke halaman sebelumnya" aria-label="Kembali">
+                        <i class="bi bi-arrow-left-circle me-2"></i>
+                        Back
+                    </a>
+                </div>
+            </div>
+            <hr>
 
-<h1>Daftar User yang Menunggu Approval</h1>
-
-<table>
-    <thead>
-        <tr>
-            <th>ID User</th>
-            <th>Nama User</th>
-            <th>Quest</th>
-            <th>Status</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($usersQuest as $userQuest)
-            @foreach ($userQuest->quest as $quest)
-                @if ($quest->pivot->status === 'menunggu')
-                    <tr>
-                        <td>{{ $userQuest->id }}</td>
-                        <td>{{ $userQuest->name }}</td>
-                        <td>{{ $quest->nama_quest }}</td>
-                        <td>{{ $quest->pivot->status }}</td>
-                        <td>
-                            <form
-                                action="{{ route('admin.kirim-reward-quest', ['userId' => $userQuest->id, 'questId' => $quest->id]) }}"
-                                method="POST">
-                                @csrf
-                                @method('put')
-                                <button type="submit">Set Selesai</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endif
-            @endforeach
-        @endforeach
-    </tbody>
-</table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Nama User</th>
+                            <th scope="col">Quest</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($usersQuest as $quest)
+                            <tr>
+                                <td>{{ $loop->index + 1 + ($usersQuest->currentPage() - 1) * $usersQuest->perPage() }}</td>
+                                <td>{{ $quest->user_name }}</td>
+                                <td>{{ $quest->quest_name }}</td>
+                                <td>{{ $quest->status }}</td>
+                                <td>
+                                    <form
+                                        action="{{ route('admin.kirim-reward-quest', ['userId' => $quest->id_user, 'questId' => $quest->id_quest]) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('put')
+                                        <button type="submit" class="btn btn-primary">Set Selesai</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">Tidak ada quest yang menunggu approval.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center">
+                {{ $usersQuest->links() }}
+            </div>
+        </div>
+    </div>
+@endsection
+@section('customize-script', '')

@@ -29,16 +29,19 @@
                                     @if (auth()->user()->quest()->where('id_quest', $quest->id)->exists())
                                         <a href="{{ route('users.detail-quest', $quest->id) }}">Status quest</a>
                                     @else
-                                        <a href="{{ route('quest.show', $quest->id) }}">Detail quest</a>
+                                        <a
+                                            href="{{ auth()->user()->hasRole('admin') ? route('quest.show', $quest->id) : route('users.info-quest-user', $quest->id) }}">Detail
+                                            quest</a>
                                     @endif
-                                    @haspermission('ambil-quest')
+
+                                    @can('ambil-quest')
                                         <form action="{{ route('users.ambil-quest', $quest->id) }}" method="post">
                                             @csrf
                                             @method('post')
 
                                             <button type="submit" class="btn btn-primary btn-sm">Ambil Quest</button>
                                         </form>
-                                    @endhaspermission
+                                    @endcan
                                 </div>
                             </div>
                         </div>
@@ -49,16 +52,4 @@
     </div>
     {{-- end of header --}}
 @endsection
-@section('customize-script')
-    @if (session('success'))
-        <script>
-            alert('{{ session('success') }}');
-        </script>
-    @endif
-
-    @if (session('error'))
-        <script>
-            alert('{{ session('error') }}');
-        </script>
-    @endif
-@endsection
+@section('customize-script', '')

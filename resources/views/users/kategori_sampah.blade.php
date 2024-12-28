@@ -28,13 +28,11 @@
                         <div class="col-md-4 mb-3">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $kategori->id }}</h5>
+                                    <h5 class="card-title">
+                                        {{ $loop->iteration }}
+                                    </h5>
                                     <h6 class="card-subtitle mb-2 text-body-secondary">{{ $kategori->nama_kategori }}</h6>
                                     <p class="card-text">{{ $kategori->deskripsi }}</p>
-                                    @if (auth()->user()->role === 'admin')
-                                        <a href="#" class="card-link">Card link</a>
-                                        <a href="#" class="card-link">Another link</a>
-                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -45,16 +43,4 @@
     </div>
     {{-- end of header --}}
 @endsection
-@section('customize-script')
-    @if (session('success'))
-        <script>
-            alert('{{ session('success') }}');
-        </script>
-    @endif
-
-    @if (session('error'))
-        <script>
-            alert('{{ session('error') }}');
-        </script>
-    @endif
-@endsection
+@section('customize-script', '')

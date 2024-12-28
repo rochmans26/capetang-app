@@ -47,14 +47,14 @@ class UserQuest extends Model
         return Storage::url('public/uploads/quest/' . $this->bukti_penyerahan);
     }
 
-    public static function uploadBuktiPenyerahan($file)
+    public static function uploadImage($file)
     {
         $fileName = time() . '.' . $file->extension();
         $file->storeAs('public/uploads/quest', $fileName);
         return $fileName;
     }
 
-    public static function deleteBuktiPenyerahan($fileName)
+    public static function deleteImage($fileName)
     {
         return Storage::exists('public/uploads/quest/' . $fileName) && Storage::delete('public/uploads/quest/' . $fileName);
     }

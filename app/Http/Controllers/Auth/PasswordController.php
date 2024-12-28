@@ -30,9 +30,9 @@ class PasswordController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
-        $validated = $request->validateWithBag('updatePassword', [
+        $validated = $request->validate([
             'current_password' => ['required', 'current_password'],
-            'password' => ['required', Password::defaults(), 'confirmed', 'different:current_password'],
+            'password' => ['required', 'min:8', 'confirmed', 'different:current_password'],
         ]);
 
         $request->user()->update([

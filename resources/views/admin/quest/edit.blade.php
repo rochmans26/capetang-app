@@ -27,73 +27,54 @@
                         Back
                     </a>
                 </div>
-
             </div>
             <hr>
+
             <div class="row justify-content-center">
                 <div class="col-md-10 mb-3">
-                    <form action="{{ route('quest.update', $quest->id) }}" method="post">
+                    <form action="{{ route('quest.update', $quest->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('put')
+
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="nama_quest" name="nama_quest"
                                 placeholder="Nama Quest" value="{{ $quest->nama_quest }}">
                             <label for="nama_quest">Nama Quest</label>
                         </div>
-                        @error('nama_quest')
-                            <script>
-                                alert('{{ $message }}');
-                            </script>
-                        @enderror
+
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" placeholder="Deskripsi quest ..." id="deskripsi" name="deskripsi" style="height: 100px">
-                                {{ $quest->deskripsi }}
-                            </textarea>
+                            <textarea class="form-control" placeholder="Deskripsi Quest ..." id="deskripsi" name="deskripsi" style="height: 100px">{{ $quest->deskripsi }}</textarea>
                             <label for="deskripsi">Deskripsi</label>
                         </div>
-                        @error('deskripsi')
-                            <script>
-                                alert('{{ $message }}');
-                            </script>
-                        @enderror
 
                         <div class="form-floating mb-3">
                             <input type="datetime-local" class="form-control" id="waktu_mulai" name="waktu_mulai"
                                 value="{{ $quest->waktu_mulai }}">
                             <label for="waktu_mulai">Waktu Mulai</label>
                         </div>
-                        @error('waktu_mulai')
-                            <script>
-                                alert('{{ $message }}');
-                            </script>
-                        @enderror
+
                         <div class="form-floating mb-3">
                             <input type="datetime-local" class="form-control" id="waktu_berakhir" name="waktu_berakhir"
                                 value="{{ $quest->waktu_berakhir }}">
                             <label for="waktu_berakhir">Waktu Berakhir</label>
                         </div>
-                        @error('waktu_berakhir')
-                            <script>
-                                alert('{{ $message }}');
-                            </script>
-                        @enderror
 
                         <div class="form-floating mb-3">
                             <input type="number" class="form-control" id="point" name="point"
                                 placeholder="Point Item" value="{{ $quest->point }}">
                             <label for="point">Poin Quest</label>
                         </div>
-                        @error('point')
-                            <script>
-                                alert('{{ $message }}');
-                            </script>
-                        @enderror
+
+                        <div class="form-floating mb-3">
+                            <input type="file" class="form-control" id="gambar" name="gambar" placeholder="Gambar"
+                                accept="image/jpg,image/jpeg,image/png">
+                            <label for="gambar">Gambar</label>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>
 @endsection
