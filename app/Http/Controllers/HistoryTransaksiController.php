@@ -34,6 +34,12 @@ class HistoryTransaksiController extends Controller
 
     public function riwayatTukarPoinUser()
     {
-        return view('users.riwayat_tukar_poin');
+        $user = auth()->user();
+        // Ambil riwayat tukar poin dan urutkan berdasarkan data terbaru
+        $userHistory = $user->penukaranPoin()->with('item')->latest('created_at')->get();
+
+        // dd($userHistory->toArray());
+
+        return view('users.riwayat_tukar_poin', compact('userHistory'));
     }
 }

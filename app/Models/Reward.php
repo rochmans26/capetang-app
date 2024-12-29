@@ -26,12 +26,17 @@ class Reward extends Model
 
     public function setorSampah()
     {
-        return $this->belongsTo(SetorSampah::class, 'id_transaksi');
+        return $this->belongsTo(SetorSampah::class, 'id_transaksi', 'id');
     }
 
     public function userQuest()
     {
         return $this->belongsTo(UserQuest::class, 'id_transaksi', 'id_quest');
+    }
+
+    public function transaksiTukarPoin()
+    {
+        return $this->belongsTo(TransaksiTukarPoint::class, 'id_transaksi', 'id');
     }
 
     /*
@@ -42,8 +47,12 @@ class Reward extends Model
         switch ($value) {
             case 'App\Models\SetorSampah':
                 return 'Setor Sampah';
-            default:
+            case 'App\Models\Quest':
                 return 'Quest';
+            case 'App\Models\TransaksiTukarPoint':
+                return 'Tukar Poin';
+            default:
+                return null;
         }
     }
 
@@ -60,6 +69,9 @@ class Reward extends Model
             })
                 ->orWhereHas('userQuest', function ($query) {
                     $query->where('status', 'selesai');
+                })
+                ->orWhereHas('transaksiTukarPoin', function ($query) {
+                    $query->where('status_transaksi', 'success');
                 });
         });
     }

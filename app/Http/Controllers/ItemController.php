@@ -16,7 +16,7 @@ class ItemController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:lihat-item')->only(['index', 'show', 'indexUser']);
+        $this->middleware('permission:lihat-item')->only(['index', 'show']);
         $this->middleware('permission:tambah-item')->only(['create', 'store']);
         $this->middleware('permission:ubah-item')->only(['edit', 'update']);
         $this->middleware('permission:hapus-item')->only(['destroy']);
@@ -29,15 +29,6 @@ class ItemController extends Controller
         return request()->user()->canAny($this->adminAkses) ?
             view('admin.item.index', compact('listItem')) :
             redirect()->route('users.penukaran-poin');
-    }
-
-    public function indexForUser()
-    {
-        $listItem = Item::all();
-
-        return !request()->user()->canAny($this->adminAkses) ?
-            view('users.tukar_poin', compact('listItem')) :
-            redirect()->route('item.index');
     }
 
     public function create()
@@ -100,6 +91,7 @@ class ItemController extends Controller
         $item->deleteImage($item->foto_item ?? null);
         $item->delete();
 
-        return redirect()->route('item.index')->with('success', 'item berhasil dihapus');
+        return redirect()->route('item.index')
+            ->with('success', 'item berhasil dihapus');
     }
 }

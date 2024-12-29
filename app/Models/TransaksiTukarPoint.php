@@ -17,12 +17,43 @@ class TransaksiTukarPoint extends Model
         'tgl_transaksi',
         'total_transaksi',
         'status_transaksi',
+        'tipe_pengambilan',
         'bukti_penyerahan',
     ];
 
-    public function items()
+    public function item()
     {
         return $this->belongsToMany(Item::class, 'pivot_transaksi_tukar_poin_item', 'id_transaksi', 'id_item')->withPivot('jumlah_item');
+    }
+
+    public function detailTransaksi()
+    {
+        return $this->hasMany(DetailPenukaranPoin::class, 'id_transaksi', 'id');
+    }
+
+    public function pencatatanReward($tukarPoin)
+    {
+        Reward::create([
+            'nama_reward' => 'Transaksi Tukar Poin',
+            'id_user' => $tukarPoin->id_user,
+            'id_transaksi' => $tukarPoin->id,
+            'tipe_transaksi' => $tukarPoin->getMorphClass(),
+            'point_reward' => -$tukarPoin->total_transaksi,
+        ]);
+    }
+
+    public function updatePencatatanReward($tukarPoin)
+    {
+        Reward::where('id_transaksi', $tukarPoin->id)
+            ->update([
+                'id_user' => $tukarPoin->id_user,
+                'point_reward' => $tukarPoin->point,
+            ]);
+    }
+
+    public function deletePencatatanReward($tukarPoin)
+    {
+        Reward::where('id_transaksi', $tukarPoin->id)->delete();
     }
 
     public function user()

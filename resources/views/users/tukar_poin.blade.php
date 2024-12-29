@@ -138,10 +138,20 @@
                                 <small class="badge bg-success">Stok: {{ $item->stok_item }}</small>
                             </div>
                             <div class="card-footer">
-                                <div class="d-flex justify-content-between">
-                                    <a href="#" class="btn btn-primary w-100 me-2">Checkout</a>
-                                    <a href="#" class="btn btn-warning w-100" data-bs-toggle="modal"
-                                        data-bs-target="#modal-keranjang">
+                                <div class="d-flex gap-2">
+                                    <form
+                                        action="{{ route('users.checkout-store', [
+                                            'id_item' => $item->id,
+                                            'id_user' => request()->user()->id,
+                                        ]) }}"
+                                        method="POST" class="flex-grow-1">
+                                        @csrf
+
+                                        <button type="submit" class="btn btn-primary w-100">Checkout</button>
+                                    </form>
+
+                                    <a href="{{ route('users.cart') }}" class="btn btn-warning w-100 flex-grow-1"
+                                        data-bs-toggle="modal" data-bs-target="#modal-keranjang">
                                         Masukan Keranjang
                                     </a>
                                 </div>

@@ -28,9 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user-trans-detail', function () {
     return view('users.detail_transaksi_tukar_poin');
 })->name('user-trans-detail');
-Route::get('/user-checkout', function () {
-    return view('users.checkout');
-})->name('user-checkout');
+
 
 Route::get('/', function () {
     return view('landing_page');
@@ -47,11 +45,6 @@ Route::middleware(['auth'])->group(function () {
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('users-profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('users-profile.update');
-
-    // Belum implement ke viewnya aja
-    Route::middleware(['verified'])->group(function () {
-        Route::resource('penukaran-poin', PenukaranPoinController::class);
-    });
 
     // Admin
     Route::prefix('admin')->middleware(['verified'])->group(function () {
@@ -85,8 +78,13 @@ Route::middleware(['auth'])->group(function () {
         // Riwayat Transaksi Setoran Sampah
         Route::get('/riwayat-setor-sampah', [HistoryTransaksiController::class, 'riwayatSetorSampahUser'])->name('users.riwayat-setor-sampah');
         // Tukar Poin
-        Route::get('/penukaran-poin', [ItemController::class, 'indexForUser'])->name('users.penukaran-poin');
         Route::get('/riwayat-tukar-poin', [HistoryTransaksiController::class, 'riwayatTukarPoinUser'])->name('users.riwayat-tukar-poin');
+        Route::get('/penukaran-poin', [PenukaranPoinController::class, 'index'])->name('users.penukaran-poin');
+        Route::get('/checkout', [PenukaranPoinController::class, 'create'])->name('users.checkout')->middleware('checkout.session');
+        Route::post('/checkout', [PenukaranPoinController::class, 'store'])->name('users.checkout-store');
+        Route::post('/proses-checkout', [PenukaranPoinController::class, 'prosesCheckout'])->name('users.checkout-proses')->middleware('checkout.session');
+        Route::get('/cart', [PenukaranPoinController::class, 'cartUser'])->name('users.cart');
+        Route::get('/detail-penukaran-poin/{id}', [PenukaranPoinController::class, 'show'])->name('users.detail-penukaran-poin');
     });
 });
 

@@ -71,7 +71,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Reward::class, 'id_user', 'id');
     }
 
-    public function transaksiTukarPoint()
+    public function transaksiTukarPoin()
+    {
+        return $this->belongsToMany(TransaksiTukarPoint::class, 'pivot_transaksi_tukar_poin_item', 'id_user', 'id_item')->withPivot('jumlah_item');
+    }
+
+    public function penukaranPoin()
     {
         return $this->hasMany(TransaksiTukarPoint::class, 'id_user', 'id');
     }

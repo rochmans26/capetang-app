@@ -20,9 +20,14 @@ class Item extends Model
         'foto_item',
     ];
 
-    public function transaksiTukarPoin()
+    public function users()
     {
-        return $this->belongsToMany(TransaksiTukarPoint::class, 'pivot_transaksi_tukar_poin_item', 'id_item', 'id_transaksi')->withPivot('jumlah_item');
+        return $this->belongsToMany(User::class, 'pivot_transaksi_tukar_poin_item', 'id_item', 'id_user')->withPivot('jumlah_item');
+    }
+
+    public function detailTransaksi()
+    {
+        return $this->hasMany(DetailPenukaranPoin::class, 'id_item', 'id');
     }
 
     /**

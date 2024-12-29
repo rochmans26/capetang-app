@@ -31,30 +31,36 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col">No.</th>
+                            <th scope="col">Tanggal Transaksi</th>
+                            <th scope="col">Point Tukar</th>
+                            <th scope="col">Nama Item</th>
+                            <th scope="col">Jumlah Item</th>
+                            <th scope="col">Status Transaksi</th>
+                            <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
+                        @foreach ($userHistory as $history)
+                            <tr>
+                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td>{{ $history->tgl_transaksi }}</td>
+                                <td>{{ $history->total_transaksi ?? '-' }}</td>
+                                @foreach ($history['item'] as $item)
+                                    <td>{{ $item->nama_item }}</td>
+                                    <td>{{ $item->pivot->jumlah_item }}</td>
+                                @endforeach
+                                <td>{{ $history->status_transaksi }}</td>
+                                <td>
+                                    <a href="{{ route('users.detail-penukaran-poin', $history->id) }}"
+                                        class="btn btn-primary d-inline-flex align-items-center" role="button"
+                                        title="Detail Transaksi" aria-label="Detail">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        Detail
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
