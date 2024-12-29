@@ -20,8 +20,9 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->dateTime('tgl_transaksi');
-            $table->string('total_transaksi');
+            $table->string('total_transaksi')->default(0);
             $table->string('status_transaksi')->nullable();
+            $table->string('tipe_pengambilan')->nullable();
             $table->string('bukti_penyerahan')->nullable();
             $table->timestamps();
         });

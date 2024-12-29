@@ -45,92 +45,75 @@
                     <div class="col-md-5 col-lg-4 order-md-last">
                         <h4 class="d-flex justify-content-between align-items-center mb-3">
                             <span class="text-primary">Your cart</span>
-                            <span class="badge bg-primary rounded-pill">2</span>
+                            <span class="badge bg-primary rounded-pill">1</span>
                         </h4>
                         <ul class="list-group mb-3">
-                            <!-- Item List -->
-                            <li class="list-group-item">
-                                <div class="d-flex align-items-center">
-                                    <!-- Item Image -->
-                                    <img src="{{ asset('img/sample-item-card.jpg') }}" alt="Sample Item" width="50"
-                                        height="50" class="me-2 rounded">
+                            @if (session('data'))
+                                <!-- Item List -->
+                                <li class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        <!-- Item Image -->
+                                        <img src="{{ asset('img/sample-item-card.jpg') }}" alt="Sample Item" width="50"
+                                            height="50" class="me-2 rounded">
 
-                                    <!-- Item Details -->
-                                    <div class="flex-grow-1">
-                                        <h6 class="m-0 fw-bold">Nama Item</h6>
-                                        <p class="m-0 text-muted">Poin: 2000</p>
-                                    </div>
+                                        <!-- Item Details -->
+                                        <div class="flex-grow-1">
+                                            <h6 class="m-0 fw-bold">{{ session('data.item.nama_item') }}</h6>
+                                            <p class="m-0 text-muted">Poin: {{ session('data.item.point_item') }}</p>
+                                        </div>
 
-                                    <!-- Quantity and Points -->
-                                    <div class="text-end">
-                                        <table border="0">
-                                            <tr>
-                                                <td>Jumlah Item:</td>
-                                                <td>2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Jumlah Poin:</td>
-                                                <td>&nbsp;4000</td>
-                                            </tr>
-                                        </table>
+                                        <!-- Quantity and Points -->
+                                        <div class="text-end">
+                                            <table border="0">
+                                                <tr>
+                                                    <td>Jumlah Item:</td>
+                                                    <td>{{ session('data.quantity') }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Jumlah Poin:</td>
+                                                    <td>
+                                                        &nbsp;
+                                                        {{ session('data.item.point_item') * session('data.quantity') }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex align-items-center">
-                                    <!-- Item Image -->
-                                    <img src="{{ asset('img/sample-item-card.jpg') }}" alt="Sample Item" width="50"
-                                        height="50" class="me-2 rounded">
-
-                                    <!-- Item Details -->
-                                    <div class="flex-grow-1">
-                                        <h6 class="m-0 fw-bold">Nama Item</h6>
-                                        <p class="m-0 text-muted">Poin: 2000</p>
-                                    </div>
-
-                                    <!-- Quantity and Points -->
-                                    <div class="text-end">
-                                        <table border="0">
-                                            <tr>
-                                                <td>Jumlah Item:</td>
-                                                <td>1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Jumlah Poin:</td>
-                                                <td>&nbsp;2000</td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- Total -->
-                            <li class="list-group-item d-flex justify-content-between text-bg-primary">
-                                <span>Total Poin</span>
-                                <strong>6000 Poin</strong>
-                            </li>
+                                </li>
+                                <!-- Total -->
+                                <li class="list-group-item d-flex justify-content-between text-bg-primary">
+                                    <span>Total Poin</span>
+                                    <strong>{{ session('data.total') }} Poin</strong>
+                                </li>
+                            @else
+                                <li class="list-group-item">
+                                    <p class="text-muted text-center">Keranjang kosong.</p>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                     <div class="col-md-7 col-lg-8">
                         <h4 class="mb-3">Data Penerima</h4>
-                        <form class="" novalidate action="{{ route('user-trans-detail') }}">
+                        <form class="" novalidate action="{{ route('users.checkout-proses') }}" method="POST">
+                            @csrf
+
                             <div class="row g-3">
                                 <div class="col-sm-6">
                                     <label for="firstName" class="form-label">Nama</label>
                                     <input type="text" class="form-control" id="firstName" placeholder=""
-                                        value="Rochman Setiono" disabled>
+                                        value="{{ session('data.user.name') }}" disabled>
                                 </div>
 
                                 <div class="col-sm-6">
                                     <label for="lastName" class="form-label">Email</label>
                                     <input type="email" class="form-control" id="lastName" placeholder=""
-                                        value="rochmansetiono26@gmail.com" disabled>
+                                        value="{{ session('data.user.email') }}" disabled>
                                 </div>
 
                                 <div class="col-12">
                                     <label for="address" class="form-label">Alamat</label>
-                                    <input type="text" class="form-control" id="address" placeholder="1234 Main St"
-                                        disabled
-                                        value="Komp. Cibogo Indah No. 36 A RT01/RW017, Desa Cangkuang Kulon, Kec. Dayeuhkolot, Kab. Bandung - 40239">
+                                    <input type="text" class="form-control" id="address" placeholder="Alamat" disabled
+                                        value="{{ session('data.user.alamat') }}">
                                 </div>
                             </div>
 

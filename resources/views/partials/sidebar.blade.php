@@ -96,13 +96,13 @@
                 </a>
                 <ul id="reward" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
-                        <a href="{{ route('users.riwayat-reward') }}" class="sidebar-link">Reward Point</a>
+                        <a href="{{ route('users.riwayat-reward') }}" class="sidebar-link">Riwayat Pencatatan Point</a>
                         <span
                             class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
                             <span class="visually-hidden">New alerts</span>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{ route('users.riwayat-tukar-poin') }}" class="sidebar-link">Riwayat Tukar Point</a>
+                        <a href="{{ route('users.riwayat-tukar-poin') }}" class="sidebar-link">Riwayat Penukaran Point</a>
                         <span
                             class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
                             <span class="visually-hidden">New alerts</span>

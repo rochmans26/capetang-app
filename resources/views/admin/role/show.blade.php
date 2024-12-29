@@ -67,10 +67,12 @@
                         </div>
 
                         <!-- Footer Card -->
-                        <div class="card-footer text-center bg-light rounded-bottom">
-                            <a href="{{ route('role.edit', $role->id) }}" class="btn btn-primary btn-sm"><span><i
-                                        class="bi bi-pencil-square fs-5"></i></span> Edit</a>
-                        </div>
+                        @can('ubah-role')
+                            <div class="card-footer text-center bg-light rounded-bottom">
+                                <a href="{{ route('role.edit', $role->id) }}" class="btn btn-primary btn-sm"><span><i
+                                            class="bi bi-pencil-square fs-5"></i></span> Edit</a>
+                            </div>
+                        @endcan
                     </div>
                 </div>
             </div>

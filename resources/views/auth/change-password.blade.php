@@ -19,7 +19,6 @@
             {{-- end of header --}}
         </div>
 
-
         <div class="row justify-content-center mx-auto my-3">
             <div class="col-12 col-md-8 col-lg-6">
                 <div class="card">
@@ -55,22 +54,4 @@
     </div>
 @endsection
 
-@section('customize-script')
-    @if (session('success'))
-        <script>
-            alert('{{ session('success') }}');
-        </script>
-    @endif
-
-    {{-- @error('current_password', 'updatePassword')
-        <script>
-            alert('{{ $message }}');
-        </script>
-    @enderror
-
-    @error('password', 'updatePassword')
-        <script>
-            alert('{{ $message }}');
-        </script>
-    @enderror --}}
-@endsection
+@section('customize-script', '')

@@ -23,9 +23,8 @@ class PenukaranPoinRequest extends FormRequest
     {
         $rules = [
             'id_user' => ['required', 'exists:users,id'],
-            'tgl_transaksi' => ['required', 'date'],
-            'total_trasaksi' => ['required', 'integer', 'min:0'],
-            'status_transaksi' => ['nullable', 'string', 'max:255', 'min:3'],
+            'tgl_transaksi' => ['sometimes', 'date'],
+            'total_trasaksi' => ['sometimes', 'integer', 'min:0'],
             'bukti_penyerahan' => [
                 'nullable',
                 'image',

@@ -30,14 +30,13 @@
 
             </div>
             <hr>
-            <div class="d-flex mb-3">
-                <a href="{{ route('role.create') }}" class="btn btn-success">Tambah Data</a>
-            </div>
-            @if (session('success'))
-                <script>
-                    alert('{{ session('success') }}');
-                </script>
-            @endif
+
+            @can('tambah-role')
+                <div class="d-flex mb-3">
+                    <a href="{{ route('role.create') }}" class="btn btn-success">Tambah Data</a>
+                </div>
+            @endcan
+
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -58,13 +57,18 @@
                                     <div class="d-flex align-item-center">
                                         <a href="{{ route('role.show', $role->id) }}"
                                             class="btn btn-primary me-2">Detail</a>
-                                        <a href="{{ route('role.edit', $role->id) }}" class="btn btn-warning me-2">Edit</a>
-                                        <form action="{{ route('role.destroy', $role->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
+                                        @can('ubah-role')
+                                            <a href="{{ route('role.edit', $role->id) }}" class="btn btn-warning me-2">Edit</a>
+                                        @endcan
 
-                                            <button type="submit" class="btn btn-danger">Hapus</button>
-                                        </form>
+                                        @can('hapus-role')
+                                            <form action="{{ route('role.destroy', $role->id) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

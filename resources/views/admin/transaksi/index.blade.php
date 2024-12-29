@@ -1,12 +1,6 @@
 <div>
     <h1>List Transaksi Penukaran Point</h1>
 
-    @if (session('success'))
-        <script>
-            alert('{{ session('success') }}');
-        </script>
-    @endif
-
     <div>
         <table>
             <thead>
