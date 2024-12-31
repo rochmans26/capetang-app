@@ -25,6 +25,7 @@ class PenukaranPoinRequest extends FormRequest
             'id_user' => ['required', 'exists:users,id'],
             'tgl_transaksi' => ['sometimes', 'date'],
             'total_trasaksi' => ['sometimes', 'integer', 'min:0'],
+            'jumlah_item' => ['sometimes', 'integer', 'min:1'],
             'bukti_penyerahan' => [
                 'nullable',
                 'image',

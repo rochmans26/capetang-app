@@ -52,7 +52,7 @@
                                 @endforeach
                                 <td>{{ $history->status_transaksi }}</td>
                                 <td>
-                                    <a href="{{ route('users.detail-penukaran-poin', $history->id) }}"
+                                    <a href="{{ route('users.detail-transaksi', $history->id) }}"
                                         class="btn btn-primary d-inline-flex align-items-center" role="button"
                                         title="Detail Transaksi" aria-label="Detail">
                                         <i class="bi bi-info-circle me-2"></i>

@@ -70,12 +70,23 @@ class UserQuest extends Model
         ]);
     }
 
-    public function updatePencatatanReward($setorSampah)
+    public function updatePencatatanReward($userQuest)
     {
-        Reward::where('id_transaksi', $setorSampah->id)
+        Reward::where([
+            ['id_transaksi', '=', $userQuest->id],
+            ['tipe_transaksi', '=', $userQuest->getMorphClass()]
+        ])
             ->update([
-                'id_user' => $setorSampah->id_user,
-                'point_reward' => $setorSampah->point,
+                'id_user' => $userQuest->id_user,
+                'point_reward' => $userQuest->quest->point,
             ]);
+    }
+
+    public function deletePencatatanReward($userQuest)
+    {
+        Reward::where([
+            ['id_transaksi', '=', $userQuest->id],
+            ['tipe_transaksi', '=', $userQuest->getMorphClass()]
+        ])->delete();
     }
 }

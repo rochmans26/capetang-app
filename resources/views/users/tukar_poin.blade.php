@@ -115,13 +115,13 @@
                 {{-- End of Keranjang List --}}
             </div>
             <hr>
+
             {{-- Daftar Item --}}
             <div class="row">
                 @foreach ($listItem as $item)
                     <div class="col-md-4 mb-3">
                         <div class="card shadow-sm">
-                            <img src="{{ asset('img/sample-item-card.jpg') }}" class="card-img-top rounded-top"
-                                alt="Nama Item">
+                            <img src="{{ $item->image_url }}" class="card-img-top rounded-top" alt="{{ $item->image_url }}">
                             <div class="card-body">
                                 <h5 class="card-title text-primary fw-bold">{{ $item->nama_item }}</h5>
                                 <small class="text-muted">Poin Item</small>
@@ -140,7 +140,7 @@
                             <div class="card-footer">
                                 <div class="d-flex gap-2">
                                     <form
-                                        action="{{ route('users.checkout-store', [
+                                        action="{{ route('users.direct-checkout', [
                                             'id_item' => $item->id,
                                             'id_user' => request()->user()->id,
                                         ]) }}"
@@ -150,10 +150,61 @@
                                         <button type="submit" class="btn btn-primary w-100">Checkout</button>
                                     </form>
 
-                                    <a href="{{ route('users.cart') }}" class="btn btn-warning w-100 flex-grow-1"
-                                        data-bs-toggle="modal" data-bs-target="#modal-keranjang">
+                                    <a href="javascript:void(0)" class="btn btn-warning w-100 flex-grow-1"
+                                        data-bs-toggle="modal" data-bs-target="#modal-keranjang"
+                                        onclick="populateCartModal({{ $item->id }}, '{{ $item->image_url }}', '{{ $item->nama_item }}', '{{ $item->deskripsi_item }}', {{ $item->point_item }}, {{ $item->stok_item }})">
                                         Masukan Keranjang
                                     </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Modal Masukan Keranjang Jumlah --}}
+                    <div class="modal fade" id="modal-keranjang" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header bg-success">
+                                    <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">Masukan Jumlah Item
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="card">
+                                            <img src="{{ $item->image_url }}" class="card-img-top"
+                                                alt="{{ $item->image_url }}" id="modal-item-image">
+                                            <div class="card-body">
+                                                <h5 class="card-title" id="modal-item-name"></h5>
+                                                <p class="card-text" id="modal-item-description"></p>
+                                                <p class="card-text">Poin: <span id="modal-item-points"></span></p>
+                                                <small class="badge text-bg-success" id="modal-item-stock"></small>
+                                            </div>
+                                            <hr>
+                                            <div class="container">
+                                                <form
+                                                    action="{{ route('users.add-to-cart', ['id_user' => request()->user()->id]) }}"
+                                                    method="post" class="mx-2 mb-1" id="cart-form">
+                                                    @csrf
+
+                                                    <input type="hidden" id="modal-item-id" name="id_item">
+
+                                                    <div class="form-group mb-3">
+                                                        <label for="jumlah_item" class="fw-bold">Jumlah</label>
+                                                        <input type="number" class="form-control" id="jumlah_item"
+                                                            placeholder="Masukan Jumlah" name="jumlah_item"
+                                                            min="1">
+                                                    </div>
+                                                    <div class="form-group mb-3 d-flex justify-content-center">
+                                                        <input type="submit" value="Masukan Keranjang"
+                                                            class="btn btn-primary">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -164,46 +215,17 @@
         </div>
     </div>
     {{-- end of header --}}
-
-    {{-- Modal Masukan Keranjang Jumlah --}}
-    <!-- Modal -->
-    <div class="modal fade" id="modal-keranjang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header bg-success">
-                    <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">Masukan Jumlah Item</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="d-flex justify-content-center">
-                        <div class="card">
-                            <img src="{{ asset('img/sample-item-card.jpg') }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Nama Item</h5>
-                                <p class="card-text">Deskripsi Item</p>
-                                <p class="card-text">Some quick example text to build on the card title and make up the
-                                    bulk of the card's content.</p>
-                                <small class="badge text-bg-success">Stok: 8</small>
-                            </div>
-                            <hr>
-                            <div class="container">
-                                <form action="" method="post" class="mx-2 mb-1">
-                                    @csrf
-                                    <div class="form-group mb-3">
-                                        <label for="inputJumlah" class="fw-bold">Jumlah</label>
-                                        <input type="number" class="form-control" id="inputJumlah"
-                                            placeholder="Masukan Jumlah">
-                                    </div>
-                                    <div class="form-group mb-3 d-flex justify-content-center">
-                                        <input type="submit" value="Masukan Keranjang" class="btn btn-primary">
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
-@section('customize-script', '')
+@section('customize-script')
+    <script>
+        function populateCartModal(id, image, name, description, points, stock) {
+            // Populate modal fields with dynamic item details
+            document.getElementById('modal-item-id').value = id;
+            document.getElementById('modal-item-image').value = image;
+            document.getElementById('modal-item-name').innerText = name;
+            document.getElementById('modal-item-description').innerText = description;
+            document.getElementById('modal-item-points').innerText = points;
+            document.getElementById('modal-item-stock').innerText = "Stok: " + stock;
+        }
+    </script>
+@endsection

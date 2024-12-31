@@ -13,7 +13,7 @@ class HistoryTransaksiController extends Controller
 
     public function riwayatRewardUser()
     {
-        $user = auth()->user();
+        $user = request()->user();
         // Ambil riwayat reward poin dan urutkan berdasarkan data terbaru
         $userHistory = $user->reward()
             ->diselesaikan()
@@ -25,7 +25,7 @@ class HistoryTransaksiController extends Controller
 
     public function riwayatSetorSampahUser()
     {
-        $user = auth()->user();
+        $user = request()->user();
         // Ambil riwayat setoran sampah dan urutkan berdasarkan data terbaru
         $userHistory = $user->setorSampah()->latest('tgl_setor_sampah')->get();
 
@@ -34,11 +34,9 @@ class HistoryTransaksiController extends Controller
 
     public function riwayatTukarPoinUser()
     {
-        $user = auth()->user();
+        $user = request()->user();
         // Ambil riwayat tukar poin dan urutkan berdasarkan data terbaru
-        $userHistory = $user->penukaranPoin()->with('item')->latest('created_at')->get();
-
-        // dd($userHistory->toArray());
+        $userHistory = $user->penukaranPoin()->with('item')->where('status_transaksi', 'success')->latest('created_at')->get();
 
         return view('users.riwayat_tukar_poin', compact('userHistory'));
     }

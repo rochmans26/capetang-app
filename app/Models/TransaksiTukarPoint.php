@@ -44,16 +44,22 @@ class TransaksiTukarPoint extends Model
 
     public function updatePencatatanReward($tukarPoin)
     {
-        Reward::where('id_transaksi', $tukarPoin->id)
+        Reward::where([
+            ['id_transaksi', '=', $tukarPoin->id],
+            ['tipe_transaksi', '=', $tukarPoin->getMorphClass()]
+        ])
             ->update([
                 'id_user' => $tukarPoin->id_user,
-                'point_reward' => $tukarPoin->point,
+                'point_reward' => -$tukarPoin->total_transaksi,
             ]);
     }
 
     public function deletePencatatanReward($tukarPoin)
     {
-        Reward::where('id_transaksi', $tukarPoin->id)->delete();
+        Reward::where([
+            ['id_transaksi', '=', $tukarPoin->id],
+            ['tipe_transaksi', '=', $tukarPoin->getMorphClass()]
+        ])->delete();
     }
 
     public function user()

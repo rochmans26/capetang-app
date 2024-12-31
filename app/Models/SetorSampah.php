@@ -57,16 +57,21 @@ class SetorSampah extends Model
 
     public function updatePencatatanReward($setorSampah)
     {
-        Reward::where('id_transaksi', $setorSampah->id)
-            ->update([
-                'id_user' => $setorSampah->id_user,
-                'point_reward' => $setorSampah->point,
-            ]);
+        Reward::where([
+            ['id_transaksi', '=', $setorSampah->id],
+            ['tipe_transaksi', '=', $setorSampah->getMorphClass()]
+        ])->update([
+            'id_user' => $setorSampah->id_user,
+            'point_reward' => $setorSampah->point,
+        ]);
     }
 
     public function deletePencatatanReward($setorSampah)
     {
-        Reward::where('id_transaksi', $setorSampah->id)->delete();
+        Reward::where([
+            ['id_transaksi', '=', $setorSampah->id],
+            ['tipe_transaksi', '=', $setorSampah->getMorphClass()]
+        ])->delete();
     }
 
     public function getImageUrlAttribute()
