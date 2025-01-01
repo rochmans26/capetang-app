@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="row g-5">
-                    @if ($cart)
+                    @if (session('data'))
                         <div class="col-md-5 col-lg-4 order-md-last">
                             <h4 class="d-flex justify-content-between align-items-center mb-3">
                                 <span class="text-primary">Your cart</span>
@@ -50,48 +50,49 @@
                             </h4>
                             <ul class="list-group mb-3">
                                 <!-- Item List -->
-                                @foreach ($cart->item as $item)
-                                    <li class="list-group-item">
-                                        <div class="d-flex align-items-center">
-                                            <!-- Item Image -->
-                                            <img src="{{ $item->image_url }}" alt="{{ $item->image_url }}" width="50"
-                                                height="50" class="me-2 rounded">
+                                <li class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        <!-- Item Image -->
+                                        <img src="{{ session('data.item.image_url') }}"
+                                            alt="{{ session('data.item.image_url') }}" width="50" height="50"
+                                            class="me-2 rounded">
 
-                                            <!-- Item Details -->
-                                            <div class="flex-grow-1">
-                                                <h6 class="m-0 fw-bold">{{ $item->nama_item }}</h6>
-                                                <p class="m-0 text-muted">Poin: {{ $item->point_item }}</p>
-                                            </div>
-
-                                            <!-- Quantity and Points -->
-                                            <div class="text-end">
-                                                <table border="0">
-                                                    <tr>
-                                                        <td>Jumlah Item:</td>
-                                                        <td>{{ $item->pivot->jumlah_item }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Jumlah Poin:</td>
-                                                        <td>
-                                                            &nbsp;
-                                                            {{ $item->point_item * $item->pivot->jumlah_item }}
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
+                                        <!-- Item Details -->
+                                        <div class="flex-grow-1">
+                                            <h6 class="m-0 fw-bold">{{ session('data.item.nama_item') }}</h6>
+                                            <p class="m-0 text-muted">Poin: {{ session('data.item.point_item') }}</p>
                                         </div>
-                                    </li>
-                                @endforeach
+
+                                        <!-- Quantity and Points -->
+                                        <div class="text-end">
+                                            <table border="0">
+                                                <tr>
+                                                    <td>Jumlah Item:</td>
+                                                    <td>{{ session('data.quantity') }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Jumlah Poin:</td>
+                                                    <td>
+                                                        &nbsp;
+                                                        {{ session('data.item.point_item') * session('data.quantity') }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </li>
                                 <!-- Total -->
                                 <li class="list-group-item d-flex justify-content-between text-bg-primary">
                                     <span>Total Poin</span>
-                                    <strong>{{ $cart->total_transaksi }} Poin</strong>
+                                    <strong>{{ session('data.total') }} Poin</strong>
                                 </li>
+
                             </ul>
                         </div>
                         <div class="col-md-7 col-lg-8">
                             <h4 class="mb-3">Data Penerima</h4>
-                            <form class="" novalidate action="{{ route('users.checkout-cart') }}" method="POST">
+                            <form class="" novalidate action="{{ route('users.direct-checkout-proses') }}"
+                                method="POST">
                                 @csrf
 
                                 <div class="row g-3">

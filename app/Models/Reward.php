@@ -73,6 +73,6 @@ class Reward extends Model
                 ->orWhereHas('transaksiTukarPoin', function ($query) {
                     $query->where('status_transaksi', 'success');
                 });
-        });
+        })->whereNotNull('point_reward');
     }
 }
