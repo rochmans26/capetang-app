@@ -34,8 +34,6 @@
                             <th scope="col">No.</th>
                             <th scope="col">Tanggal Transaksi</th>
                             <th scope="col">Point Tukar</th>
-                            <th scope="col">Nama Item</th>
-                            <th scope="col">Jumlah Item</th>
                             <th scope="col">Status Transaksi</th>
                             <th scope="col">Aksi</th>
                         </tr>
@@ -46,10 +44,6 @@
                                 <th scope="row">{{ $loop->iteration }}</th>
                                 <td>{{ $history->tgl_transaksi }}</td>
                                 <td>{{ $history->total_transaksi ?? '-' }}</td>
-                                @foreach ($history['item'] as $item)
-                                    <td>{{ $item->nama_item }}</td>
-                                    <td>{{ $item->pivot->jumlah_item }}</td>
-                                @endforeach
                                 <td>{{ $history->status_transaksi }}</td>
                                 <td>
                                     <a href="{{ route('users.detail-transaksi', $history->id) }}"

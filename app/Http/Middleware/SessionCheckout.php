@@ -51,7 +51,7 @@ class SessionCheckout
 
         // Cek apakah points users kurang dari total transaksi
         if ($request->user()->points < $data['total']) {
-            return redirect()->route('users.checkout')
+            return redirect()->route('users.view-checkout')
                 ->withErrors(['error' => 'Poin Anda tidak mencukupi untuk melakukan transaksi.']);
         }
 

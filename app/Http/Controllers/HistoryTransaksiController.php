@@ -27,7 +27,10 @@ class HistoryTransaksiController extends Controller
     {
         $user = request()->user();
         // Ambil riwayat setoran sampah dan urutkan berdasarkan data terbaru
-        $userHistory = $user->setorSampah()->latest('tgl_setor_sampah')->get();
+        $userHistory = $user->setorSampah()->whereNotNull('bukti_penyerahan')->latest('tgl_setor_sampah')->get();
+
+        // jika ingin menampilkan riwayat setoran sampah beserta yang belum diselesaikan
+        // $userHistory = $user->setorSampah()->latest('tgl_setor_sampah')->get();
 
         return view('users.riwayat_setor_sampah', compact('userHistory'));
     }

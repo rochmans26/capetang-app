@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserQuestRequest;
 use App\Models\Quest;
-use App\Models\User;
 use App\Models\UserQuest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -82,6 +81,7 @@ class GamifikasiController extends Controller
             $query->where('id_user', $user->id)->where('id_quest', $id);
         })->firstOrFail();
         $quest->bukti_penyerahan = $quest->pivot->bukti_penyerahan ?? "Belum upload bukti penyerahan";
+        $quest->point = $quest->getRewardPoint($user->id);
 
         return view('admin.transaksi.quest.show', compact('quest'));
     }

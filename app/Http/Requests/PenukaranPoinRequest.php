@@ -22,10 +22,11 @@ class PenukaranPoinRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'id_user' => ['required', 'exists:users,id'],
+            'id_user' => ['sometimes', 'exists:users,id'],
             'tgl_transaksi' => ['sometimes', 'date'],
             'total_trasaksi' => ['sometimes', 'integer', 'min:0'],
             'jumlah_item' => ['sometimes', 'integer', 'min:1'],
+            'tipe_pengambilan' => 'sometimes|in:1,2',
             'bukti_penyerahan' => [
                 'nullable',
                 'image',

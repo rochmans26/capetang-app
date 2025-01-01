@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CartEvent;
 use App\Http\Requests\PenukaranPoinRequest;
 use App\Models\Item;
 use App\Models\TransaksiTukarPoint;
@@ -36,7 +37,14 @@ class PenukaranPoinController extends Controller
 
     public function viewCheckout()
     {
-        return view('users.checkout');
+        return view('users.direct-checkout');
+    }
+
+    public function viewCheckoutCart(Request $request)
+    {
+        $cart = $request->user()->penukaranPoin()->where('status_transaksi', 'cart')->first();
+
+        return view('users.checkout', compact('cart'));
     }
 
     public function directCheckout(PenukaranPoinRequest $request)
@@ -74,11 +82,11 @@ class PenukaranPoinController extends Controller
             'expires_at' => $expiryTime,
         ]);
 
-        return redirect()->route('users.checkout')
+        return redirect()->route('users.view-checkout')
             ->with('success', 'Transaksi berhasil ditambahkan');
     }
 
-    public function prosesDirectCheckout(Request $request)
+    public function prosesDirectCheckout(PenukaranPoinRequest $request)
     {
         $cart = session('data');
         $user = $request->user();
@@ -94,6 +102,7 @@ class PenukaranPoinController extends Controller
                 'tgl_transaksi' => now(),
                 'total_transaksi' => $total,
                 'status_transaksi' => 'success',
+                'tipe_pengambilan' => $request->tipe_pengambilan,
             ]);
 
             // Buat detail transaksi penukaran poin
@@ -130,8 +139,6 @@ class PenukaranPoinController extends Controller
 
     public function showDetailTransaksi($id)
     {
-        $transaction = TransaksiTukarPoint::findOrFail($id);
-
         $transaction = TransaksiTukarPoint::with('detailTransaksi')
             ->where('id_user', auth()->user()->id)
             ->findOrFail($id);
@@ -151,7 +158,7 @@ class PenukaranPoinController extends Controller
                 ->withErrors(['error' => 'Keranjang kosong, silakan tambahkan item terlebih dahulu.']);
         }
 
-        return response()->json(['cart' => $transaksi]);
+        return response()->json(['cart' => $transaksi], 200);
     }
 
     public function addToCart(PenukaranPoinRequest $request)
@@ -178,11 +185,14 @@ class PenukaranPoinController extends Controller
         }
 
         // Tambahkan atau update jumlah item
+        $existingItem = $transaksi->item()->where('id_item', $item->id)->first();
+        $newQuantity = $existingItem
+            ? $existingItem->pivot->jumlah_item + $request->jumlah_item
+            : $request->jumlah_item;
+
         $transaksi->item()->syncWithoutDetaching([
             $item->id => [
-                'jumlah_item' => ($transaksi->item()->where('id_item', $item->id)->exists()
-                    ? $transaksi->item()->where('id_item', $item->id)->first()->pivot->jumlah_item + $request->jumlah_item
-                    : $request->jumlah_item),
+                'jumlah_item' => $newQuantity,
             ]
         ]);
 
@@ -202,7 +212,12 @@ class PenukaranPoinController extends Controller
         $user = $request->user();
 
         // Cari transaksi dengan status cart
-        $transaksi = TransaksiTukarPoint::with('item')->where('id_user', $user->id)->where('status_transaksi', 'cart')->first();
+        $transaksi = $user->penukaranPoin()
+            ->where([
+                'status_transaksi' => 'cart',
+                'id_user' => $user->id
+            ])
+            ->first();
 
         if (!$transaksi) {
             return redirect()->route('users.penukaran-poin')
@@ -221,16 +236,16 @@ class PenukaranPoinController extends Controller
         $transaksi->item()->detach($itemId);
 
         // Perbarui total transaksi
-        $transaksi->total_transaksi = $transaksi->item->sum(function ($item) {
-            return $item->pivot->jumlah_item * $item->point_item;
-        });
+        $jumlahItem = $item->pivot->jumlah_item;
+        $poinItem = $item->point_item;
+        $transaksi->total_transaksi -= $jumlahItem * $poinItem;
 
         // Jika keranjang kosong, hapus transaksi
         if ($transaksi->item->isEmpty()) {
             $transaksi->delete();
 
             return redirect()->route('users.penukaran-poin')
-                ->with('success', 'Keranjang kosong silahkan tambahkan item terlebih dahulu.');
+                ->with('success', 'Keranjang kosong. Transaksi berhasil dihapus.');
         }
 
         // Simpan perubahan transaksi
@@ -240,7 +255,7 @@ class PenukaranPoinController extends Controller
             ->with('success', 'Item berhasil dihapus dari keranjang.');
     }
 
-    public function checkoutCart(Request $request)
+    public function checkoutCart(PenukaranPoinRequest $request)
     {
         $user = $request->user();
 
@@ -252,13 +267,19 @@ class PenukaranPoinController extends Controller
                 ->withErrors(['error' => 'Keranjang kosong. Tidak ada transaksi untuk diproses.']);
         }
 
+        if ($user->points < $transaksi->total_transaksi) {
+            return redirect()->route('users.view-checkout-cart')
+                ->withErrors(['error' => 'Poin Anda tidak mencukupi untuk melakukan checkout.']);
+        }
+
         DB::beginTransaction();
 
         try {
             // Loop melalui item untuk mengurangi stok
             foreach ($transaksi->item as $item) {
                 if ($item->pivot->jumlah_item > $item->stok_item) {
-                    throw new \Exception('Stok untuk item ' . $item->nama_item . ' tidak mencukupi.');
+                    return redirect()->route('users.penukaran-poin')
+                        ->withErrors(['jumlah_item' => 'Stock item ' . $item->nama_item . ' tidak mencukupi.']);
                 }
 
                 // Kurangi stok item
@@ -266,12 +287,17 @@ class PenukaranPoinController extends Controller
             }
 
             // Perbarui status transaksi menjadi 'success'
-            $transaksi->update(['status_transaksi' => 'success']);
+            $transaksi->update([
+                'status_transaksi' => 'success',
+                'tgl_transaksi' => now(),
+                'tipe_pengambilan' => $request->tipe_pengambilan
+            ]);
+            $transaksi->pencatatanReward($transaksi);
 
             // Commit transaksi database
             DB::commit();
 
-            return redirect()->route('users.penukaran-poin')
+            return redirect()->route('users.detail-transaksi', $transaksi->id)
                 ->with('success', 'Checkout berhasil! Transaksi telah selesai diproses.');
         } catch (\Exception $e) {
             // Rollback transaksi database jika terjadi kesalahan

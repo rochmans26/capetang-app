@@ -20,6 +20,8 @@ class Item extends Model
         'foto_item',
     ];
 
+    public $appends = ['image_url'];
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'pivot_transaksi_tukar_poin_item', 'id_item', 'id_user')->withPivot('jumlah_item');

@@ -42,6 +42,11 @@ Route::middleware(['auth'])->group(function () {
         return view('landing_page');
     })->name('beranda');
 
+
+    Route::get('/test', function () {
+        return view('test');
+    })->name('test-page');
+
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('users-profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('users-profile.update');
@@ -80,7 +85,8 @@ Route::middleware(['auth'])->group(function () {
         // Tukar Poin
         Route::get('/riwayat-tukar-poin', [HistoryTransaksiController::class, 'riwayatTukarPoinUser'])->name('users.riwayat-tukar-poin');
         Route::get('/penukaran-poin', [PenukaranPoinController::class, 'index'])->name('users.penukaran-poin');
-        Route::get('/checkout', [PenukaranPoinController::class, 'viewCheckout'])->name('users.checkout');
+        Route::get('/checkout', [PenukaranPoinController::class, 'viewCheckout'])->name('users.view-checkout');
+        Route::get('/checkout-cart', [PenukaranPoinController::class, 'viewCheckoutCart'])->name('users.view-checkout-cart');
         Route::post('/checkout', [PenukaranPoinController::class, 'directCheckout'])->name('users.direct-checkout');
         Route::post('/checkout-cart', [PenukaranPoinController::class, 'checkoutCart'])->name('users.checkout-cart');
         Route::post('/proses-checkout', [PenukaranPoinController::class, 'prosesDirectCheckout'])->name('users.direct-checkout-proses')->middleware('checkout.session');

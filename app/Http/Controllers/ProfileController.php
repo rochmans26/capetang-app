@@ -37,9 +37,9 @@ class ProfileController extends Controller
 
         if ($request->hasFile('foto')) {
             // Hapus foto lama jika ada
-            $user->deleteFoto($user->foto ?? null);
+            $user->deleteImage($user->foto ?? null);
             // Simpan foto baru
-            $user->foto = $user->uploadFoto($request->file('foto'));
+            $user->foto = $user->uploadImage($request->file('foto'));
         }
 
         if ($user->isDirty('email')) {
