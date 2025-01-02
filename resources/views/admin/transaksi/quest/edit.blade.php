@@ -43,11 +43,6 @@
                                 accept="image/jpg,image/jpeg,image/png" class="form-control"
                                 value="{{ $quest->bukti_penyerahan }}">
                         </div>
-                        @error('bukti_penyerahan')
-                            <script>
-                                alert('{{ $message }}');
-                            </script>
-                        @enderror
 
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>

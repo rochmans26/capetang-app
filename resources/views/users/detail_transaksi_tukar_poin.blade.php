@@ -82,8 +82,13 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <small class="text-muted">Bukti Penyerahan:</small>
-                    <h3 class="text-body-emphasis">Belum ada bukti penyerahan</h3>
+                    <small class="text-muted">Bukti Penyerahan:</small><br>
+                    @if ($transaction->bukti_penyerahan)
+                        <img src="{{ $transaction->image_url }}" alt="{{ $transaction->image_url }}"
+                            class="img-fluid rounded mt-2" width="350" height="350">
+                    @else
+                        <h3 class="text-body-emphasis">Belum ada bukti penyerahan</h3>
+                    @endif
                 </div>
             </div>
         </div>

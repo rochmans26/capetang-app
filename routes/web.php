@@ -25,11 +25,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/user-trans-detail', function () {
-    return view('users.detail_transaksi_tukar_poin');
-})->name('user-trans-detail');
-
-
 Route::get('/', function () {
     return view('landing_page');
 })->name('landing-page');
@@ -42,11 +37,6 @@ Route::middleware(['auth'])->group(function () {
         return view('landing_page');
     })->name('beranda');
 
-
-    Route::get('/test', function () {
-        return view('test');
-    })->name('test-page');
-
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('users-profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('users-profile.update');
@@ -56,12 +46,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/reward-quest', [GamifikasiController::class, 'penerimaReward'])->name('admin.reward-quest');
         Route::put('/kirim-reward-quest/{userId}/{questId}', [GamifikasiController::class, 'updateStatus'])->name('admin.kirim-reward-quest');
         Route::resource('/penyetoran-sampah', SetorSampahController::class);
-        // Merge resource yang sudah implementasi ke view bootstrap
         Route::resource('/kategori-sampah', KategoriSampahController::class);
         Route::resource('/item', ItemController::class);
         Route::resource('/quest', QuestController::class);
         Route::resource('/role', RoleController::class);
         Route::resource('/kelola-pengguna', UserController::class);
+        Route::get('/riwayat-penukaran-poin', [HistoryTransaksiController::class, 'riwayatTukarPoinAdmin'])->name('admin.riwayat-tukar-poin');
+        Route::get('/update-transaksi/{id}', [PenukaranPoinController::class, 'viewUploadBuktiPenyerahan'])->name('admin.view-update-transaksi');
+        Route::put('/update-transaksi/{id}', [PenukaranPoinController::class, 'uploadBuktiPenyerahan'])->name('admin.update-transaksi');
     });
 
     // Users
