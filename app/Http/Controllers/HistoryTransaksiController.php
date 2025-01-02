@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TransaksiTukarPoint;
 use Illuminate\Http\Request;
 
 class HistoryTransaksiController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:lihat-riwayat-transaksi')->only(['riwayatRewardUser', 'riwayatSetorSampahUser', 'riwayatTukarPoinUser']);
+        $this->middleware('permission:lihat-riwayat-transaksi');
     }
 
     public function riwayatRewardUser()
@@ -41,6 +42,23 @@ class HistoryTransaksiController extends Controller
         // Ambil riwayat tukar poin dan urutkan berdasarkan data terbaru
         $userHistory = $user->penukaranPoin()->with('item')->where('status_transaksi', 'success')->latest('created_at')->get();
 
-        return view('users.riwayat_tukar_poin', compact('userHistory'));
+        return !$user->hasRole('admin') ?
+            view('users.riwayat_tukar_poin', compact('userHistory')) :
+            redirect()->route('admin.riwayat-tukar-poin');
+    }
+
+    /*
+    * Halaman riwayat tukar poin untuk role admin
+    */
+    public function riwayatTukarPoinAdmin()
+    {
+        $user = request()->user();
+        $userHistory = TransaksiTukarPoint::with('item', 'detailTransaksi')
+            ->where('status_transaksi', 'success')
+            ->get();
+
+        return $user->hasRole('admin') ?
+            view('admin.riwayat_tukar_poin', compact('userHistory')) :
+            redirect()->route('users.riwayat-tukar-poin');
     }
 }

@@ -137,6 +137,12 @@
                     <span>Kelola Role</span>
                 </a>
             </li>
+            <li class="sidebar-item">
+                <a href="{{ route('admin.riwayat-tukar-poin') }}" class="sidebar-link">
+                    <i class="bi bi-list-task"></i>
+                    <span>Riwayat Penukaran Point</span>
+                </a>
+            </li>
         @endrole
 
         <li class="sidebar-item">

@@ -39,9 +39,6 @@
                             <input type="text" class="form-control" id="name" name="name" placeholder="Nama Role"
                                 required>
                             <label for="name">Nama Role</label>
-                            @error('name')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
                         </div>
 
                         <!-- Input Deskripsi -->
@@ -49,9 +46,6 @@
                             <textarea class="form-control" placeholder="Deskripsi Role ..." id="description" name="description"
                                 style="height: 120px"></textarea>
                             <label for="description">Deskripsi</label>
-                            @error('description')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
                         </div>
 
                         <!-- Checkbox Permissions -->
@@ -70,9 +64,6 @@
                                     </div>
                                 @endforeach
                             </div>
-                            @error('permission')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
                         </div>
 
                         <!-- Tombol Submit -->

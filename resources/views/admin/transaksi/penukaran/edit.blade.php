@@ -17,7 +17,7 @@
             <div class="title d-flex justify-content-between align-items-center mt-3">
                 <h1 class="d-flex align-items-center mt-3">
                     <i class="bi bi-bookmark-star-fill fs-1 me-2 text-success"></i>
-                    Tambah Data Quest
+                    Upload Bukti Penyerahan
                 </h1>
                 <div class="d-flex align-items-center justify-content-end gap-3">
                     <!-- Tombol Kembali -->
@@ -27,46 +27,27 @@
                         Back
                     </a>
                 </div>
-
             </div>
             <hr>
+
             <div class="row justify-content-center">
                 <div class="col-md-10 mb-3">
-                    <form action="{{ route('quest.store') }}" method="post">
+                    <form action="{{ route('admin.update-transaksi', $transaksi->id) }}" method="post"
+                        enctype="multipart/form-data">
                         @csrf
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="nama_quest" name="nama_quest"
-                                placeholder="Nama Quest">
-                            <label for="nama_quest">Nama Quest</label>
-                        </div>
+                        @method('put')
 
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" placeholder="Deskripsi quest ..." id="deskripsi" name="deskripsi" style="height: 100px"></textarea>
-                            <label for="deskripsi">Deskripsi</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input type="datetime-local" class="form-control" id="waktu_mulai" name="waktu_mulai">
-                            <label for="waktu_mulai">Waktu Mulai</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input type="datetime-local" class="form-control" id="waktu_berakhir" name="waktu_berakhir">
-                            <label for="waktu_berakhir">Waktu Berakhir</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="point" name="point"
-                                placeholder="Point Item">
-                            <label for="point">Poin Quest</label>
+                        <div class="mb-3">
+                            <label for="bukti_penyerahan"><small class="text-muted">Bukti Penyerahan</small></label>
+                            <input type="file" id="bukti_penyerahan" name="bukti_penyerahan"
+                                accept="image/jpg,image/jpeg,image/png" class="form-control"
+                                value="{{ $transaksi->bukti_penyerahan }}">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>
 @endsection

@@ -24,6 +24,7 @@ class PenukaranPoinController extends Controller
     public function __construct()
     {
         $this->middleware('permission:lihat-penukaran-poin');
+        $this->middleware('role:admin')->only(['uploadBuktiPenyerahan', 'viewUploadBuktiPenyerahan']);
     }
 
     public function index()
@@ -306,5 +307,50 @@ class PenukaranPoinController extends Controller
             return redirect()->route('users.penukaran-poin')
                 ->withErrors(['error' => 'Gagal melakukan checkout: ' . $e->getMessage()]);
         }
+    }
+
+    /*
+    * Admin upload file
+    */
+
+    public function viewUploadBuktiPenyerahan($id)
+    {
+        $transaksi = TransaksiTukarPoint::findOrFail($id);
+
+        return view('admin.transaksi.penukaran.edit', compact('transaksi'));
+    }
+
+    public function uploadBuktiPenyerahan(Request $request, $id)
+    {
+        $request->validate([
+            'bukti_penyerahan' => [
+                'nullable',
+                'image',
+                'mimes:png,jpg,jpeg',
+                'max:10240',
+                'dimensions:min_width=100,min_height=100,max_width=2000,max_height=2000', // minimal 100x100, maksimal 2000x2000
+            ],
+        ]);
+
+        $file = $request->file('bukti_penyerahan');
+
+        $transaksi = TransaksiTukarPoint::findOrFail($id);
+
+        if ($request->hasFile('bukti_penyerahan')) {
+            DB::transaction(function () use ($transaksi, $file) {
+                $transaksi->deleteImage($file ?? null);
+                $buktiPenyerahan = $transaksi->uploadImage($file);
+
+                // Perbarui bukti penyerahan
+                $transaksi->update([
+                    'bukti_penyerahan' => $buktiPenyerahan,
+                ]);
+            });
+
+            return redirect()->route('admin.riwayat-tukar-poin')
+                ->with('success', 'Bukti penyerahan berhasil diupload');
+        }
+
+        return redirect()->route('admin.riwayat-tukar-poin');
     }
 }
