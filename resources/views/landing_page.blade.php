@@ -458,9 +458,9 @@
             </div>
 
             <hr class="featurette-divider">
-            <div class="row" id="about">
-                <h1 class="text text-center mb-3">About</h1>
+            <div class="row p-4 rounded justify-content-center" id="about">
                 <div class="col-lg">
+                    <h1 class="text text-center mb-3  mt-5">About</h1>
                     <p class="text text-center">
                         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure consequuntur deserunt porro
                         cupiditate sunt, hic voluptatibus voluptas omnis assumenda cum mollitia nostrum repellat

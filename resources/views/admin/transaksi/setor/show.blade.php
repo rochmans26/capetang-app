@@ -37,7 +37,7 @@
                         <div class="d-flex align-items-center justify-content-between p-2">
                             <div class="row align-items-center">
                                 <div class="col-md-6">
-                                    <img src="{{ asset('img/sample-item-card.jpg') }}" alt="Sample Item"
+                                    <img src="{{ $setorSampah->image_url }}" alt="Sample Item"
                                         class="img-fluid me-1 rounded" width="auto">
                                 </div>
                                 <div class="col-md-6">
