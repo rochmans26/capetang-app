@@ -24,7 +24,7 @@ class QuestFactory extends Factory
             'deskripsi' => fake()->sentence(rand(6, 20)),
             'waktu_mulai' => $waktuMulai,
             'waktu_berakhir' => $waktuBerakhir,
-            'point' => fake()->randomNumber(rand(2, 3)),
+            'point' => fake()->numberBetween(100, 10000),
         ];
     }
 }

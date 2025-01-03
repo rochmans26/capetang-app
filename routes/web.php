@@ -25,11 +25,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/user-trans-detail', function () {
-    return view('users.detail_transaksi_tukar_poin');
-})->name('user-trans-detail');
-
-
 Route::get('/', function () {
     return view('landing_page');
 })->name('landing-page');
@@ -51,12 +46,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/reward-quest', [GamifikasiController::class, 'penerimaReward'])->name('admin.reward-quest');
         Route::put('/kirim-reward-quest/{userId}/{questId}', [GamifikasiController::class, 'updateStatus'])->name('admin.kirim-reward-quest');
         Route::resource('/penyetoran-sampah', SetorSampahController::class);
-        // Merge resource yang sudah implementasi ke view bootstrap
         Route::resource('/kategori-sampah', KategoriSampahController::class);
         Route::resource('/item', ItemController::class);
         Route::resource('/quest', QuestController::class);
         Route::resource('/role', RoleController::class);
         Route::resource('/kelola-pengguna', UserController::class);
+        Route::get('/riwayat-penukaran-poin', [HistoryTransaksiController::class, 'riwayatTukarPoinAdmin'])->name('admin.riwayat-tukar-poin');
+        Route::get('/update-transaksi/{id}', [PenukaranPoinController::class, 'viewUploadBuktiPenyerahan'])->name('admin.view-update-transaksi');
+        Route::put('/update-transaksi/{id}', [PenukaranPoinController::class, 'uploadBuktiPenyerahan'])->name('admin.update-transaksi');
     });
 
     // Users
@@ -80,11 +77,15 @@ Route::middleware(['auth'])->group(function () {
         // Tukar Poin
         Route::get('/riwayat-tukar-poin', [HistoryTransaksiController::class, 'riwayatTukarPoinUser'])->name('users.riwayat-tukar-poin');
         Route::get('/penukaran-poin', [PenukaranPoinController::class, 'index'])->name('users.penukaran-poin');
-        Route::get('/checkout', [PenukaranPoinController::class, 'create'])->name('users.checkout')->middleware('checkout.session');
-        Route::post('/checkout', [PenukaranPoinController::class, 'store'])->name('users.checkout-store');
-        Route::post('/proses-checkout', [PenukaranPoinController::class, 'prosesCheckout'])->name('users.checkout-proses')->middleware('checkout.session');
-        Route::get('/cart', [PenukaranPoinController::class, 'cartUser'])->name('users.cart');
-        Route::get('/detail-penukaran-poin/{id}', [PenukaranPoinController::class, 'show'])->name('users.detail-penukaran-poin');
+        Route::get('/checkout', [PenukaranPoinController::class, 'viewCheckout'])->name('users.view-checkout');
+        Route::get('/checkout-cart', [PenukaranPoinController::class, 'viewCheckoutCart'])->name('users.view-checkout-cart');
+        Route::post('/checkout', [PenukaranPoinController::class, 'directCheckout'])->name('users.direct-checkout');
+        Route::post('/checkout-cart', [PenukaranPoinController::class, 'checkoutCart'])->name('users.checkout-cart');
+        Route::post('/proses-checkout', [PenukaranPoinController::class, 'prosesDirectCheckout'])->name('users.direct-checkout-proses')->middleware('checkout.session');
+        Route::post('/add-to-cart', [PenukaranPoinController::class, 'addToCart'])->name('users.add-to-cart');
+        Route::get('/cart', [PenukaranPoinController::class, 'viewCart'])->name('users.cart');
+        Route::delete('/remove-from-cart/{id}', [PenukaranPoinController::class, 'removeFromCart'])->name('users.remove-from-cart');
+        Route::get('/detail-transaksi/{id}', [PenukaranPoinController::class, 'showDetailTransaksi'])->name('users.detail-transaksi');
     });
 });
 

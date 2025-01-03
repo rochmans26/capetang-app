@@ -41,7 +41,7 @@ class RegisteredUserController extends Controller
 
         // Upload foto
         if ($request->hasFile('foto')) {
-            $user->foto = $user->uploadFoto($request->file('foto'));
+            $user->foto = $user->uploadImage($request->file('foto'));
             $user->save();
         }
 

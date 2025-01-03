@@ -32,6 +32,7 @@
                     <thead>
                         <tr>
                             <th scope="col">No.</th>
+                            <th scope="col">Nama User</th>
                             <th scope="col">Tanggal Transaksi</th>
                             <th scope="col">Point Tukar</th>
                             <th scope="col">Status Transaksi</th>
@@ -42,15 +43,16 @@
                         @foreach ($userHistory as $history)
                             <tr>
                                 <th scope="row">{{ $loop->iteration }}</th>
+                                <td>{{ $history->user->name }}</td>
                                 <td>{{ $history->tgl_transaksi }}</td>
                                 <td>{{ $history->total_transaksi ?? '-' }}</td>
                                 <td>{{ $history->status_transaksi }}</td>
                                 <td>
-                                    <a href="{{ route('users.detail-transaksi', $history->id) }}"
-                                        class="btn btn-primary d-inline-flex align-items-center" role="button"
-                                        title="Detail Transaksi" aria-label="Detail">
-                                        <i class="bi bi-info-circle me-2"></i>
-                                        Detail
+                                    <a href="{{ route('admin.update-transaksi', $history->id) }}"
+                                        class="btn btn-warning d-inline-flex align-items-center" role="button"
+                                        title="Update Transaksi" aria-label="Update">
+                                        <i class="bi bi-pencil-square me-2')}}"></i>
+                                        Upload Bukti Penyerahan
                                     </a>
                                 </td>
                             </tr>

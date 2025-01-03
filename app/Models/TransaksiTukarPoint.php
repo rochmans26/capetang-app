@@ -31,6 +31,11 @@ class TransaksiTukarPoint extends Model
         return $this->hasMany(DetailPenukaranPoin::class, 'id_transaksi', 'id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
+
     public function pencatatanReward($tukarPoin)
     {
         Reward::create([
@@ -44,21 +49,22 @@ class TransaksiTukarPoint extends Model
 
     public function updatePencatatanReward($tukarPoin)
     {
-        Reward::where('id_transaksi', $tukarPoin->id)
+        Reward::where([
+            ['id_transaksi', '=', $tukarPoin->id],
+            ['tipe_transaksi', '=', $tukarPoin->getMorphClass()]
+        ])
             ->update([
                 'id_user' => $tukarPoin->id_user,
-                'point_reward' => $tukarPoin->point,
+                'point_reward' => -$tukarPoin->total_transaksi,
             ]);
     }
 
     public function deletePencatatanReward($tukarPoin)
     {
-        Reward::where('id_transaksi', $tukarPoin->id)->delete();
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'id_user', 'id');
+        Reward::where([
+            ['id_transaksi', '=', $tukarPoin->id],
+            ['tipe_transaksi', '=', $tukarPoin->getMorphClass()]
+        ])->delete();
     }
 
     public function getImageUrlAttribute()

@@ -35,7 +35,7 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <small class="text-muted">Kode Transaksi:</small>
-                        <h3 class="text-body-emphasis">TRX-12345</h3>
+                        <h3 class="text-body-emphasis">TRX-{{ $transaction->id }}</h3>
                         <small class="text-muted">Nama Penerima:</small>
                         <h3 class="text-body-emphasis">{{ $transaction->user->name }}</h3>
                     </div>
@@ -65,8 +65,8 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <!-- Item Image -->
-                                            <img src="{{ asset('img/sample-item-card.jpg') }}" alt="Sample Item"
-                                                width="50" height="50" class="me-2 rounded">
+                                            <img src="{{ $item->image_url }}" alt="{{ $item->image_url }}" width="50"
+                                                height="50" class="me-2 rounded">
                                             <!-- Item Details -->
                                             <div class="flex-grow-1">
                                                 <a href="#">
@@ -82,8 +82,13 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <small class="text-muted">Bukti Penyerahan:</small>
-                    <h3 class="text-body-emphasis">Belum ada bukti penyerahan</h3>
+                    <small class="text-muted">Bukti Penyerahan:</small><br>
+                    @if ($transaction->bukti_penyerahan)
+                        <img src="{{ $transaction->image_url }}" alt="{{ $transaction->image_url }}"
+                            class="img-fluid rounded mt-2" width="350" height="350">
+                    @else
+                        <h3 class="text-body-emphasis">Belum ada bukti penyerahan</h3>
+                    @endif
                 </div>
             </div>
         </div>

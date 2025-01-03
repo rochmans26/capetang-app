@@ -71,6 +71,15 @@ class Quest extends Model
         return $this->users()->where('id_user', $userId)->exists();
     }
 
+    public function getRewardPoint($userId)
+    {
+        return Reward::where('id_user', $userId)
+            ->where('tipe_transaksi', $this->getMorphClass())
+            ->where('id_transaksi', $this->id)
+            ->pluck('point_reward')
+            ->first() ?? $this->point;
+    }
+
     public function getStatusAttribute()
     {
         return $this->berlangsung() ? 'Berlangsung' : 'Kadaluarsa';
