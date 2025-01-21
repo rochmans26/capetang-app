@@ -8,8 +8,14 @@
     @vite(['resources/js/app.js'])
     <script src="{{ asset('js/color-modes.js') }}"></script>
     <link href="{{ asset('css/carousel.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <title>Capetang App</title>
     <style>
+        #map {
+            height: 500px;
+        }
+
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -85,6 +91,14 @@
 
         .bd-mode-toggle .dropdown-menu .active .bi {
             display: block !important;
+        }
+
+        .jumbotron-bg {
+            background-image: url('{{ asset('img/carousel-example.png') }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* height: 468px; */
         }
 
         .carousel-item {
@@ -231,6 +245,9 @@
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="#howTo">Cara Kerja</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="#about">About</a>
                         </li>
                         <li class="nav-item">
@@ -287,8 +304,22 @@
     </header>
 
     <main>
+        <!-- Jumbotron -->
+        <div class="container mt-4">
+            <div class="p-5 mb-4 rounded-3 jumbotron-bg shadow-sm">
+                <div class="container-fluid py-5 text-white">
+                    <h1 class="display-5 fw-bold">Selamat Datang,</h1>
+                    <h1>Di Bank Sampah Capetang!</h1>
+                    <p class="col-md-8 fs-4">Peduli Sampah, Peduli Masa Depan!</p>
+                    @if (Route::has('register'))
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#register-form"
+                            data-bs-dismiss="modal">Daftar Sekarang</button>
+                    @endif
+                </div>
+            </div>
+        </div>
 
-        <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+        {{-- <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"
                     aria-current="true" aria-label="Slide 1"></button>
@@ -299,10 +330,10 @@
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    {{-- <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
                         <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
-                    </svg> --}}
+                    </svg>
                     <div class="container">
                         <div class="carousel-caption text-start text-white">
                             <h1 style="font-size: 45pt" class="fw-bold">Selamat Datang,</h1>
@@ -347,7 +378,7 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
-        </div>
+        </div> --}}
 
 
         <!-- Marketing messaging and featurettes
@@ -358,39 +389,53 @@
 
             <!-- Three columns of text below the carousel -->
             <div class="row">
-                <div class="col-lg-4">
-                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
-                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder"
-                        preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="var(--bs-success)" />
-                    </svg>
+                <div class="col-lg-4 d-flex flex-column align-items-center">
+                    <div class="position-relative" style="width: 140px; height: 140px;">
+                        <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="var(--bs-warning)" />
+                        </svg>
+                        <i class="bi bi-bookmark-star-fill position-absolute text-white"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 50px;"></i>
+                    </div>
                     <h2 class="fw-normal">Quest</h2>
                     <p>Setor sampah dan ikuti quest yang disediakan oleh Bank Sampah Capetang.</p>
                     <p><a class="btn btn-success" href="#">View details &raquo;</a></p>
-                </div><!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
-                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder"
-                        preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="var(--bs-success)" />
-                    </svg>
+                </div>
+                <div class="col-lg-4 d-flex flex-column align-items-center">
+                    <div class="position-relative d-flex justify-content-center align-items-center"
+                        style="width: 140px; height: 140px;">
+                        <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="var(--bs-warning)" />
+                        </svg>
+                        <i class="bi bi-coin position-absolute text-white"
+                            style="font-size: 60px; line-height: 1;"></i>
+                    </div>
                     <h2 class="fw-normal">Point</h2>
                     <p>Dapatkan point sebanyak-banyaknya dengan mengikuti quest yang disediakan.</p>
                     <p><a class="btn btn-success" href="#">View details &raquo;</a></p>
-                </div><!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
-                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder"
-                        preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="var(--bs-success)" />
-                    </svg>
+                </div>
+
+                <div class="col-lg-4 d-flex flex-column align-items-center">
+                    <div class="position-relative" style="width: 140px; height: 140px;">
+                        <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="var(--bs-warning)" />
+                        </svg>
+                        <i class="bi bi-arrow-left-right position-absolute text-white"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 50px;"></i>
+                    </div>
                     <h2 class="fw-normal">Exchange</h2>
                     <p>Tukar point dan dapatkan item yang kalian inginkan di Capetang App.</p>
                     <p><a class="btn btn-success" href="#">View details &raquo;</a></p>
-                </div><!-- /.col-lg-4 -->
+                </div>
             </div><!-- /.row -->
 
 
@@ -398,21 +443,17 @@
 
             <hr class="featurette-divider">
 
-            <div class="row featurette">
+            <div class="row featurette" id="howTo">
                 <div class="col-md-7">
-                    <h2 class="featurette-heading fw-normal lh-1">First featurette heading. <span
-                            class="text-body-secondary">It’ll blow your mind.</span></h2>
-                    <p class="lead">Some great placeholder content for the first featurette here. Imagine some
-                        exciting prose here.</p>
+                    <h2 class="featurette-heading fw-normal lh-1">Ayo Gabung, <span
+                            class="text-body-secondary">Dapatkan Poinnya!</span></h2>
+                    <p class="lead">Silahkan daftarkan data diri Anda di web aplikasi Capetang ini dengan klik tombol
+                        "Daftar Sekarang" atau <a href="#" data-bs-toggle="modal"
+                            data-bs-target="#register-form" data-bs-dismiss="modal">klik disini</a></p>
                 </div>
                 <div class="col-md-5">
-                    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
-                        width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img"
-                        aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="var(--bs-success)" /><text x="50%" y="50%"
-                            fill="var(--bs-secondary-color)" dy=".3em">500x500</text>
-                    </svg>
+                    <img src="{{ asset('img/square-join.jpg') }}" alt="" srcset="" width="500"
+                        height="500">
                 </div>
             </div>
 
@@ -420,19 +461,13 @@
 
             <div class="row featurette">
                 <div class="col-md-7 order-md-2">
-                    <h2 class="featurette-heading fw-normal lh-1">Oh yeah, it’s that good. <span
-                            class="text-body-secondary">See for yourself.</span></h2>
-                    <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea
-                        of how this layout would work with some actual real-world content in place.</p>
+                    <h2 class="featurette-heading fw-normal lh-1">Tukar Poin. <span class="text-body-secondary">Dan
+                            Dapatkan Hadiahnya!</span></h2>
+                    <p class="lead">Anda dapat menukar poin yang Anda kumpulkan dengan item yang tersedia.</p>
                 </div>
                 <div class="col-md-5 order-md-1">
-                    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
-                        width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img"
-                        aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="var(--bs-success)" /><text x="50%" y="50%"
-                            fill="var(--bs-secondary-color)" dy=".3em">500x500</text>
-                    </svg>
+                    <img src="{{ asset('img/square-gift.jpg') }}" alt="" srcset="" width="500"
+                        height="500">
                 </div>
             </div>
 
@@ -440,20 +475,23 @@
 
             <div class="row featurette">
                 <div class="col-md-7">
-                    <h2 class="featurette-heading fw-normal lh-1">And lastly, this one. <span
-                            class="text-body-secondary">Checkmate.</span></h2>
-                    <p class="lead">And yes, this is the last block of representative placeholder content. Again, not
-                        really intended to be actually read, simply here to give you a better view of what this would
-                        look like with some actual content. Your content.</p>
+                    <h2 class="featurette-heading fw-normal lh-1">Dan terakhir. Gimana sih, caranya? <span
+                            class="text-body-secondary">Gampang Banget.</span></h2>
+                    <p class="lead">Gini nih, caranya ...
+                    <ol>
+                        <li>Daftar di web aplikasi Capetang ini.</li>
+                        <li>Login akun Anda.</li>
+                        <li>Kumpulkan sampah terpilah di rumah.</li>
+                        <li>Setor sampah ke Bank Unit wilayah Anda.</li>
+                        <li>Dapatkan poin Anda.</li>
+                        <li>Tukar poin dengan hadiah yang menarik.</li>
+                        <li>Terakhir, jangan lupa ikuti Quest, untuk mengumpulkan lebih banyak Poin!</li>
+                    </ol>
+                    </p>
                 </div>
                 <div class="col-md-5">
-                    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
-                        width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img"
-                        aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="var(--bs-success)" /><text x="50%" y="50%"
-                            fill="var(--bs-secondary-color)" dy=".3em">500x500</text>
-                    </svg>
+                    <img src="{{ asset('img/square-howto.jpg') }}" alt="" srcset="" width="500"
+                        height="500">
                 </div>
             </div>
 
@@ -469,17 +507,11 @@
                         amet molestiae odio, maiores quisquam quibusdam ipsa ex esse deleniti sit quidem dolorum
                         perspiciatis, repudiandae enim sequi nihil rerum laborum ut. Dolor culpa dolore quos ipsa
                         aperiam itaque at unde nihil id numquam! Maiores laboriosam mollitia, natus doloremque, vel
-                        explicabo labore excepturi neque in nesciunt quos ad alias distinctio aperiam. Sed corporis
-                        earum dicta deserunt autem commodi in expedita ullam tenetur veniam aperiam deleniti consequatur
-                        officia voluptatibus, amet impedit labore obcaecati repellendus corrupti possimus tempora aut
-                        illo. Quaerat maiores aperiam quos porro totam pariatur! Ad facilis quo repellendus? Eligendi
-                        eaque repellendus ex tempore dolorum corrupti qui nam obcaecati iste. Odit mollitia aliquid in
-                        necessitatibus vel. Architecto repellendus nihil aliquid eos hic ducimus quibusdam illum nostrum
-                        excepturi, tempora numquam ut odio nam totam, amet repellat beatae exercitationem labore
-                        obcaecati recusandae reprehenderit asperiores culpa? Facilis praesentium debitis dolorum
-                        repellendus iste natus aperiam consequatur quod officia inventore. Sapiente exercitationem
-                        aperiam perferendis numquam quis itaque!
+                        explicabo labore excepturi neque in nesciunt quos ad alias distinctio aperiam.
                     </p>
+                    <div class="container">
+                        <div id="map"></div>
+                    </div>
                 </div>
             </div>
             <hr class="featurette-divider">
@@ -532,10 +564,9 @@
                         <form method="POST" action="{{ route('login') }}" class="text-center w-100"
                             style="max-width: auto;">
                             @csrf
-
                             <!-- Logo -->
-                            <img class="mb-4 mx-auto d-block" src="{{ asset('img/bootstrap-logo.svg') }}"
-                                alt="Logo" width="72" height="57">
+                            <img class="mb-4 mx-auto d-block" src="{{ asset('img/logo.png') }}" alt="Logo"
+                                width="100">
                             <!-- Judul -->
                             <h1 class="h3 mb-3 fw-normal">Silahkan Log In</h1>
 
@@ -588,7 +619,11 @@
                     <!-- Form Start -->
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-
+                        <!-- Logo -->
+                        <img class="mb-4 mx-auto d-block" src="{{ asset('img/logo.png') }}" alt="Logo"
+                            width="100">
+                        <!-- Judul -->
+                        <h1 class="h3 mb-3 fw-normal text-center">Silahkan Daftarkan Diri Anda!</h1>
                         <!-- Full Name -->
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="fullName" placeholder="Full Name"
@@ -660,6 +695,17 @@
                 setTimeout(() => alert.remove(), 500);
             }
         }, 2000);
+    </script>
+    <script>
+        var map = L.map('map').setView([-6.943264, 107.652910], 50); // Koordinat Jakarta
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        L.marker([-6.943264, 107.652910]).addTo(map)
+            .bindPopup('Bandung, Indonesia')
+            .openPopup();
     </script>
 </body>
 
