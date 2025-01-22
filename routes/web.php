@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GamifikasiController;
 use App\Http\Controllers\HistoryTransaksiController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\QuestController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SetorSampahController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin
     Route::prefix('admin')->middleware(['verified'])->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard')->middleware('role:admin');
         Route::get('/reward-quest', [GamifikasiController::class, 'penerimaReward'])->name('admin.reward-quest');
         Route::put('/kirim-reward-quest/{userId}/{questId}', [GamifikasiController::class, 'updateStatus'])->name('admin.kirim-reward-quest');
         Route::resource('/penyetoran-sampah', SetorSampahController::class);
@@ -58,7 +59,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Users
     Route::prefix('users')->middleware(['verified'])->group(function () {
-        Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('users.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'userDashboard'])->name('users.dashboard')->middleware('role:user');
         Route::get('/kategori-sampah', [KategoriSampahController::class, 'indexForUser'])->name('users.kategori-sampah');
         Route::get('/kategori-sampah/{id}', [KategoriSampahController::class, 'showForUser'])->name('users.detail-kategori-sampah');
         // Gamifikasi
