@@ -35,8 +35,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleAndPermissionSeeder::class,
         ]);
-
-        KategoriSampah::factory(10)->create();
+        KategoriSampah::factory()->createMany([
+            ['nama_kategori' => 'Sampah Kertas'],
+            ['nama_kategori' => 'Sampah Kaleng'],
+            ['nama_kategori' => 'Sampah Plastik'],
+            ['nama_kategori' => 'Sampah Kaca'],
+        ]);
 
         Quest::factory(10)->create();
 
