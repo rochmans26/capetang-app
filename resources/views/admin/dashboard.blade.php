@@ -96,38 +96,16 @@
                 <h5 class="card-title"><span><i class="bi bi-bookmark-star-fill text-success"></i></span> Info Setor Sampah
                 </h5>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <div class="card text-bg-light">
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Sampah Kertas</h5>
-                                <h1 class="text text-center">100 Kg</h1>
+                    @foreach ($beratPerKategori as $key => $berat)
+                        <div class="col-sm-3">
+                            <div class="card text-bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">{{ $key }}</h5>
+                                    <h1 class="text text-center">{{ $berat }}</h1>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card text-bg-light">
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Sampah Kaleng</h5>
-                                <h1 class="text text-center">500 Kg</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card text-bg-light">
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Sampah Kaca</h5>
-                                <h1 class="text text-center">300 Kg</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="card text-bg-light">
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Sampah Plastik</h5>
-                                <h1 class="text text-center">100 Kg</h1>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
