@@ -268,9 +268,9 @@
                                         class="rounded-circle me-2" width="28" height="28">
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="#">Profil</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('users-profile') }}">Profil</a></li>
                                     @if (Auth::user()->hasRole('admin'))
-                                        <li><a class="dropdown-item" href="{{ route('users.dashboard') }}">Pusat
+                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Pusat
                                                 Kelola</a></li>
                                     @else
                                         <li><a class="dropdown-item" href="{{ route('users.dashboard') }}">Pusat
