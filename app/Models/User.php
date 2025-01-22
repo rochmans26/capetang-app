@@ -127,4 +127,21 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return Storage::exists('public/uploads/users/' . $fileName) && Storage::delete('public/uploads/users/' . $fileName);
     }
+
+    public function scopeTopUsers($query)
+    {
+        return $query->whereHas('roles', function ($query) {
+            $query->where('name', 'user');
+        })
+            ->withSum('reward', 'point_reward')
+            ->orderBy('reward_sum_point_reward', 'desc')
+            ->limit(3)
+            ->get()
+            ->map(function ($user) {
+                return [
+                    'name' => $user->name,
+                    'point' => $user->reward_sum_point_reward ?? 0,
+                ];
+            })->toArray();
+    }
 }
