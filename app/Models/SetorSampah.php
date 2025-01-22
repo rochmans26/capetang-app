@@ -93,4 +93,34 @@ class SetorSampah extends Model
     {
         return Storage::exists('public/uploads/setor-sampah/' . $fileName) && Storage::delete('public/uploads/setor-sampah/' . $fileName);
     }
+
+    public function scopeGrafikSetorSampah($query, $bulan)
+    {
+        return $query
+            ->selectRaw('MONTH(tgl_setor_sampah) as month, SUM(berat_sampah) as total')
+            ->groupBy('month')
+            ->get()
+            ->values()
+            ->mapWithKeys(function ($value) use ($bulan) {
+                return [$bulan[$value['month'] - 1] => $value['total']];
+            })->toArray();
+    }
+
+    public function scopeBeratPerKategori($query)
+    {
+        // Ambil semua kategori sampah
+        $kategoriSampah = KategoriSampah::pluck('nama_kategori', 'id')->toArray();
+
+        // Ambil total berat per kategori, jika tidak ada maka akan menghasilkan array kosong
+        $result = $query
+            ->selectRaw('id_kategori, SUM(berat_sampah) as total')
+            ->groupBy('id_kategori')
+            ->pluck('total', 'id_kategori')
+            ->toArray();
+
+        // Gabungkan kategori sampah dengan total berat, jika tidak ada data berat, set ke 0
+        return collect($kategoriSampah)->mapWithKeys(function ($name, $id) use ($result) {
+            return [$name => $result[$id] ?? 0]; // Jika tidak ada total, beri nilai 0
+        });
+    }
 }

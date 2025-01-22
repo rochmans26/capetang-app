@@ -10,10 +10,17 @@
     <hr class="text-white">
     <ul class="sidebar-nav">
         <li class="sidebar-item">
-            <a href="{{ route('users.dashboard') }}" class="sidebar-link">
-                <i class="bi bi-columns-gap"></i>
-                <span>Dashboard</span>
-            </a>
+            @if (auth()->user()->hasRole('admin'))
+                <a href="{{ route('admin.dashboard') }}" class="sidebar-link">
+                    <i class="bi bi-columns-gap"></i>
+                    <span>Dashboard</span>
+                </a>
+            @else
+                <a href="{{ route('users.dashboard') }}" class="sidebar-link">
+                    <i class="bi bi-columns-gap"></i>
+                    <span>Dashboard</span>
+                </a>
+            @endif
         </li>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
