@@ -34,26 +34,20 @@
                         class="sidebar-link">
                         Kategori Sampah
                     </a>
-                    <span
-                        class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                        <span class="visually-hidden">New alerts</span>
+                    
                 </li>
 
                 @role('user')
                     <li class="sidebar-item">
                         <a href="{{ route('users.riwayat-setor-sampah') }}" class="sidebar-link">Riwayat Setor Sampah</a>
-                        <span
-                            class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                            <span class="visually-hidden">New alerts</span>
+                       
                     </li>
                 @endrole
 
                 @role('admin')
                     <li class="sidebar-item">
                         <a href="{{ route('penyetoran-sampah.index') }}" class="sidebar-link">Penyetoran Sampah</a>
-                        <span
-                            class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                            <span class="visually-hidden">New alerts</span>
+                       
                     </li>
                 @endrole
             </ul>
@@ -69,26 +63,20 @@
                 <li class="sidebar-item">
                     <a href="{{ auth()->user()->hasRole('admin') ? route('quest.index') : route('users.list-quest') }}"
                         class="sidebar-link">Quest</a>
-                    <span
-                        class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                        <span class="visually-hidden">New alerts</span>
+                   
                 </li>
 
                 @role('user')
                     <li class="sidebar-item">
                         <a href="{{ route('users.quest-user') }}" class="sidebar-link">Quest Anda</a>
-                        <span
-                            class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                            <span class="visually-hidden">New alerts</span>
+                        
                     </li>
                 @endrole
 
                 @role('admin')
                     <li class="sidebar-item">
                         <a href="{{ route('admin.reward-quest') }}" class="sidebar-link">Reward Quest</a>
-                        <span
-                            class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                            <span class="visually-hidden">New alerts</span>
+                       
                     </li>
                 @endrole
             </ul>
@@ -104,15 +92,11 @@
                 <ul id="reward" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
                         <a href="{{ route('users.riwayat-reward') }}" class="sidebar-link">Riwayat Pencatatan Point</a>
-                        <span
-                            class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                            <span class="visually-hidden">New alerts</span>
+                       
                     </li>
                     <li class="sidebar-item">
                         <a href="{{ route('users.riwayat-tukar-poin') }}" class="sidebar-link">Riwayat Penukaran Point</a>
-                        <span
-                            class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                            <span class="visually-hidden">New alerts</span>
+                      
                     </li>
                 </ul>
             </li>

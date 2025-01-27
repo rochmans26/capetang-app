@@ -16,7 +16,7 @@
             {{-- header --}}
             <div class="title d-flex justify-content-between align-items-center mt-3">
                 <h1 class="d-flex align-items-center">
-                    <i class="bi bi-recycle fs-1 me-2 text-success"></i>
+                    <img src="{{ asset('img/ikon-setor-sampah.png') }}" alt="" width="80">&nbsp;
                     Penyetoran Sampah
                 </h1>
                 <div class="d-flex align-items-center justify-content-end gap-3">

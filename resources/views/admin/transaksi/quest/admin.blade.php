@@ -16,7 +16,7 @@
             {{-- header --}}
             <div class="title d-flex justify-content-between align-items-center mt-3">
                 <h1 class="d-flex align-items-center">
-                    <i class="bi bi-arrow-left-right fs-1 me-2 text-success"></i>
+                    <i class="bi bi-bookmark-check-fill fs-1 me-2 text-warning"></i>
                     Daftar Quest Yang Menunggu Approval
                 </h1>
                 <div class="d-flex align-items-center justify-content-end gap-3">

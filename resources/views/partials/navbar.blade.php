@@ -16,14 +16,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
-                        <span class="me-1 badge text-bg-warning">
-                            Point Anda: {{ auth()->user()->points ?? '0' }}</span>
-                        <img src="{{ asset('img/coin.png') }}" alt="Coin" width="22" class="me-2">
-                        <span>|</span>
-                    </a>
-                </li>
+                @role('user')
+                    <li class="nav-item">
+                        <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
+                            <span class="me-1 badge text-bg-warning">
+                                Point Anda: {{ auth()->user()->points ?? '0' }}</span>
+                            <img src="{{ asset('img/coin.png') }}" alt="Coin" width="22" class="me-2">
+                            <span>|</span>
+                        </a>
+                    </li>
+                @endrole
             </ul>
             <div class="d-flex align-items-center">
                 <div class="dropdown me-3">
