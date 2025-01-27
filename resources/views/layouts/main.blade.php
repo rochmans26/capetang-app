@@ -13,6 +13,10 @@
         html {
             height: 100%;
         }
+
+        .primary-color {
+            background-color: #079b6a;
+        }
     </style>
     @yield('customize-style')
 </head>

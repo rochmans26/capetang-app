@@ -31,6 +31,7 @@
                                     <h5 class="card-title">
                                         {{ $loop->iteration }}
                                     </h5>
+                                    <img src="{{ $kategori->image_url }}" alt="" class="img-fluid mb-3 rounded">
                                     <h6 class="card-subtitle mb-2 text-body-secondary">{{ $kategori->nama_kategori }}</h6>
                                     <p class="card-text">{{ $kategori->deskripsi }}</p>
                                 </div>

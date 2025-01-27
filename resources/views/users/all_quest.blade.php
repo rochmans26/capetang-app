@@ -23,6 +23,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">#{{ $quest->id }}</h5>
                                 <h6 class="card-subtitle mb-2 text-body-secondary">{{ $quest->nama_quest }}</h6>
+                                <img src="{{ $quest->image_url }}" alt="" class="img-fluid rounded mb-3">
                                 <h6 class="card-subtitle mb-2 text-body-secondary">{{ $quest->point . ' Point' }}</h6>
                                 <p class="card-text">{{ $quest->deskripsi }}</p>
                                 <div class="card-link">

@@ -14,8 +14,8 @@
     <div class="container">
         <div class="container shadow full-height rounded">
             {{-- header --}}
-            <div class="title d-flex justify-content-between align-items-center mt-3">
-                <h1 class="d-flex align-items-center">
+            <div class="title d-flex justify-content-between align-items-center mt-3 p-3 primary-color rounded">
+                <h1 class="d-flex align-items-center text-white">
                     <img src="{{ asset('img/ikon-quest.png') }}" alt="" width="80">&nbsp;
                     Daftar Quest
                 </h1>

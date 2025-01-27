@@ -3,9 +3,9 @@
     <div class="container">
         <div class="container">
             {{-- header --}}
-            <div class="title d-flex justify-content-between align-items-center">
-                <h1 class="d-flex align-items-center">
-                    <i class="bi bi-person-circle text-warning"></i>
+            <div class="title d-flex justify-content-between align-items-center p-3 rounded bg-light shadow-sm">
+                <h1 class="d-flex align-items-center text-dark">
+                    <i class="bi bi-person-circle fs-1 me-2"></i>
                     Profile
                 </h1>
 

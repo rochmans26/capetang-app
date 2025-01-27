@@ -14,9 +14,9 @@
     <div class="container">
         <div class="container shadow full-height rounded">
             {{-- header --}}
-            <div class="title d-flex justify-content-between align-items-center mt-3">
-                <h1 class="d-flex align-items-center">
-                    <i class="bi bi-bookmark-star-fill text-warning"></i>
+            <div class="title d-flex justify-content-between align-items-center mt-3 p-3 primary-color rounded">
+                <h1 class="d-flex align-items-center text-white">
+                    <i class="bi bi-nintendo-switch fs-1 me-2"></i>
                     Riwayat Tukar Poin
                 </h1>
 

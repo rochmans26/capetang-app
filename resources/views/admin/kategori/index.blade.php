@@ -14,14 +14,14 @@
     <div class="container">
         <div class="container shadow full-height rounded">
             {{-- header --}}
-            <div class="title d-flex justify-content-between align-items-center mt-3">
-                <h1 class="d-flex align-items-center">
+            <div class="title d-flex justify-content-between align-items-center mt-3 primary-color p-3 rounded">
+                <h1 class="d-flex align-items-center text-white">
                     <img src="{{ asset('img/ikon-kategori-sampah.png') }}" alt="" width="80">
                     Kategori Sampah
                 </h1>
                 <div class="d-flex align-items-center justify-content-end gap-3">
                     <!-- Tombol Kembali -->
-                    <a href="javascript:history.back()" class="btn btn-warning d-inline-flex align-items-center px-3 py-2"
+                    <a href="javascript:history.back()" class="btn btn-light d-inline-flex align-items-center px-3 py-2"
                         role="button" title="Kembali ke halaman sebelumnya" aria-label="Kembali">
                         <i class="bi bi-arrow-left-circle me-2"></i>
                         Back
